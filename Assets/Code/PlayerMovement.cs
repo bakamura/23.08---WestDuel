@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] private float _baseSpeed;
     [SerializeField] private float _noBulletSpeed;
+
+    [Header("Inputs")]
+
     [SerializeField] private KeyCode _keyForward;
     [SerializeField] private KeyCode _keyRight;
     [SerializeField] private KeyCode _keyBackward;
