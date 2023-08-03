@@ -10,9 +10,9 @@ public class SpawnPickup : MonoBehaviour
     [SerializeField] private float _delayBetweenSpawns;
     [SerializeField] private GameObject _bulletPickupPrefab;
     [SerializeField] private byte _maxAmmoPickupsInScene = 2;
-    [SerializeField] private bool _startWithAutomaticSpawns = true;
 
     [Header("Debug")]
+    [SerializeField] private bool _startWithAutomaticSpawns = true;
     [SerializeField] private bool _debugMode;
     [SerializeField] private Color[] _colorPoints;
     [SerializeField] private float _gizmoSize;
@@ -22,7 +22,7 @@ public class SpawnPickup : MonoBehaviour
     private byte _currentBoxAmount;
     private List<Vector3> _currentAvailable;
     private Coroutine _autoSpawnCoroutine;
-    private BulletPickup[] _bullets;
+    private BulletPickup[] _bulletPickups;
     private BulletPickup _bulletAvailable;
 
     private void Awake()
@@ -30,19 +30,19 @@ public class SpawnPickup : MonoBehaviour
         _delay = new WaitForSeconds(_delayBetweenSpawns);
         _currentAvailable = new List<Vector3>(_spawnPoints);
         _spawnByDelay = _startWithAutomaticSpawns;
-        _bullets = new BulletPickup[_maxAmmoPickupsInScene];
+        _bulletPickups = new BulletPickup[_maxAmmoPickupsInScene];
 
         for (int i = 0; i < _maxAmmoPickupsInScene; i++)
         {
-            _bullets[i] = Instantiate(_bulletPickupPrefab, null).GetComponent<BulletPickup>();
-            _bullets[i].UpdateState(false);
-            _bullets[i].OnCollect += OnPickupCollect;
-            _bullets[i].name = $"BulletPickup {i}";
+            _bulletPickups[i] = Instantiate(_bulletPickupPrefab, null).GetComponent<BulletPickup>();
+            _bulletPickups[i].UpdateState(false);
+            _bulletPickups[i].OnCollect += OnPickupCollect;
+            _bulletPickups[i].name = $"BulletPickup {i}";
         }
 
-        _bulletAvailable = _bullets[0];
-        for (int i = 0; i < _maxAmmoPickupsInScene - 1; i++) _bullets[i].SetNextInLine(_bullets[i + 1]);
-        _bullets[_maxAmmoPickupsInScene - 1].SetNextInLine(null);
+        _bulletAvailable = _bulletPickups[0];
+        for (int i = 0; i < _maxAmmoPickupsInScene - 1; i++) _bulletPickups[i].SetNextInLine(_bulletPickups[i + 1]);
+        _bulletPickups[_maxAmmoPickupsInScene - 1].SetNextInLine(null);
 
         UpdateAutoSpawn();
     }
@@ -65,11 +65,11 @@ public class SpawnPickup : MonoBehaviour
         _autoSpawnCoroutine = null;
     }
 
-    //public void SetSpawnAutomatic(bool activate)
-    //{
-    //    _spawnByDelay = activate;
-    //    UpdateAutoSpawn();
-    //}
+    public void SetSpawnAutomatic(bool activate)
+    {
+        _spawnByDelay = activate;
+        UpdateAutoSpawn();
+    }
 
     private void Spawn()
     {
@@ -97,6 +97,7 @@ public class SpawnPickup : MonoBehaviour
         Debug.Log("collect");
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         Color[] temp = _colorPoints;
@@ -119,6 +120,7 @@ public class SpawnPickup : MonoBehaviour
             }
         }
     }
+#endif
 
     private BulletPickup GetBullet()
     {
@@ -133,10 +135,10 @@ public class SpawnPickup : MonoBehaviour
             //dessa forma sepre tera uma sequencia de balas possiveis de serem usadas
             for (int i = 0; i < _maxAmmoPickupsInScene; i++)
             {
-                if (!_bullets[i].isActiveAndEnabled)
+                if (!_bulletPickups[i].isActiveAndEnabled)
                 {
-                    _bullets[i].SetNextInLine(_bulletAvailable);
-                    _bulletAvailable = _bullets[i];
+                    _bulletPickups[i].SetNextInLine(_bulletAvailable);
+                    _bulletAvailable = _bulletPickups[i];
                 }
             }
             temp = _bulletAvailable;
