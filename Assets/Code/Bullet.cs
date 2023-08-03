@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour {
     //private Coroutine _moveCoroutine;
     //private Vector3 _currentDirection;
     private Rigidbody _rb;
+    private PlayerHealth _adversaryPlayerHealth;
 
     private void Awake()
     {
@@ -39,8 +40,8 @@ public class Bullet : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        PlayerHealth player = collision.collider.GetComponent<PlayerHealth>();
-        if (player) player.Die();
+        if (!_adversaryPlayerHealth) _adversaryPlayerHealth = collision.collider.GetComponent<PlayerHealth>();
+        if(_adversaryPlayerHealth) _adversaryPlayerHealth.Die();
         gameObject.SetActive(false);
         _rb.velocity = Vector3.zero;
     }
