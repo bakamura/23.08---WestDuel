@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerShoot), typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour {
 
     [Header("Parameters")]
@@ -36,8 +35,11 @@ public class PlayerMovement : MonoBehaviour {
         if (_canInput) {
             _input[0] = (Input.GetKey(_keyLeft) ? -1 : 0) + (Input.GetKey(_keyRight) ? 1 : 0);
             _input[1] = (Input.GetKey(_keyBackward) ? -1 : 0) + (Input.GetKey(_keyForward) ? 1 : 0);
-            if(_input.sqrMagnitude > 0) Move(_input.normalized); // does it need to be normalized?
         }
+        else {
+            _input = Vector2.zero; // Could be smoothed to zero, but requires testing on how it works
+        }
+        Move(_input.normalized); 
     }
 
     private void Move(Vector2 direction) {
