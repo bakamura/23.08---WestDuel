@@ -8,6 +8,10 @@ public class PlayerShoot : MonoBehaviour {
 
     }
 
+    public bool CheckBullet() {
+        return true;
+    }
+
     public void GetBullet() {
 
     }
