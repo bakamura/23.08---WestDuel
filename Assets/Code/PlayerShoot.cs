@@ -54,10 +54,6 @@ public class PlayerShoot : MonoBehaviour {
         return _hasBullet;
     }
 
-    public bool CheckBullet() {
-        return true;
-    }
-
     public void GetBullet() {
         _hasBullet = true;
     }
