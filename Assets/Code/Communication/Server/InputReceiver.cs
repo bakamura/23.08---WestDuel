@@ -22,7 +22,12 @@ public class InputReceiver : DataReceiver<InputDataPack> {
     }
 
     protected override void ImplementPack() {
-        throw new System.NotImplementedException();
+        for (int i = 0; i < ServerConnectionHandler.players.Count; i++) {
+            if (_ipToData[ServerConnectionHandler.players[i].ip].updated) {
+                ServerConnectionHandler.players[i].movement.SetInputDirection(PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip]._movementInput));
+                if (_ipToData[ServerConnectionHandler.players[i].ip]._mouseClick) ServerConnectionHandler.players[i].shoot.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
+            }
+        }
     }
 
 }

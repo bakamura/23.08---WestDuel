@@ -10,13 +10,12 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
     private MemoryStream _ms;
 
     protected override void PreparePack() {
-        //throw new System.NotImplementedException();
-        // Check every data needed for WorldStateDataPack
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++) {
             _dataPackCache.playersPos[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position);
             _dataPackCache.playersVelocity[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].rigidBody.velocity);
             _dataPackCache.playersHasBullet[i] = ServerConnectionHandler.players[i].shoot.CheckBullet();
-            _dataPackCache.bulletsPos[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position);
+            _dataPackCache.bulletsPos[2*i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position); // Calc Inside [] because each player has 2 bullets
+            _dataPackCache.bulletsPos[2*i + 1] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position);
             _dataPackCache.bulletsVelocity[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position); // Change later into account of bullet per player
         }
     }

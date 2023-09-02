@@ -26,22 +26,19 @@ public class PlayerShoot : MonoBehaviour {
         _cam = Camera.main;
 
         _canInput = true; // test
-        _hasBullet = true; // test
     }
 
-    private void Update() {
-        if (_canInput && _hasBullet && Input.GetKeyDown(_keyShoot)) Shoot();
-    }
+    public void Shoot(Vector3 point) {
+        if (_canInput && _hasBullet) {
+            //Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, _mouseElevatedReceiver, QueryTriggerInteraction.Collide);
 
-    private void Shoot() {
-        Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, _mouseElevatedReceiver, QueryTriggerInteraction.Collide);
-
-        foreach (Bullet bullet in _bulletPool) {
-            if (!bullet.gameObject.activeSelf) {
-                bullet.gameObject.SetActive(true);
-                bullet.Shoot(_firePoint.position, hit.point);
-                //_hasBullet = false;
-                break;
+            foreach (Bullet bullet in _bulletPool) {
+                if (!bullet.gameObject.activeSelf) {
+                    bullet.gameObject.SetActive(true);
+                    bullet.Shoot(_firePoint.position, point);
+                    _hasBullet = false;
+                    break;
+                }
             }
         }
     }
