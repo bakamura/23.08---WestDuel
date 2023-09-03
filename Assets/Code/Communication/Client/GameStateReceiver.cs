@@ -30,8 +30,11 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
                 case GameStateDataPack.GameState.Continue:
                     break;
                 case GameStateDataPack.GameState.Ended:
+                    //ClientConnectionHandler.PlayersList.Clear();
+                    //ClientConnectionHandler.BulletsList.Clear();
                     break;
                 case GameStateDataPack.GameState.Initiate:
+                    //spawn host
                     ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(Instantiate(InstantiateHandler.GetPlayerPrefab(),
                         _container.SpawnPlayer.GetPointFurthestFromOponent(_container.LocalPlayer.transform.position), Quaternion.identity)));
 
