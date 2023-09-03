@@ -71,7 +71,7 @@ public class SpawnPickup : MonoBehaviour
         UpdateAutoSpawn();
     }
 
-    private void Spawn()
+    public BulletPickup Spawn()
     {
         if (_currentBoxAmount < _maxAmmoPickupsInScene)
         {
@@ -79,7 +79,9 @@ public class SpawnPickup : MonoBehaviour
             temp.SetSpawnPointUsed(GetValidSpawnPoint());
             temp.gameObject.SetActive(true);
             _currentBoxAmount++;
+            return temp;
         }
+        return null;
     }
 
     private Vector3 GetValidSpawnPoint()
