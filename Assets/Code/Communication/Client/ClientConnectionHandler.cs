@@ -8,8 +8,8 @@ public static class ClientConnectionHandler
 {
     // Stores UDP Client + Server's IPEndPoint
     public static List<MovableObjectData> PlayersList = new List<MovableObjectData>();
-    public static List<MovableObjectData> BulletsList = new List<MovableObjectData>();
-    public static List<BulletPickup> AmmoBoxList = new List<BulletPickup>();
+    public static List<Bullet> BulletsList = new List<Bullet>();
+    //public static List<BulletPickup> AmmoBoxList = new List<BulletPickup>();
 
     [System.Serializable]
     public struct MovableObjectData
