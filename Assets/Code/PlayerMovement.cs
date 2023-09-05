@@ -32,14 +32,11 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Update() {
-        if (_canInput) {
-            _input[0] = (Input.GetKey(_keyLeft) ? -1 : 0) + (Input.GetKey(_keyRight) ? 1 : 0);
-            _input[1] = (Input.GetKey(_keyBackward) ? -1 : 0) + (Input.GetKey(_keyForward) ? 1 : 0);
-        }
-        else {
-            _input = Vector2.zero; // Could be smoothed to zero, but requires testing on how it works
-        }
-        Move(_input.normalized); 
+        if (_canInput && _input != Vector2.zero) Move(_input.normalized); 
+    }
+
+    public void SetInputDirection(Vector2 direction) {
+        _input = direction;
     }
 
     private void Move(Vector2 direction) {

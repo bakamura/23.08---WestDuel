@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviour {
     [Header("Parameters")]
 
     [SerializeField] private byte _healthMax;
-    private byte _healthCurrent;
+     private byte _healthCurrent;
     [SerializeField] private float _delayRespawn;
     [Tooltip("Invencibility duration starts after respawning")]
     [SerializeField] private float _invencibilityDuration;
@@ -44,6 +44,7 @@ public class PlayerHealth : MonoBehaviour {
         _movementScript.SetActive(false);
         _shootScript.SetActive(false);
 
+        _healthCurrent--;
         if (_healthCurrent <= 0) {
             // Call game manager admiting defeat
 
@@ -62,4 +63,9 @@ public class PlayerHealth : MonoBehaviour {
 
     }
 
+    public byte GetCurrentHealth() { return _healthCurrent; }
+
+    public void ResetHealth() {
+        _healthCurrent = _healthMax;
+    }
 }
