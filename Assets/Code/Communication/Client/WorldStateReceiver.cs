@@ -18,7 +18,11 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
         {
             IPEndPoint temp = ClientConnectionHandler.ServerEndPoint;
             _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
-            _ipToData[temp] = (WorldStateDataPack)_binaryFormatter.Deserialize(_memoryStream);
+            if (temp == ClientConnectionHandler.ServerEndPoint)
+            {
+                byte[] bArray = (byte[])_binaryFormatter.Deserialize(_memoryStream);
+                if (bArray[0] == (byte)DataPacksIdentification.WorldStateDataPack) _ipToData[temp] = (WorldStateDataPack)_binaryFormatter.Deserialize(_memoryStream);
+            }
         }
     }
 

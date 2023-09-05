@@ -16,7 +16,8 @@ public class InputReceiver : DataReceiver<InputDataPack> {
             for(int i = 0; i < ServerConnectionHandler.players.Count; i++) {
                 _ipEpCache = ServerConnectionHandler.players[i].ip;
                 _ms = new MemoryStream(ServerConnectionHandler.udpClient.Receive(ref _ipEpCache));
-                _ipToData[ServerConnectionHandler.players[i].ip] = (InputDataPack)_bf.Deserialize(_ms);
+                byte[] bArray = (byte[])_bf.Deserialize(_ms);
+                if (bArray[0] == (byte)DataPacksIdentification.InputDataPack) _ipToData[ServerConnectionHandler.players[i].ip] = (InputDataPack)_bf.Deserialize(_ms);
             }
         }
     }

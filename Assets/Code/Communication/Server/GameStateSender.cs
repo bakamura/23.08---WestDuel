@@ -49,7 +49,7 @@ public class GameStateSender : DataSender<GameStateDataPack> {
     protected override void SendPack() {
         _ms = new MemoryStream();
         _bf.Serialize(_ms, _dataPackCache);
-        _byteArrayCache = _ms.ToArray();
+        _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.GamStateDataPack);
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++) ServerConnectionHandler.udpClient.Send(_byteArrayCache, _byteArrayCache.Length, ServerConnectionHandler.players[i].ip);
     }
 

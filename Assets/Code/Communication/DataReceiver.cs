@@ -6,7 +6,7 @@ using UnityEngine;
 
 public abstract class DataReceiver<T> : MonoBehaviour {
 
-    protected Dictionary<IPEndPoint, T> _ipToData;
+    protected Dictionary<IPEndPoint, T> _ipToData = new Dictionary<IPEndPoint, T>();
 
     protected void Awake() {
         Thread receiverThread = new Thread(ReceivePack);

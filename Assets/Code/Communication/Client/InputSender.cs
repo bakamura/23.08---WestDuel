@@ -29,7 +29,7 @@ public class InputSender : DataSender<InputDataPack>
     {
         _memoryStream = new MemoryStream(); // Always open a new memory stream
         _binaryFormatter.Serialize(_memoryStream, _dataPackCache);
-        _byteArrayCache = _memoryStream.ToArray();
+        _byteArrayCache = AddIdentifierByte(_memoryStream.ToArray(), (byte)DataPacksIdentification.InputDataPack);
         ClientConnectionHandler.UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ClientConnectionHandler.ServerEndPoint);
     }
 }

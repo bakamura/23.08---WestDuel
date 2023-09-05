@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DataSender<T> : MonoBehaviour {
+public abstract class DataSender<T> : MonoBehaviour
+{
 
     [Header("Cache")]
 
     protected T _dataPackCache;
     protected byte[] _byteArrayCache;
 
-    protected virtual void FixedUpdate() {
+    protected virtual void FixedUpdate()
+    {
         PreparePack();
         SendPack();
     }
@@ -18,9 +21,15 @@ public abstract class DataSender<T> : MonoBehaviour {
 
     protected abstract void SendPack();
     // Implementation guide
-        //MemoryStream = new MemoryStream(); // Always open a new memory stream
-        //BinaryFormatter.Serialize(DataPacking.memoryStream, _dataPack); 
-        //_byteArrayCache = MemoryStream.ToArray();
-        //foreach (IPEndPoint ip in /* Server IP / Clients IP List */) UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ip);
-
+    //MemoryStream = new MemoryStream(); // Always open a new memory stream
+    //BinaryFormatter.Serialize(DataPacking.memoryStream, _dataPack); 
+    //_byteArrayCache = MemoryStream.ToArray();
+    //foreach (IPEndPoint ip in /* Server IP / Clients IP List */) UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ip);
+    protected byte[] AddIdentifierByte(byte[] bArray, byte addedB)
+    {
+        byte[] newBArray = new byte[bArray.Length + 1];
+        newBArray[0] = addedB;
+        Array.Copy(bArray, 0, newBArray, 1, bArray.Length);
+        return newBArray;
+    }
 }
