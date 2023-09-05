@@ -46,6 +46,11 @@ public class Bullet : MonoBehaviour {
         _rb.velocity = Vector3.zero;
     }
 
+    public void UpdateState(bool isActive)
+    {
+        gameObject.SetActive(isActive);
+        if(!isActive) _rb.velocity = Vector3.zero;
+    }
     //[ContextMenu("Test")]
     //private void DebugShoot()
     //{

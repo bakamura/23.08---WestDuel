@@ -20,7 +20,12 @@ public class BulletPickup : MonoBehaviour
     public void SetSpawnPointUsed(Vector3 spawnPoint)
     {
         _spawnPointUsed = spawnPoint;
-        transform.position = _spawnPointUsed;
+        SetPosition(_spawnPointUsed);
+    }
+
+    public void SetPosition(Vector3 newPosition)
+    {
+        transform.position = newPosition;
     }
 
     public void UpdateState(bool isActive)
@@ -31,6 +36,11 @@ public class BulletPickup : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         other.GetComponent<PlayerShoot>().GetBullet();
+        CollectBullet();
+    }
+
+    public void CollectBullet()
+    {
         UpdateState(false);
         OnCollect?.Invoke(_spawnPointUsed);
     }
