@@ -8,8 +8,7 @@ using UnityEngine;
 public class GameStateReceiver : DataReceiver<GameStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
-    private MemoryStream _memoryStream;
-    private BinaryFormatter _binaryFormatter = new BinaryFormatter();
+    private GameStateDataPack _dataPack;
 
     protected override void ReceivePack()
     {
@@ -17,10 +16,13 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
         {
             IPEndPoint temp = ClientConnectionHandler.ServerEndPoint;
             _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
-            if(temp == ClientConnectionHandler.ServerEndPoint)
+            if (temp == ClientConnectionHandler.ServerEndPoint)
             {
-                byte[] bArray = (byte[])_binaryFormatter.Deserialize(_memoryStream);
-                if (bArray[0] == (byte)DataPacksIdentification.GamStateDataPack) _ipToData[temp] = (GameStateDataPack)_binaryFormatter.Deserialize(_memoryStream);
+                _dataPack = CheckDataPack<GameStateDataPack>(DataPacksIdentification.GamStateDataPack);
+                if(_dataPack != null)
+                {
+                    _ipToData[temp] = _dataPack;
+                }               
             }
         }
     }

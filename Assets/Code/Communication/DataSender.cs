@@ -20,11 +20,7 @@ public abstract class DataSender<T> : MonoBehaviour
     protected abstract void PreparePack();
 
     protected abstract void SendPack();
-    // Implementation guide
-    //MemoryStream = new MemoryStream(); // Always open a new memory stream
-    //BinaryFormatter.Serialize(DataPacking.memoryStream, _dataPack); 
-    //_byteArrayCache = MemoryStream.ToArray();
-    //foreach (IPEndPoint ip in /* Server IP / Clients IP List */) UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ip);
+
     protected byte[] AddIdentifierByte(byte[] bArray, byte addedB)
     {
         byte[] newBArray = new byte[bArray.Length + 1];

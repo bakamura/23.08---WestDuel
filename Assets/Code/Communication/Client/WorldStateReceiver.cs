@@ -9,8 +9,7 @@ using System.Linq;
 public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
-    private MemoryStream _memoryStream;
-    private BinaryFormatter _binaryFormatter = new BinaryFormatter();
+    private WorldStateDataPack _dataPack;
 
     protected override void ReceivePack()
     {
@@ -20,8 +19,11 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
             _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
             if (temp == ClientConnectionHandler.ServerEndPoint)
             {
-                byte[] bArray = (byte[])_binaryFormatter.Deserialize(_memoryStream);
-                if (bArray[0] == (byte)DataPacksIdentification.WorldStateDataPack) _ipToData[temp] = (WorldStateDataPack)_binaryFormatter.Deserialize(_memoryStream);
+                _dataPack = CheckDataPack<WorldStateDataPack>(DataPacksIdentification.GamStateDataPack);
+                if (_dataPack != null)
+                {
+                    _ipToData[temp] = _dataPack;
+                }
             }
         }
     }
