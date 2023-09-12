@@ -8,8 +8,7 @@ using UnityEngine;
 public class GameStateReceiver : DataReceiver<GameStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
-    private MemoryStream _memoryStream;
-    private BinaryFormatter _binaryFormatter = new BinaryFormatter();
+    private GameStateDataPack _dataPack;
 
     protected override void ReceivePack()
     {
@@ -17,33 +16,40 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
         {
             IPEndPoint temp = ClientConnectionHandler.ServerEndPoint;
             _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
-            _ipToData[temp] = (GameStateDataPack)_binaryFormatter.Deserialize(_memoryStream);
-        }
-    }
-
-    protected override void ImplementPack()
-    {
-        if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
-        {
-            switch (_ipToData[ClientConnectionHandler.ServerEndPoint].gameState)
+            if (temp == ClientConnectionHandler.ServerEndPoint)
             {
-                case GameStateDataPack.GameState.Continue:
-                    break;
-                case GameStateDataPack.GameState.Ended:
-                    //ClientConnectionHandler.PlayersList.Clear();
-                    //ClientConnectionHandler.BulletsList.Clear();
-                    break;
-                case GameStateDataPack.GameState.Initiate:
-                    //spawn host
-                    ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(Instantiate(InstantiateHandler.GetPlayerPrefab(),
-                        _container.SpawnPlayer.GetPointFurthestFromOponent(_container.LocalPlayer.transform.position), Quaternion.identity)));
-
-                    ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(_container.LocalPlayer));
-                    break;
-                case GameStateDataPack.GameState.Restart:
-                    break;
+                _dataPack = CheckDataPack<GameStateDataPack>(DataPacksIdentification.GamStateDataPack);
+                if(_dataPack != null)
+                {
+                    _ipToData[temp] = _dataPack;
+                }               
             }
-            _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
         }
     }
+
+protected override void ImplementPack()
+{
+    if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
+    {
+        switch (_ipToData[ClientConnectionHandler.ServerEndPoint].gameState)
+        {
+            case GameStateDataPack.GameState.Continue:
+                break;
+            case GameStateDataPack.GameState.Ended:
+                //ClientConnectionHandler.PlayersList.Clear();
+                //ClientConnectionHandler.BulletsList.Clear();
+                break;
+            case GameStateDataPack.GameState.Initiate:
+                //spawn host
+                ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(Instantiate(InstantiateHandler.GetPlayerPrefab(),
+                    _container.SpawnPlayer.GetPointFurthestFromOponent(_container.LocalPlayer.transform.position), Quaternion.identity)));
+
+                ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(_container.LocalPlayer));
+                break;
+            case GameStateDataPack.GameState.Restart:
+                break;
+        }
+        _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
+    }
+}
 }
