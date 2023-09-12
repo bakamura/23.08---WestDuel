@@ -28,7 +28,7 @@ public abstract class DataReceiver<T> : MonoBehaviour
 
     protected abstract void ImplementPack();
 
-    protected T CheckDataPack<T>(DataPacksIdentification dataPackTypeWanted)
+    protected T CheckDataPack<T1>(DataPacksIdentification dataPackTypeWanted)
     {
         byte[] bArray = (byte[])_binaryFormatter.Deserialize(_memoryStream);        
         if (bArray[0] == (byte)dataPackTypeWanted)
