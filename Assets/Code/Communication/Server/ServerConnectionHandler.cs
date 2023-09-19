@@ -18,5 +18,5 @@ public class PlayerInfo {
     public Rigidbody rigidBody;
     public PlayerHealth health;
     public PlayerMovementClient movement;
-    public PlayerShoot shoot;
+    public PlayerShootClient shoot;
 }

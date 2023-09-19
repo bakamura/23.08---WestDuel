@@ -27,6 +27,7 @@ public static class ClientConnectionHandler
     public const int Port = 11000;
     public static IPEndPoint ServerEndPoint { get { return ServerEndPoint; } set { SetIpEndPoint(string.Empty); } }
     public static UdpClient UdpClient = new UdpClient(Port);
+    public static bool _hasGameEnded;
 
     public static IPEndPoint SetIpEndPoint(string IpAddress)
     {

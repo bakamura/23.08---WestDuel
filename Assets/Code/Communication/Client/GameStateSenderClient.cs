@@ -10,6 +10,14 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
     private BinaryFormatter _bf;
     private MemoryStream _ms;
 
+    protected override void FixedUpdate()
+    {
+        if (ClientConnectionHandler._hasGameEnded)
+        {
+            base.FixedUpdate();
+        }
+    }
+
     protected override void PreparePack()
     {
         _dataPackCache.gameState = GameStateDataPack.GameState.Quit;
