@@ -5,6 +5,7 @@ using System;
 
 public class BulletPickup : MonoBehaviour
 {
+    [SerializeField] private SoundManager.SfxAudioData _audioData;
     private BulletPickup _nextInPoolList;
     private Vector3 _spawnPointUsed;
 
@@ -42,6 +43,7 @@ public class BulletPickup : MonoBehaviour
 
     public void CollectBullet()
     {
+        SoundManager.Instance.PlaySoundEffect(_audioData, transform.position);
         UpdateState(false);
         OnCollect?.Invoke(_spawnPointUsed);
     }

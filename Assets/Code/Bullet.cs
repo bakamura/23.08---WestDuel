@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
     [SerializeField] private float _tickFrequency;
     [SerializeField] private float _speed;
+    [SerializeField] private SoundManager.SfxAudioData _audioData;
 
     //[SerializeField] private Vector3 _dir;
     //[SerializeField] private Transform _init;
@@ -48,8 +49,9 @@ public class Bullet : MonoBehaviour {
 
     public void UpdateState(bool isActive)
     {
+        SoundManager.Instance.PlaySoundEffect(_audioData, transform.position);
         gameObject.SetActive(isActive);
-        if(!isActive) _rb.velocity = Vector3.zero;
+        if(!isActive) _rb.velocity = Vector3.zero; 
     }
     //[ContextMenu("Test")]
     //private void DebugShoot()
