@@ -9,7 +9,7 @@ public class Menu : MonoBehaviour {
     [SerializeField] private float _fadeDuration;
     [Tooltip("The time between ending fade out and starting fade in")]
     [SerializeField] private float _fadeOpenDelay;
-    private CanvasGroup _currentUi;
+    [SerializeField] private CanvasGroup _currentUi;
 
     [Header("Move Transition")]
 
@@ -41,7 +41,7 @@ public class Menu : MonoBehaviour {
 
             yield return null;
         }
-        fadeOut.alpha = 0; //
+        fadeOut.alpha = 0;
 
         yield return _fadeDelayWait;
 
@@ -50,28 +50,28 @@ public class Menu : MonoBehaviour {
 
             yield return null;
         }
-        fadeIn.alpha = 1; //
+        fadeIn.alpha = 1;
         fadeIn.interactable = false;
         fadeIn.blocksRaycasts = false;
 
     }
 
-    public void OpenUIMove(RectTransform moveIn) {
-        StartCoroutine(MoveUITransition(null, moveIn));
+    public void OpenUIMove(RectTransform moveIn, Vector2 moveInActivePos, Vector2 moveInDeactivePos) {
+        StartCoroutine(MoveUITransition(null, moveIn, Vector2.zero, Vector2.zero, moveInActivePos, moveInDeactivePos));
     }
 
-    public void CloseUIMove(RectTransform moveOut) {
-        StartCoroutine(MoveUITransition(moveOut, null));
+    public void CloseUIMove(RectTransform moveOut, Vector2 moveOutActivePos, Vector2 moveOutDeactivePos) {
+        StartCoroutine(MoveUITransition(moveOut, null, moveOutActivePos, moveOutDeactivePos, Vector2.zero, Vector2.zero));
     }
 
-    private IEnumerator MoveUITransition(RectTransform moveOut, RectTransform moveIn) {
+    private IEnumerator MoveUITransition(RectTransform moveOut, RectTransform moveIn, Vector2 moveOutActivePos, Vector2 moveOutDeactivePos, Vector2 moveInActivePos, Vector2 moveInDeactivePos) {
         if (moveOut != null) {
             _floatC = 1;
             while (_floatC > 0) {
-                moveOut.anchoredPosition = Vector2.Lerp(Vector2.one, Vector2.zero, _floatC); //
+                moveOut.anchoredPosition = Vector2.Lerp(moveOutActivePos, moveOutDeactivePos, _floatC);
                 _floatC -= Time.deltaTime / _moveDuration;
             }
-            moveOut.anchoredPosition = Vector2.zero;
+            moveOut.anchoredPosition = moveOutDeactivePos;
         }
 
 
@@ -80,10 +80,10 @@ public class Menu : MonoBehaviour {
 
             _floatC = 0;
             while (_floatC < 1) {
-                moveIn.anchoredPosition = Vector2.Lerp(Vector2.zero, Vector2.one, _floatC); //
+                moveIn.anchoredPosition = Vector2.Lerp(moveInDeactivePos, moveInActivePos, _floatC);
                 _floatC += Time.deltaTime / _moveDuration;
             }
-            moveIn.anchoredPosition = Vector2.one;
+            moveIn.anchoredPosition = moveInActivePos;
         }
     }
 }
