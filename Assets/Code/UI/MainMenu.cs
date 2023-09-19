@@ -101,7 +101,7 @@ public class MainMenu : Menu {
                 _bFormatter.Serialize(_mStream, JOIN_SUCCESS);
                 _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, _joinerIp);
             } else if (str == START_SUCCESS) {
-                // EXTRA STUFF
+                ServerConnectionHandler.players[0].ip = _joinerIp; // Instantiate before
                 SceneManager.LoadScene(1);
             } else if (str == LEAVE_LOBBY) {
                 _joinerIp = null;
@@ -117,6 +117,7 @@ public class MainMenu : Menu {
             else if (str == START) {
                 _bFormatter.Serialize(_mStream, START_SUCCESS);
                 _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 11000));
+                ClientConnectionHandler.ServerEndPoint = _hostIp;
                 SceneManager.LoadScene(1);
             }
         }
