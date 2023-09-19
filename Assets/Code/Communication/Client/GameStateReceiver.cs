@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameStateReceiver : DataReceiver<GameStateDataPack>
 {
@@ -19,37 +17,49 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
             if (temp == ClientConnectionHandler.ServerEndPoint)
             {
                 _dataPack = CheckDataPack<GameStateDataPack>(DataPacksIdentification.GamStateDataPack);
-                if(_dataPack != null)
+                if (_dataPack != null)
                 {
                     _ipToData[temp] = _dataPack;
-                }               
+                }
             }
         }
     }
 
-protected override void ImplementPack()
-{
-    if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
+    protected override void ImplementPack()
     {
-        switch (_ipToData[ClientConnectionHandler.ServerEndPoint].gameState)
+        if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
         {
-            case GameStateDataPack.GameState.Continue:
-                break;
-            case GameStateDataPack.GameState.Ended:
-                //ClientConnectionHandler.PlayersList.Clear();
-                //ClientConnectionHandler.BulletsList.Clear();
-                break;
-            case GameStateDataPack.GameState.Initiate:
-                //spawn host
-                ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(Instantiate(InstantiateHandler.GetPlayerPrefab(),
-                    _container.SpawnPlayer.GetPointFurthestFromOponent(_container.LocalPlayer.transform.position), Quaternion.identity)));
+            switch (_ipToData[ClientConnectionHandler.ServerEndPoint].gameState)
+            {
+                case GameStateDataPack.GameState.Continue:
+                    //atualiza a UI de Vida
+                    break;
+                case GameStateDataPack.GameState.Ended:
+                    ClientConnectionHandler.PlayersList.Clear();
+                    ClientConnectionHandler.BulletsList.Clear();
+                    ClientConnectionHandler.ServerEndPoint = null;
+                    SceneManager.LoadScene("MainMenu");
+                    break;
+                case GameStateDataPack.GameState.Initiate:
+                    //spawn host
+                    ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(Instantiate(InstantiateHandler.GetPlayerPrefab(),
+                        _container.SpawnPlayer.GetPointFurthestFromOponent(_container.LocalPlayer.transform.position), Quaternion.identity)));
 
-                ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(_container.LocalPlayer));
-                break;
-            case GameStateDataPack.GameState.Restart:
-                break;
+                    ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(_container.LocalPlayer));
+
+                    //atualiza a UI de Vida
+                    break;
+                case GameStateDataPack.GameState.Restart:
+                    for (int i = 0; i < ClientConnectionHandler.PlayersList.Count; i++)
+                    {
+                        _container.SpawnPlayer.GetPointFurthestFromOponent(i+1 >= ClientConnectionHandler.PlayersList.Count ? 
+                            ClientConnectionHandler.PlayersList[0].Object.transform.position : 
+                            ClientConnectionHandler.PlayersList[i+1].Object.transform.position);
+                    }
+                    //atualiza a UI de Vida
+                    break;
+            }
+            _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
         }
-        _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
     }
-}
 }
