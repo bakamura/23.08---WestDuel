@@ -36,7 +36,8 @@ public class BulletPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<PlayerShoot>().GetBullet();
+        PlayerShoot temp = other.GetComponent<PlayerShoot>();
+        if (temp) temp.GetBullet();
         CollectBullet();
     }
 
