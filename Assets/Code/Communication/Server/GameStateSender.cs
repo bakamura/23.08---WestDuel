@@ -35,6 +35,24 @@ public class GameStateSender : DataSender<GameStateDataPack> {
         }
     }
 
+    protected override void SendPack() {
+        _ms = new MemoryStream();
+        _bf.Serialize(_ms, _dataPackCache);
+        _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.GamStateDataPack);
+        for (int i = 0; i < ServerConnectionHandler.players.Count; i++) ServerConnectionHandler.udpClient.Send(_byteArrayCache, _byteArrayCache.Length, ServerConnectionHandler.players[i].ip);
+    }
+
+    public void QuitMatch() {
+        _dataPackCache.gameState = GameStateDataPack.GameState.Quit;
+        // Reset server IP etc data
+
+        SendPack();
+    }
+
+    private void OnApplicationQuit() {
+        QuitMatch();
+    }
+
     private void EndGame() {
         // Maybe should be in other script
         // Pause all world behaviours
@@ -44,13 +62,6 @@ public class GameStateSender : DataSender<GameStateDataPack> {
         // Maybe should be in other script
         // Set playerHealth to Max
         // Unpause Game
-    }
-
-    protected override void SendPack() {
-        _ms = new MemoryStream();
-        _bf.Serialize(_ms, _dataPackCache);
-        _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.GamStateDataPack);
-        for (int i = 0; i < ServerConnectionHandler.players.Count; i++) ServerConnectionHandler.udpClient.Send(_byteArrayCache, _byteArrayCache.Length, ServerConnectionHandler.players[i].ip);
     }
 
 }
