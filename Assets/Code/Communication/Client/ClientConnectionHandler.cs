@@ -25,18 +25,21 @@ public static class ClientConnectionHandler
     }
 
     public const int Port = 11000;
-    public static IPEndPoint ServerEndPoint { get { return ServerEndPoint; } set { } }
+    public static IPEndPoint ServerEndPoint { get { return ServerEndPoint; } set { SetIpEndPoint(string.Empty); } }
     public static UdpClient UdpClient = new UdpClient(Port);
 
-    public static void SetIpEndPoint(string IpAddress)
+    public static IPEndPoint SetIpEndPoint(string IpAddress)
     {
+        IPEndPoint temp;
         if (IPAddress.TryParse(IpAddress, out IPAddress address))
         {
-            ServerEndPoint = new IPEndPoint(address, Port);
+            temp = new IPEndPoint(address, Port);
+            return temp;
         }
         else
         {
             Debug.LogError($"the Address {IpAddress} is invalid");
+            return null;
         }
     }
 }
