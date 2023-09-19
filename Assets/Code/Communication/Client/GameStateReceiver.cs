@@ -31,15 +31,6 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
         {
             switch (_ipToData[ClientConnectionHandler.ServerEndPoint].gameState)
             {
-                case GameStateDataPack.GameState.Continue:
-                    //atualiza a UI de Vida
-                    break;
-                case GameStateDataPack.GameState.Ended:
-                    ClientConnectionHandler.PlayersList.Clear();
-                    ClientConnectionHandler.BulletsList.Clear();
-                    ClientConnectionHandler.ServerEndPoint = null;
-                    SceneManager.LoadScene("MainMenu");
-                    break;
                 case GameStateDataPack.GameState.Initiate:
                     //spawn host
                     ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(Instantiate(InstantiateHandler.GetPlayerPrefab(),
@@ -47,7 +38,7 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
 
                     ClientConnectionHandler.PlayersList.Add(new ClientConnectionHandler.MovableObjectData(_container.LocalPlayer));
 
-                    //atualiza a UI de Vida
+                    UpdateHealthUI();
                     break;
                 case GameStateDataPack.GameState.Restart:
                     for (int i = 0; i < ClientConnectionHandler.PlayersList.Count; i++)
@@ -56,10 +47,33 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
                             ClientConnectionHandler.PlayersList[0].Object.transform.position : 
                             ClientConnectionHandler.PlayersList[i+1].Object.transform.position);
                     }
-                    //atualiza a UI de Vida
+                    _container.Hud.HideEndScreen();
+                    ClientConnectionHandler._hasGameEnded = false;
+                    UpdateHealthUI();
+                    break;
+                case GameStateDataPack.GameState.Continue:
+                    UpdateHealthUI();
+                    break;
+                case GameStateDataPack.GameState.Ended:                    
+                    _container.Hud.ShowEndScreen(_dataPack.playersHealth[1] > 0);
+                    ClientConnectionHandler._hasGameEnded = true;
+                    break;
+                case GameStateDataPack.GameState.Quit:
+                    ClientConnectionHandler.PlayersList.Clear();
+                    ClientConnectionHandler.BulletsList.Clear();
+                    ClientConnectionHandler.ServerEndPoint = null;
+                    ClientConnectionHandler._hasGameEnded = false;
+                    SceneManager.LoadScene("MainMenu");
                     break;
             }
             _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
+        }
+    }
+    private void UpdateHealthUI()
+    {
+        for (int i = 0; i < _dataPack.playersHealth.Count; i++)
+        {
+            _container.Hud.UpdateHealth(i, _dataPack.playersHealth[i]);
         }
     }
 }
