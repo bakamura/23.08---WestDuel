@@ -25,6 +25,13 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
         _dataPackCache.gameState = GameStateDataPack.GameState.Ended;
         EndGame();
     }
+
+    public void QuitMatch()
+    {
+        PreparePack();
+        SendPack();
+    }
+
     private void OnApplicationQuit()
     {
         PreparePack();
