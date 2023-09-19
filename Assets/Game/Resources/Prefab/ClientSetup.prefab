@@ -49,11 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb72b7fb008d9642a9961e4d530bba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyForward: 0
-  _keyRight: 0
-  _keyBackward: 0
-  _keyLeft: 0
-  _keyShoot: 0
+  _keyForward: 119
+  _keyRight: 100
+  _keyBackward: 97
+  _keyLeft: 115
+  _keyShoot: 323
 --- !u!114 &2130258223166972413
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,6 +17,6 @@ public class PlayerInfo {
     public Transform transform;
     public Rigidbody rigidBody;
     public PlayerHealth health;
-    public PlayerMovement movement;
+    public PlayerMovementClient movement;
     public PlayerShoot shoot;
 }
