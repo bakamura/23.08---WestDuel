@@ -9,7 +9,8 @@ public class GameStateDataPack {
         Initiate,
         Restart,
         Continue,
-        Ended
+        Ended,
+        Quit
     }
     public GameState gameState = GameState.Initiate;
 

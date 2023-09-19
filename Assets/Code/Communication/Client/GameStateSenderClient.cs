@@ -10,20 +10,18 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
     private BinaryFormatter _bf;
     private MemoryStream _ms;
 
-    //protected override void FixedUpdate()
-    //{
-    //    PreparePack();
-    //    if (_sendSignal)
-    //    {
-    //        _sendSignal = false;
-    //        SendPack();
-    //    }
-    //}
-
     protected override void PreparePack()
     {
-        _dataPackCache.gameState = GameStateDataPack.GameState.Ended;
+        _dataPackCache.gameState = GameStateDataPack.GameState.Quit;
         EndGame();
+    }
+
+    protected override void SendPack()
+    {
+        _ms = new MemoryStream();
+        _bf.Serialize(_ms, _dataPackCache);
+        _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.GamStateDataPack);
+        ClientConnectionHandler.UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ClientConnectionHandler.ServerEndPoint);
     }
 
     public void QuitMatch()
@@ -34,8 +32,7 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
 
     private void OnApplicationQuit()
     {
-        PreparePack();
-        SendPack();
+        QuitMatch();
     }
 
     private void EndGame()
@@ -47,11 +44,4 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
 
     }
 
-    protected override void SendPack()
-    {
-        _ms = new MemoryStream();
-        _bf.Serialize(_ms, _dataPackCache);
-        _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.GamStateDataPack);
-        ClientConnectionHandler.UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ClientConnectionHandler.ServerEndPoint);
-    }
 }
