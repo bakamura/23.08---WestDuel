@@ -69,6 +69,7 @@ public class MainMenu : Menu {
         }
         if (_threadC != null) _threadC.Abort();
         _threadC = new Thread(Joining);
+        _threadC.Start();
         OpenUIFade(_joinMenu);
     }
 
@@ -80,6 +81,7 @@ public class MainMenu : Menu {
     public void OpenHostMenu() {
         if (_threadC != null) _threadC.Abort();
         _threadC = new Thread(Hosting);
+        _threadC.Start();
         _currentUi = _mainMenu;
         OpenUIFade(_lobbyMenu);
     }
@@ -101,13 +103,13 @@ public class MainMenu : Menu {
     }
 
     public void CopySelfIp() {
-        _ipOther = _ipEpCache;
         string[] ipText = _ipSelf.ToString().Split(':');
         GUIUtility.systemCopyBuffer = ipText[0];
     }
 
     private void Hosting() {
         while (true) {
+            Debug.Log("Hosting Thread");
             if (_ipOther == null) {
                 _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
                 string str = (string)_bFormatter.Deserialize(_mStream);
@@ -130,6 +132,7 @@ public class MainMenu : Menu {
 
     private void Joining() {
         while (true) {
+            Debug.Log("Joining Thread");
             if (_ipOther == null) {
                 _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
                 string str = (string)_bFormatter.Deserialize(_mStream);
