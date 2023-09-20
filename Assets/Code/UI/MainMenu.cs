@@ -88,7 +88,7 @@ public class MainMenu : Menu {
     public void JoinGame() {
         _mStream = new MemoryStream();
         _bFormatter.Serialize(_mStream, JOIN);
-        _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 10000));
+        _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text.Substring(0, _ipInput.text.Length - 1)), 10000)); // Unsafely removes last CHAR (text mesh pro invisible char
     }
 
     public void StartGame() {
