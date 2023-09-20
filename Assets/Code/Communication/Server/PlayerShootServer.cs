@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerShootServer : MonoBehaviour {
@@ -12,7 +10,6 @@ public class PlayerShootServer : MonoBehaviour {
 
     [Header("Inputs")]
 
-    [SerializeField] private KeyCode _keyShoot;
     [SerializeField] private LayerMask _mouseElevatedReceiver;
 
     [Header("Cache")]
@@ -29,19 +26,17 @@ public class PlayerShootServer : MonoBehaviour {
         _hasBullet = true; // test
     }
 
-    private void Update() {
-        if (_canInput && _hasBullet && Input.GetKeyDown(_keyShoot)) Shoot();
-    }
+    public void Shoot(Vector3 mousePos) {
+        if (_canInput && _hasBullet) {
+            Physics.Raycast(_cam.ScreenPointToRay(mousePos), out RaycastHit hit, Mathf.Infinity, _mouseElevatedReceiver, QueryTriggerInteraction.Collide);
 
-    private void Shoot() {
-        Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, _mouseElevatedReceiver, QueryTriggerInteraction.Collide);
-
-        foreach (Bullet bullet in _bulletPool) {
-            if (!bullet.gameObject.activeSelf) {
-                bullet.gameObject.SetActive(true);
-                bullet.Shoot(_firePoint.position, hit.point);
-                //_hasBullet = false;
-                break;
+            foreach (Bullet bullet in _bulletPool) {
+                if (!bullet.gameObject.activeSelf) {
+                    bullet.gameObject.SetActive(true);
+                    bullet.Shoot(_firePoint.position, hit.point);
+                    //_hasBullet = false;
+                    break;
+                }
             }
         }
     }

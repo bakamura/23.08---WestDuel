@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerShootClient), typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovementServer : MonoBehaviour {
 
     [Header("Parameters")]
@@ -8,43 +8,34 @@ public class PlayerMovementServer : MonoBehaviour {
     [SerializeField] private float _baseSpeed;
     [SerializeField] private float _noBulletSpeed;
 
-    [Header("Inputs")]
-
-    [SerializeField] private KeyCode _keyForward;
-    [SerializeField] private KeyCode _keyRight;
-    [SerializeField] private KeyCode _keyBackward;
-    [SerializeField] private KeyCode _keyLeft;
-
     [Header("Cache")]
 
     private bool _canInput = false;
     private Vector2 _input = Vector2.zero;
     private Rigidbody _rb;
-    private PlayerShootClient _shootScript;
+    private PlayerShootServer _shootScript;
     private Transform _camTransform;
 
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
-        _shootScript = GetComponent<PlayerShootClient>();
+        _shootScript = GetComponent<PlayerShootServer>();
         _camTransform = Camera.main.transform;
 
         _canInput = true; //testing
     }
 
     private void Update() {
-        if (_canInput) {
-            _input[0] = (Input.GetKey(_keyLeft) ? -1 : 0) + (Input.GetKey(_keyRight) ? 1 : 0);
-            _input[1] = (Input.GetKey(_keyBackward) ? -1 : 0) + (Input.GetKey(_keyForward) ? 1 : 0);
-        }
-        else {
-            _input = Vector2.zero; // Could be smoothed to zero, but requires testing on how it works
-        }
-        Move(_input.normalized); 
+        Move(_input.normalized);
+    }
+
+    public void SetInputDirection(Vector2 direction) {
+        _input = direction;
     }
 
     private void Move(Vector2 direction) {
-        _rb.velocity = (Quaternion.Euler(0, Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg + _camTransform.eulerAngles.y, 0) * Vector3.forward).normalized 
-                       * (_shootScript.CheckBullet() ? _baseSpeed : _noBulletSpeed); 
+        _rb.velocity = _canInput ?
+            (Quaternion.Euler(0, Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg + _camTransform.eulerAngles.y, 0) * Vector3.forward).normalized * (_shootScript.CheckBullet() ? _baseSpeed : _noBulletSpeed) :
+            Vector3.zero;
     }
 
     public void SetActive(bool isActive) {

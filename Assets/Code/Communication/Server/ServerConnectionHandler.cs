@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -17,6 +16,6 @@ public class PlayerInfo {
     public Transform transform;
     public Rigidbody rigidBody;
     public PlayerHealth health;
-    public PlayerMovementClient movement;
-    public PlayerShootClient shoot;
+    public PlayerMovementServer movement;
+    public PlayerShootServer shoot;
 }
