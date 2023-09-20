@@ -107,43 +107,47 @@ public class MainMenu : Menu {
     }
 
     private void Hosting() {
-        if (_ipOther == null) {
-            _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
-            string str = (string)_bFormatter.Deserialize(_mStream);
-            if (str == JOIN) {
-                _ipOther = _ipEpCache;
-                _mStream = new MemoryStream();
-                _bFormatter.Serialize(_mStream, JOIN_SUCCESS);
-                _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, _ipOther);
-            }
-            else if (str == START_SUCCESS) {
-                ServerConnectionHandler.players[0].ip = _ipOther; // Instantiate before
-                SceneManager.LoadScene(1);
-            }
-            else if (str == LEAVE_LOBBY) {
-                _ipOther = null;
+        while (true) {
+            if (_ipOther == null) {
+                _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
+                string str = (string)_bFormatter.Deserialize(_mStream);
+                if (str == JOIN) {
+                    _ipOther = _ipEpCache;
+                    _mStream = new MemoryStream();
+                    _bFormatter.Serialize(_mStream, JOIN_SUCCESS);
+                    _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, _ipOther);
+                }
+                else if (str == START_SUCCESS) {
+                    ServerConnectionHandler.players[0].ip = _ipOther; // Instantiate before
+                    SceneManager.LoadScene(1);
+                }
+                else if (str == LEAVE_LOBBY) {
+                    _ipOther = null;
+                }
             }
         }
     }
 
     private void Joining() {
-        if (_ipOther == null) {
-            _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
-            string str = (string)_bFormatter.Deserialize(_mStream);
-            if (str == JOIN_SUCCESS) {
-                _currentUi = _mainMenu;
-                OpenUIFade(_lobbyMenu);
+        while (true) {
+            if (_ipOther == null) {
+                _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
+                string str = (string)_bFormatter.Deserialize(_mStream);
+                if (str == JOIN_SUCCESS) {
+                    _currentUi = _mainMenu;
+                    OpenUIFade(_lobbyMenu);
 
-                _ipOther = _ipEpCache;
-                string[] ipText = _ipOther.ToString().Split(':');
-                _ipOtherText.text = ipText[0];
-            }
-            else if (str == START) {
-                _mStream = new MemoryStream();
-                _bFormatter.Serialize(_mStream, START_SUCCESS);
-                _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 10000));
-                ClientConnectionHandler.ServerEndPoint = _ipOther;
-                SceneManager.LoadScene(1);
+                    _ipOther = _ipEpCache;
+                    string[] ipText = _ipOther.ToString().Split(':');
+                    _ipOtherText.text = ipText[0];
+                }
+                else if (str == START) {
+                    _mStream = new MemoryStream();
+                    _bFormatter.Serialize(_mStream, START_SUCCESS);
+                    _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 10000));
+                    ClientConnectionHandler.ServerEndPoint = _ipOther;
+                    SceneManager.LoadScene(1);
+                }
             }
         }
     }
