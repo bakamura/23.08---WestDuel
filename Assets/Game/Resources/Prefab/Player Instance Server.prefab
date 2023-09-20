@@ -510,7 +510,6 @@ GameObject:
   - component: {fileID: 3178418511314837009}
   - component: {fileID: 3178418511314837011}
   - component: {fileID: 1083039953724483083}
-  - component: {fileID: 1212507221453411861}
   m_Layer: 0
   m_Name: Player Instance Server
   m_TagString: Untagged
@@ -582,12 +581,16 @@ MonoBehaviour:
     ConstrainXAxis: 1
     ConstrainYAxis: 0
     ConstrainZAxis: 1
+    MinAngleToFlip: 0
+    MaxAngleToFlip: 0
   - Bone: {fileID: 9020243566458038287}
     BodyPartType: 1
     ConstrainXAxis: 1
     ConstrainYAxis: 0
     ConstrainZAxis: 1
-  _inputReader: {fileID: 1212507221453411861}
+    MinAngleToFlip: 0
+    MaxAngleToFlip: 0
+  _inputReader: {fileID: 0}
   _tickFrequency: 0.02
   _sensitivity: 10
   _minDiferenceToUpdate: 0.2
@@ -611,23 +614,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &1212507221453411861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3178418511314837010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c9065ef290b9044cb919ef0bea143fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _keyForward: 119
-  _keyRight: 100
-  _keyBackward: 115
-  _keyLeft: 97
-  _keyShoot: 323
 --- !u!1 &3273205320647381351
 GameObject:
   m_ObjectHideFlags: 0

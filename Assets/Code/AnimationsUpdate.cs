@@ -9,7 +9,6 @@ public class AnimationsUpdate : MonoBehaviour
     [SerializeField] private float _tickFrequency;
     [SerializeField, Min(1f)] private float _sensitivity;
     [SerializeField, Tooltip("the diference that the current direction and the target direction can be ignored")] private float _minDiferenceToUpdate;
-    private float[] _previousValues;
     private WaitForSeconds _delay;
     private bool _canUpdate = true;
     private Vector3 _direction;
@@ -17,6 +16,7 @@ public class AnimationsUpdate : MonoBehaviour
     private Animator _animator;
     private bool _canShoot;
     private Coroutine _updateCoroutine;
+    bool _fliped = false;
 
     [System.Serializable]
     private struct BoneModificationData
@@ -26,6 +26,8 @@ public class AnimationsUpdate : MonoBehaviour
         public bool ConstrainXAxis;
         public bool ConstrainYAxis;
         public bool ConstrainZAxis;
+        [Range(0f, 360f)] public float MinAngleToFlip;
+        [Range(0f, 360f)] public float MaxAngleToFlip;
     }
 
     private enum CalculationMethod
@@ -38,8 +40,18 @@ public class AnimationsUpdate : MonoBehaviour
     {
         _delay = new WaitForSeconds(_tickFrequency);
         _animator = GetComponent<Animator>();
-        if(_inputReader) _inputReader.OnShoot += TriggerShootAnim;
-        _previousValues = new float[_bonesToUpdate.Length];
+        if (_inputReader)
+        {
+            PlayerShootServer temp = GetComponentInChildren<PlayerShootServer>();
+            if (temp)
+            {
+                temp.OnShoot += TriggerShootAnim;
+            }
+            else
+            {
+                Debug.LogWarning("there is no PlayerShootServer script to callback the Shoot animation");
+            }
+        }
         if (_canUpdate) _updateCoroutine = StartCoroutine(UpdateAnimations());
     }
 
@@ -50,6 +62,7 @@ public class AnimationsUpdate : MonoBehaviour
             Vector3 direction = Vector3.zero;
             float dotProduct;
             Vector3 axisLocks;
+            Vector3 result;
 
             if (_inputReader)
             {
@@ -63,48 +76,54 @@ public class AnimationsUpdate : MonoBehaviour
                 switch (_bonesToUpdate[i].BodyPartType)
                 {
                     case CalculationMethod.DirectionalInput:
-                        //direction = new Vector3(_inputReader.CurrenMovment.x, 0, _inputReader.CurrenMovment.y).normalized;
                         direction = new Vector3(_direction.x, 0, _direction.y).normalized;
                         dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
-                        if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate || _previousValues[i] == -dotProduct)
+                        if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate)
                         {
-                            Vector3 result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;                            
-                            if (result.y < -90 || result.y > 90)
+                            result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
+
+                            if (result.y > _bonesToUpdate[i].MinAngleToFlip && result.y < _bonesToUpdate[i].MaxAngleToFlip)
                             {
-                                _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
-                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
-                                    180,
-                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);
+                                _fliped = true;
+                                Debug.Log($"true {result.y}");
                             }
                             else
                             {
-                                _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
-                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
-                                    0,
-                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);
+                                _fliped = false;
+                                Debug.Log($"false {result.y}");
                             }
                             _bonesToUpdate[i].Bone.transform.eulerAngles = result;
                         }
                         //Debug.Log($"previous: {_previousValues[i]}, current {dotProduct}");
-                        if (dotProduct != 0) _previousValues[i] = dotProduct;
-                        //Debug.Log($"direction: {direction}, dot: {dotProduct}");
+                        //Debug.Log($"direction: {direction}, dot: {dotProduct}, rigth: {_bonesToUpdate[i].Bone.transform.right}");
                         break;
                     case CalculationMethod.MouseInput:
-                        //direction = _inputReader.MousePosition;
-                        //dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
-                        //if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate || _previousValues[i] == -dotProduct)
-                        //{
-                        //    _bonesToUpdate[i].Bone.transform.eulerAngles += _sensitivity * dotProduct * axisLocks;
-                        //}
-                        ////Debug.Log($"previous: {_previousValues[i]}, current {dotProduct}");
-                        //if (dotProduct != 0) _previousValues[i] = dotProduct;
-                        ////Debug.Log($"direction: {direction}, dot: {dotProduct}");
-                        //direction = _inputReader.MousePosition - _bonesToUpdate[i].Bone.transform.position;
-                        direction = _mousePosition - _bonesToUpdate[i].Bone.transform.position;
-                        _bonesToUpdate[i].Bone.transform.rotation = Quaternion.AngleAxis(Mathf.Clamp(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, -90, 90), axisLocks);
+                        direction = (_mousePosition - _bonesToUpdate[i].Bone.transform.position).normalized;
+                        dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
+                        result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
+                        _bonesToUpdate[i].Bone.transform.eulerAngles = result;
+                        //direction = _mousePosition - _bonesToUpdate[i].Bone.transform.position;
+                        //angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+                        //_bonesToUpdate[i].Bone.transform.rotation = Quaternion.AngleAxis(Mathf.Clamp(angle * Mathf.Rad2Deg, -90, 90), axisLocks);
                         //Debug.Log($"direction: {direction}, dot: {dotProduct}");
                         break;
                 }
+            }
+            if (_fliped)
+            {
+                //_bonesToUpdate[0].Bone.transform.root.transform.localScale = new Vector3(_bonesToUpdate[0].Bone.transform.root.transform.localScale.x, _bonesToUpdate[0].Bone.transform.root.transform.localScale.y, -1);
+                _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles = new Vector3(
+                                    _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.x,
+                                    180,
+                                    _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.z);
+            }
+            else
+            {
+                //_bonesToUpdate[0].Bone.transform.root.transform.localScale = new Vector3(_bonesToUpdate[0].Bone.transform.root.transform.localScale.x, _bonesToUpdate[0].Bone.transform.root.transform.localScale.y, 1);
+                _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles = new Vector3(
+                                    _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.x,
+                                    0,
+                                    _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.z);
             }
             _animator.SetFloat("VELOCITY", direction.sqrMagnitude);
             if (_canShoot)
@@ -115,6 +134,19 @@ public class AnimationsUpdate : MonoBehaviour
             yield return _delay;
         }
         _updateCoroutine = null;
+    }
+
+    private float GetAngleInsideCircule(float val)
+    {
+        float temp = val + 180;
+        if (temp > 360)
+        {
+            return temp - 360;
+        }
+        else
+        {
+            return temp;
+        }
     }
 
     public void SetDirection(Vector3 pos)

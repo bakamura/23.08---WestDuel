@@ -14,7 +14,6 @@ public class ServerInputReader : MonoBehaviour
     private Vector2 _input;
     private Vector3 _mousePosition;
     private Camera _camera;
-    public Action OnShoot;
 
     public Vector3 MousePosition => _mousePosition;
     public Vector2 Direction => _input;
@@ -32,11 +31,11 @@ public class ServerInputReader : MonoBehaviour
         if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit))
         {
             _mousePosition = raycastHit.point;
+            //Debug.Log(_mousePosition);
         }
         if (Input.GetKeyDown(_keyShoot))
         {
             //ServerConnectionHandler.players[0].shoot.Shoot(_mousePosition);
-            OnShoot?.Invoke();
         }
     }
 }
