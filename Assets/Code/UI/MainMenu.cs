@@ -62,6 +62,8 @@ public class MainMenu : Menu {
         if(threadToMain != null) {
             switch(threadToMain) {
                 case "OPEN LOBBY":
+                    string[] ipText = _ipOther.ToString().Split(':');
+                    _ipOtherText.text = ipText[0];
                     OpenUIFade(_lobbyMenu);
                     break;
                 case "LEAVE LOBBY":
@@ -157,9 +159,8 @@ public class MainMenu : Menu {
                 if (str == JOIN_SUCCESS) {
                     _currentUi = _mainMenu;
 
-                    _ipOther = _ipEpCache;
-                    string[] ipText = _ipOther.ToString().Split(':');
-                    _ipOtherText.text = ipText[0];
+                    _ipOther = _ipEpCache;;
+                    threadToMain = "OPEN LOBBY";
                 }
             }
             else {
@@ -172,6 +173,7 @@ public class MainMenu : Menu {
                 }
                 else if (str == LEAVE_LOBBY) {
                     _ipOther = null;
+                    threadToMain = "LEAVE LOBBY";
                 }
             }
         }
