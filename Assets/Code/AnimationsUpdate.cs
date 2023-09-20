@@ -50,7 +50,6 @@ public class AnimationsUpdate : MonoBehaviour
             Vector3 direction = Vector3.zero;
             float dotProduct;
             Vector3 axisLocks;
-            bool _willFlip = false;
 
             if (_inputReader)
             {
@@ -69,23 +68,8 @@ public class AnimationsUpdate : MonoBehaviour
                         dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
                         if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate || _previousValues[i] == -dotProduct)
                         {
-                            Vector3 result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
-                            _willFlip = result.y < -90 || result.y > 90 || _willFlip;
-                            //if (result.y < -90 || result.y > 90 || _willFlip)
-                            //{
-                            //    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
-                            //        _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
-                            //        180,
-                            //        _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);                                
-                            //}
-                            //else
-                            //{
-                            //    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
-                            //       _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
-                            //       0,
-                            //       _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);
-                            //}
-                            if (_willFlip)
+                            Vector3 result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;                            
+                            if (result.y < -90 || result.y > 90)
                             {
                                 _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
                                     _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
@@ -117,7 +101,7 @@ public class AnimationsUpdate : MonoBehaviour
                         ////Debug.Log($"direction: {direction}, dot: {dotProduct}");
                         //direction = _inputReader.MousePosition - _bonesToUpdate[i].Bone.transform.position;
                         direction = _mousePosition - _bonesToUpdate[i].Bone.transform.position;
-                        _bonesToUpdate[i].Bone.transform.localRotation = Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, axisLocks);
+                        _bonesToUpdate[i].Bone.transform.rotation = Quaternion.AngleAxis(Mathf.Clamp(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, -90, 90), axisLocks);
                         //Debug.Log($"direction: {direction}, dot: {dotProduct}");
                         break;
                 }

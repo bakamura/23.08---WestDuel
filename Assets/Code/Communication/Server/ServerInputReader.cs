@@ -35,7 +35,7 @@ public class ServerInputReader : MonoBehaviour
         }
         if (Input.GetKeyDown(_keyShoot))
         {
-            ServerConnectionHandler.players[0].shoot.Shoot(_mousePosition);
+            //ServerConnectionHandler.players[0].shoot.Shoot(_mousePosition);
             OnShoot?.Invoke();
         }
     }
