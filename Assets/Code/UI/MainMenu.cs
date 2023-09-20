@@ -45,6 +45,8 @@ public class MainMenu : Menu {
     private const string JOIN_SUCCESS = "JOIN SUCCESS";
     private const string LEAVE_LOBBY = "LEAVE";
 
+    private string threadToMain;
+
     private void Awake() {
         _currentUi = _initialMenu;
         _ipSelf = new IPEndPoint(Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(f => f.AddressFamily == AddressFamily.InterNetwork), 10000);
@@ -54,6 +56,20 @@ public class MainMenu : Menu {
 
         _udpClient = new UdpClient(10000);
         _bFormatter = new BinaryFormatter();
+    }
+
+    private void Update() {
+        if(threadToMain != null) {
+            switch(threadToMain) {
+                case "OPEN LOBBY":
+                    OpenUIFade(_lobbyMenu);
+                    break;
+                case "LEAVE LOBBY":
+                    OpenJoinMenu();
+                    break;
+            }
+            threadToMain = null;
+        }
     }
 
     public void OpenInitialMenu() {
@@ -110,16 +126,18 @@ public class MainMenu : Menu {
     private void Hosting() {
         while (true) {
             Debug.Log("Hosting Thread");
+            _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
+            string str = (string)_bFormatter.Deserialize(_mStream);
             if (_ipOther == null) {
-                _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
-                string str = (string)_bFormatter.Deserialize(_mStream);
                 if (str == JOIN) {
                     _ipOther = _ipEpCache;
                     _mStream = new MemoryStream();
                     _bFormatter.Serialize(_mStream, JOIN_SUCCESS);
                     _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, _ipOther);
                 }
-                else if (str == START_SUCCESS) {
+            }
+            else {
+                if (str == START_SUCCESS) {
                     ServerConnectionHandler.players[0].ip = _ipOther; // Instantiate before
                     SceneManager.LoadScene(1);
                 }
@@ -133,23 +151,27 @@ public class MainMenu : Menu {
     private void Joining() {
         while (true) {
             Debug.Log("Joining Thread");
+            _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
+            string str = (string)_bFormatter.Deserialize(_mStream);
             if (_ipOther == null) {
-                _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
-                string str = (string)_bFormatter.Deserialize(_mStream);
                 if (str == JOIN_SUCCESS) {
                     _currentUi = _mainMenu;
-                    OpenUIFade(_lobbyMenu);
 
                     _ipOther = _ipEpCache;
                     string[] ipText = _ipOther.ToString().Split(':');
                     _ipOtherText.text = ipText[0];
                 }
-                else if (str == START) {
+            }
+            else {
+                if (str == START) {
                     _mStream = new MemoryStream();
                     _bFormatter.Serialize(_mStream, START_SUCCESS);
                     _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 10000));
                     ClientConnectionHandler.ServerEndPoint = _ipOther;
                     SceneManager.LoadScene(1);
+                }
+                else if (str == LEAVE_LOBBY) {
+                    _ipOther = null;
                 }
             }
         }
