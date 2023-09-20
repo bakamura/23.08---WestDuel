@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerShoot), typeof(Rigidbody))]
+[RequireComponent(typeof(PlayerShootClient), typeof(Rigidbody))]
 public class PlayerMovementClient : MonoBehaviour {
 
     [Header("Parameters")]
@@ -13,12 +13,12 @@ public class PlayerMovementClient : MonoBehaviour {
     private bool _canInput = false;
     private Vector2 _input = Vector2.zero;
     private Rigidbody _rb;
-    private PlayerShoot _shootScript;
+    private PlayerShootClient _shootScript;
     private Transform _camTransform;
 
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
-        _shootScript = GetComponent<PlayerShoot>();
+        _shootScript = GetComponent<PlayerShootClient>();
         _camTransform = Camera.main.transform;
 
         _canInput = true; //testing

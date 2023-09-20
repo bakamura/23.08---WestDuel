@@ -17,6 +17,14 @@ public class InputSender : DataSender<InputDataPack>
         _clientInputReader = GetComponent<ClientInputReader>();
     }
 
+    protected override void FixedUpdate()
+    {
+        if (ClientConnectionHandler._hasGameEnded)
+        {
+            base.FixedUpdate();
+        }
+    }
+
     protected override void PreparePack()
     {
         _dataPackCache.updated = true;
