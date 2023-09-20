@@ -59,15 +59,18 @@ public class MainMenu : Menu {
     }
 
     private void Update() {
-        if(threadToMain != null) {
-            switch(threadToMain) {
+        if (threadToMain != null) {
+            string[] ipText = _ipOther.ToString().Split(':');
+            switch (threadToMain) {
                 case "OPEN LOBBY":
-                    string[] ipText = _ipOther.ToString().Split(':');
                     _ipOtherText.text = ipText[0];
                     OpenUIFade(_lobbyMenu);
                     break;
                 case "LEAVE LOBBY":
                     OpenJoinMenu();
+                    break;
+                case "OTHER JOINED":
+                    _ipOtherText.text = ipText[0];
                     break;
             }
             threadToMain = null;
@@ -136,6 +139,7 @@ public class MainMenu : Menu {
                     _mStream = new MemoryStream();
                     _bFormatter.Serialize(_mStream, JOIN_SUCCESS);
                     _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, _ipOther);
+                    threadToMain = "OTHER JOINED";
                 }
             }
             else {
@@ -159,7 +163,7 @@ public class MainMenu : Menu {
                 if (str == JOIN_SUCCESS) {
                     _currentUi = _mainMenu;
 
-                    _ipOther = _ipEpCache;;
+                    _ipOther = _ipEpCache; ;
                     threadToMain = "OPEN LOBBY";
                 }
             }
