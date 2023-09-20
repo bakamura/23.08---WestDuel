@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimationsUpdate : MonoBehaviour
 {
     [SerializeField] private BoneModificationData[] _bonesToUpdate;
-    [SerializeField] private ClientInputReader _inputReader;
+    [SerializeField] private ServerInputReader _inputReader;
     [SerializeField] private float _tickFrequency;
     [SerializeField, Min(1f)] private float _sensitivity;
     [SerializeField, Tooltip("the diference that the current direction and the target direction can be ignored")] private float _minDiferenceToUpdate;
@@ -14,6 +14,9 @@ public class AnimationsUpdate : MonoBehaviour
     private bool _canUpdate = true;
     private Vector3 _direction;
     private Vector3 _mousePosition;
+    private Animator _animator;
+    private bool _canShoot;
+    private Coroutine _updateCoroutine;
 
     [System.Serializable]
     private struct BoneModificationData
@@ -34,22 +37,25 @@ public class AnimationsUpdate : MonoBehaviour
     private void Awake()
     {
         _delay = new WaitForSeconds(_tickFrequency);
+        _animator = GetComponent<Animator>();
+        if(_inputReader) _inputReader.OnShoot += TriggerShootAnim;
         _previousValues = new float[_bonesToUpdate.Length];
-        if (_canUpdate) StartCoroutine(UpdateAnimations());
+        if (_canUpdate) _updateCoroutine = StartCoroutine(UpdateAnimations());
     }
 
     IEnumerator UpdateAnimations()
     {
         while (_canUpdate)
         {
-            Vector3 direction;
+            Vector3 direction = Vector3.zero;
             float dotProduct;
             Vector3 axisLocks;
+            bool _willFlip = false;
 
             if (_inputReader)
             {
                 SetMousePosition(_inputReader.MousePosition);
-                SetDirection(_inputReader.CurrenMovment);
+                SetDirection(_inputReader.Direction);
             }
 
             for (int i = 0; i < _bonesToUpdate.Length; i++)
@@ -64,19 +70,34 @@ public class AnimationsUpdate : MonoBehaviour
                         if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate || _previousValues[i] == -dotProduct)
                         {
                             Vector3 result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
-                            if (result.y < -90 || result.y > 90)
+                            _willFlip = result.y < -90 || result.y > 90 || _willFlip;
+                            //if (result.y < -90 || result.y > 90 || _willFlip)
+                            //{
+                            //    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
+                            //        _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
+                            //        180,
+                            //        _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);                                
+                            //}
+                            //else
+                            //{
+                            //    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
+                            //       _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
+                            //       0,
+                            //       _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);
+                            //}
+                            if (_willFlip)
                             {
                                 _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
-                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x, 
+                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
                                     180,
                                     _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);
                             }
                             else
                             {
                                 _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles = new Vector3(
-                                   _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
-                                   0,
-                                   _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);
+                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.x,
+                                    0,
+                                    _bonesToUpdate[i].Bone.transform.root.transform.eulerAngles.z);
                             }
                             _bonesToUpdate[i].Bone.transform.eulerAngles = result;
                         }
@@ -96,13 +117,20 @@ public class AnimationsUpdate : MonoBehaviour
                         ////Debug.Log($"direction: {direction}, dot: {dotProduct}");
                         //direction = _inputReader.MousePosition - _bonesToUpdate[i].Bone.transform.position;
                         direction = _mousePosition - _bonesToUpdate[i].Bone.transform.position;
-                        _bonesToUpdate[i].Bone.transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, axisLocks);
+                        _bonesToUpdate[i].Bone.transform.localRotation = Quaternion.AngleAxis(Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, axisLocks);
                         //Debug.Log($"direction: {direction}, dot: {dotProduct}");
                         break;
                 }
             }
+            _animator.SetFloat("VELOCITY", direction.sqrMagnitude);
+            if (_canShoot)
+            {
+                _animator.SetTrigger("SHOOT");
+                _canShoot = false;
+            }
             yield return _delay;
         }
+        _updateCoroutine = null;
     }
 
     public void SetDirection(Vector3 pos)
@@ -115,8 +143,27 @@ public class AnimationsUpdate : MonoBehaviour
         _mousePosition = pos;
     }
 
+    public void TriggerShootAnim()
+    {
+        _canShoot = true;
+    }
+
+    public Vector3 GetMousePosition()
+    {
+        return _mousePosition;
+    }
+
+    public Vector3 GetDirection()
+    {
+        return _direction;
+    }
+
     public void UpdateState(bool canUpdate)
     {
         _canUpdate = canUpdate;
+        if (_updateCoroutine == null && canUpdate)
+        {
+            _updateCoroutine = StartCoroutine(UpdateAnimations());
+        }
     }
 }

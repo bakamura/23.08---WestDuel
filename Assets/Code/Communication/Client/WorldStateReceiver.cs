@@ -6,6 +6,16 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
     private WorldStateDataPack _dataPack;
+    private bool[] _bulletsShoot = new bool[4];//size is playerCount * MaxBulletPerPlayer
+
+    private void Start()
+    {
+        for (int a = 0; a < _bulletsShoot.Length; a++)
+        {
+            Bullet temp = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>();
+            ClientConnectionHandler.BulletsList.Add(temp);
+        }
+    }
 
     protected override void ReceivePack()
     {
@@ -35,17 +45,18 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
                 ClientConnectionHandler.PlayersList[i].Rigidbody.velocity = PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].playersVelocity[i]);
             }
             #endregion
-            #region UpdateBullets
-            if (_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count > ClientConnectionHandler.BulletsList.Count)
-            {
-                int newBullets = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - ClientConnectionHandler.BulletsList.Count;
-                for (int a = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - newBullets; a < _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count; a++)
-                {
-                    Bullet temp = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>();
-                    temp.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[a]), PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsVelocity[a]));
-                    ClientConnectionHandler.BulletsList.Add(temp);
-                }
-            }
+            #region UpdateBullets               
+            //if (_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count > ClientConnectionHandler.BulletsList.Count)
+            //{
+            //    int newBullets = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - ClientConnectionHandler.BulletsList.Count;
+            //    for (int a = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - newBullets; a < _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count; a++)
+            //    {
+            //        Bullet temp = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>();
+            //        temp.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[a]), PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsVelocity[a]));
+            //        ClientConnectionHandler.BulletsList.Add(temp);
+            //        _bulletsShoot[a] = true;
+            //    }
+            //}
             for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count; i++)
             {
                 if (_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[i] == _ipToData[ClientConnectionHandler.ServerEndPoint].deactivatePos)
@@ -56,6 +67,7 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
                 {
                     ClientConnectionHandler.BulletsList[i].UpdateState(true);
                     ClientConnectionHandler.BulletsList[i].Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[i]), PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsVelocity[i]));
+                    _bulletsShoot[i] = true;
                 }
             }
             #endregion
@@ -103,6 +115,11 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
             {
                 ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetDirection(PackingUtility.FloatArrayToVector3(_dataPack.playersVelocity[i]));
                 ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_dataPack.playersMousePosition[i]));
+                for(int a  = _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count * i; a < _bulletsShoot.Length; a++)
+                {
+                    ClientConnectionHandler.PlayersList[i].AnimationsUpdate.TriggerShootAnim();
+                    _bulletsShoot[a] = false;
+                }
             }
             #endregion
         }

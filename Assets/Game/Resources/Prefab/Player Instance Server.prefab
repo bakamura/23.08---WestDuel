@@ -508,8 +508,9 @@ GameObject:
   - component: {fileID: 2834965831631373480}
   - component: {fileID: 3178418511314837014}
   - component: {fileID: 3178418511314837009}
-  - component: {fileID: 3178418511314837008}
   - component: {fileID: 3178418511314837011}
+  - component: {fileID: 1083039953724483083}
+  - component: {fileID: 1212507221453411861}
   m_Layer: 0
   m_Name: Player Instance Server
   m_TagString: Untagged
@@ -563,23 +564,6 @@ CapsuleCollider:
   m_Height: 2.4323316
   m_Direction: 1
   m_Center: {x: 0, y: 0.7161658, z: 0.22299135}
---- !u!114 &3178418511314837008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3178418511314837010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcb72b7fb008d9642a9961e4d530bba0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _keyForward: 119
-  _keyRight: 100
-  _keyBackward: 115
-  _keyLeft: 97
-  _keyShoot: 323
 --- !u!114 &3178418511314837011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,10 +587,47 @@ MonoBehaviour:
     ConstrainXAxis: 1
     ConstrainYAxis: 0
     ConstrainZAxis: 1
-  _inputReader: {fileID: 3178418511314837008}
+  _inputReader: {fileID: 1212507221453411861}
   _tickFrequency: 0.02
   _sensitivity: 10
   _minDiferenceToUpdate: 0.2
+--- !u!95 &1083039953724483083
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178418511314837010}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bb35f3958a4ec7548b730bf79b0bb916, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &1212507221453411861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178418511314837010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c9065ef290b9044cb919ef0bea143fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _keyForward: 119
+  _keyRight: 100
+  _keyBackward: 115
+  _keyLeft: 97
+  _keyShoot: 323
 --- !u!1 &3273205320647381351
 GameObject:
   m_ObjectHideFlags: 0

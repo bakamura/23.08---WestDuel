@@ -728,6 +728,7 @@ GameObject:
   - component: {fileID: 6845345399201749523}
   - component: {fileID: 6278842922407893454}
   - component: {fileID: 2607295250034501987}
+  - component: {fileID: 6345846821502188569}
   m_Layer: 0
   m_Name: Player Instance Client
   m_TagString: Untagged
@@ -808,6 +809,26 @@ MonoBehaviour:
   _tickFrequency: 0.02
   _sensitivity: 10
   _minDiferenceToUpdate: 0.2
+--- !u!95 &6345846821502188569
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828787713868741276}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bb35f3958a4ec7548b730bf79b0bb916, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &3916154096163498942
 GameObject:
   m_ObjectHideFlags: 0
