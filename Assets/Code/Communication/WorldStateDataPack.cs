@@ -7,6 +7,7 @@ public class WorldStateDataPack {
 
     public List<float[]> playersPos = new List<float[]>();
     public List<float[]> playersVelocity = new List<float[]>();
+    public List<float[]> playersMousePosition = new List<float[]>();
     public List<bool> playersHasBullet = new List<bool>();
 
     public List<float[]> bulletsPos = new List<float[]>();

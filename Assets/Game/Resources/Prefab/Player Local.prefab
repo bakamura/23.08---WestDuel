@@ -73,8 +73,9 @@ GameObject:
   - component: {fileID: 4382175088600151822}
   - component: {fileID: 8191634712511978778}
   - component: {fileID: 2007154200306025203}
-  - component: {fileID: 7884039342351546085}
   - component: {fileID: 7009361629754686594}
+  - component: {fileID: 7255507456810534005}
+  - component: {fileID: 505219485713092490}
   m_Layer: 0
   m_Name: Player Local
   m_TagString: Untagged
@@ -146,24 +147,6 @@ MonoBehaviour:
   _mouseElevatedReceiver:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &7884039342351546085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101373072802541741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27ea5e3c27920824ea7e718ee0b8db9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseSpeed: 0
-  _noBulletSpeed: 0
-  _keyForward: 0
-  _keyRight: 0
-  _keyBackward: 0
-  _keyLeft: 0
 --- !u!114 &7009361629754686594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,6 +162,36 @@ MonoBehaviour:
   _healthMax: 0
   _delayRespawn: 0
   _invencibilityDuration: 0
+--- !u!114 &7255507456810534005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101373072802541741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6c467be2ed11bb40966320aa108c67c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseSpeed: 0
+  _noBulletSpeed: 0
+--- !u!114 &505219485713092490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101373072802541741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f884473d04b1ae45b30a2aff3478c95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bonesToUpdate: []
+  _tickFrequency: 0
+  _sensitivity: 0
+  _minDiferenceToUpdate: 0
 --- !u!1 &189187646735030103
 GameObject:
   m_ObjectHideFlags: 0

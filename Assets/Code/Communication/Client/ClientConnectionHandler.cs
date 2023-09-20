@@ -16,11 +16,13 @@ public static class ClientConnectionHandler
     {
         public GameObject Object;
         public Rigidbody Rigidbody;
+        public AnimationsUpdate AnimationsUpdate;
 
         public MovableObjectData(GameObject obj)
         {
             Object = obj;
             Rigidbody = Object.GetComponent<Rigidbody>();
+            AnimationsUpdate = Object.GetComponent<AnimationsUpdate>();
         }
     }
 

@@ -4,9 +4,14 @@ using UnityEngine;
 
 public static class InstantiateHandler
 {
-    public static GameObject GetPlayerPrefab()
+    public static GameObject GetPlayerServerPrefab()
     {
-        return Resources.Load<GameObject>("/Prefab/Player");
+        return Resources.Load<GameObject>("/Prefab/Player Instance Server");
+    }
+
+    public static GameObject GetPlayerClientPrefab()
+    {
+        return Resources.Load<GameObject>("/Prefab/Player Instance Client");
     }
 
     public static GameObject GetAmmoBoxPrefab()

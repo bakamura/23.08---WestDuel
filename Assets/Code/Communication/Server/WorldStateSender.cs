@@ -17,6 +17,7 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
             _dataPackCache.bulletsPos[2*i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position); // Calc Inside [] because each player has 2 bullets
             _dataPackCache.bulletsPos[2*i + 1] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position);
             _dataPackCache.bulletsVelocity[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position); // Change later into account of bullet per player
+            //_dataPackCache.playersMousePosition[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i]);
         }
     }
 

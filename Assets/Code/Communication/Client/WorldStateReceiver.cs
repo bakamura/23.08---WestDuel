@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System.Net;
-using System.Linq;
 
 public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 {
@@ -32,7 +28,7 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
     {
         if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
         {
-            #region UpdatePlayers
+            #region UpdatePlayersPositions
             for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
             {
                 ClientConnectionHandler.PlayersList[i].Object.transform.position = PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].playersPos[i]);
@@ -101,8 +97,15 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
                 }
             }
             //}
+            #endregion
+            #region UpdatePlayersAnimations
+            for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
+            {
+                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetDirection(PackingUtility.FloatArrayToVector3(_dataPack.playersVelocity[i]));
+                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_dataPack.playersMousePosition[i]));
+            }
+            #endregion
         }
-        #endregion
         _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
     }
 }
