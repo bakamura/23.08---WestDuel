@@ -8,7 +8,7 @@ public class SpawnPickup : MonoBehaviour
     [Header("Values")]
     [SerializeField] private Vector3[] _spawnPoints;
     [SerializeField] private float _delayBetweenSpawns;
-    [SerializeField] private GameObject _bulletPickupPrefab;
+    //[SerializeField] private GameObject _bulletPickupPrefab;
     [SerializeField] private byte _maxAmmoPickupsInScene = 2;
 
     [Header("Debug")]
@@ -34,7 +34,7 @@ public class SpawnPickup : MonoBehaviour
 
         for (int i = 0; i < _maxAmmoPickupsInScene; i++)
         {
-            _bulletPickups[i] = Instantiate(_bulletPickupPrefab, null).GetComponent<BulletPickup>();
+            _bulletPickups[i] = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<BulletPickup>();
             _bulletPickups[i].UpdateState(false);
             _bulletPickups[i].OnCollect += OnPickupCollect;
             _bulletPickups[i].name = $"BulletPickup {i}";

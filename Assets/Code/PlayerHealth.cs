@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovementClient), typeof(PlayerShoot))]
+[RequireComponent(typeof(PlayerMovementClient), typeof(PlayerShootClient))]
 public class PlayerHealth : MonoBehaviour {
 
     [Header("Parameters")]
@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour {
     [Header("Cache")]
 
     private PlayerMovementClient _movementScript;
-    private PlayerShoot _shootScript;
+    private PlayerShootClient _shootScript;
     private SpawnPlayer _spawnPlayer;
     private Transform _oponentTransform;
     private WaitForSeconds _respawnWait;
@@ -25,7 +25,7 @@ public class PlayerHealth : MonoBehaviour {
 
     private void Awake() {
         _movementScript = GetComponent<PlayerMovementClient>();
-        _shootScript = GetComponent<PlayerShoot>();
+        _shootScript = GetComponent<PlayerShootClient>();
         _spawnPlayer = FindObjectOfType<SpawnPlayer>();
         PlayerHealth[] players = FindObjectsOfType<PlayerHealth>();
         foreach(PlayerHealth player in players) if(player != this) _oponentTransform = player.transform;
