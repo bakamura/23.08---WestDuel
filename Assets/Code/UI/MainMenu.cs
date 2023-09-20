@@ -33,10 +33,10 @@ public class MainMenu : Menu {
 
     [Header("Cache")]
 
-    private UdpClient _udpClient = new UdpClient(10000);
+    private UdpClient _udpClient;
     private IPEndPoint _ipEpCache;
     private MemoryStream _mStream;
-    private BinaryFormatter _bFormatter = new BinaryFormatter();
+    private BinaryFormatter _bFormatter;
     private Thread _threadC;
 
     private const string START = "START";
@@ -51,6 +51,9 @@ public class MainMenu : Menu {
 
         string[] ipText = _ipSelf.ToString().Split(':');
         _ipSelfText.text = ipText[0];
+
+        _udpClient = new UdpClient(10000);
+        _bFormatter = new BinaryFormatter();
     }
 
     public void OpenInitialMenu() {
