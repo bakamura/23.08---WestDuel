@@ -36,6 +36,14 @@ public class AnimationsUpdate : MonoBehaviour
         MouseInput
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            TriggerShootAnim();
+        }
+    }
+
     private void Awake()
     {
         _delay = new WaitForSeconds(_tickFrequency);
@@ -62,6 +70,7 @@ public class AnimationsUpdate : MonoBehaviour
             Vector3 direction = Vector3.zero;
             float dotProduct;
             Vector3 axisLocks;
+            float movmentSpeed = 0;
             //Vector3 result;
 
             if (_inputReader)
@@ -77,13 +86,13 @@ public class AnimationsUpdate : MonoBehaviour
                 {
                     case CalculationMethod.DirectionalInput:
                         direction = new Vector3(_direction.x * axisLocks.x, 0, _direction.y * axisLocks.z).normalized;
+                        movmentSpeed = direction.sqrMagnitude;
                         dotProduct = Mathf.Abs(Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction));
                         if (direction != Vector3.zero)
                         {
                             _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
                             _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
                         }
-                        Debug.Log(_bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y);
                         break;
                     case CalculationMethod.MouseInput:
                         direction = (_mousePosition - _bonesToUpdate[i].Bone.transform.position).normalized;
@@ -111,7 +120,7 @@ public class AnimationsUpdate : MonoBehaviour
                                     0,
                                     _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.z);
             }
-            _animator.SetFloat("VELOCITY", direction.sqrMagnitude);
+            _animator.SetFloat("VELOCITY", movmentSpeed);
             if (_canShoot)
             {
                 _animator.SetTrigger("SHOOT");
@@ -132,6 +141,7 @@ public class AnimationsUpdate : MonoBehaviour
         _mousePosition = pos;
     }
 
+    [ContextMenu("Shoot")]
     public void TriggerShootAnim()
     {
         _canShoot = true;
