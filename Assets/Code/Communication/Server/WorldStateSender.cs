@@ -1,6 +1,8 @@
 using System.IO;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using System.Net;
 
 public class WorldStateSender : DataSender<WorldStateDataPack> {
 
@@ -8,6 +10,7 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
 
     private BinaryFormatter _bf;
     private MemoryStream _ms;
+    private UdpClient _udpClient = new UdpClient(WorldStateDataPack.Port);
 
     protected override void PreparePack() {
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++) {
@@ -24,7 +27,7 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
         _ms = new MemoryStream();
         _bf.Serialize(_ms, _dataPackCache);
         _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.WorldStateDataPack);
-        for (int i = 0; i < ServerConnectionHandler.players.Count; i++) ServerConnectionHandler.udpClient.Send(_byteArrayCache, _byteArrayCache.Length, ServerConnectionHandler.players[i].ip);
+        for (int i = 0; i < ServerConnectionHandler.players.Count; i++) _udpClient.Send(_byteArrayCache, _byteArrayCache.Length, new IPEndPoint(ServerConnectionHandler.players[i].ip, WorldStateDataPack.Port));
     }
 
 }

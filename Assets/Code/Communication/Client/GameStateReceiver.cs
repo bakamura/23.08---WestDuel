@@ -1,5 +1,6 @@
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,19 +8,20 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
     private GameStateDataPack _dataPack;
+    private UdpClient _udpClient = new UdpClient(GameStateDataPack.Port);
 
     protected override void ReceivePack()
     {
         while (true)
         {
-            IPEndPoint temp = ClientConnectionHandler.ServerEndPoint;
-            _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
-            if (temp == ClientConnectionHandler.ServerEndPoint)
+            IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
+            _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
+            if (temp.Address == ClientConnectionHandler.ServerEndPoint)
             {
                 _dataPack = CheckDataPack<GameStateDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {
-                    _ipToData[temp] = _dataPack;
+                    _ipToData[temp.Address] = _dataPack;
                 }
             }
         }

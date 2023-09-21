@@ -9,4 +9,5 @@ public class InputDataPack {
     public float[] _mousePoint = new float[2];
     public bool _mouseClick;
 
+    public static int Port = 11003;
 }

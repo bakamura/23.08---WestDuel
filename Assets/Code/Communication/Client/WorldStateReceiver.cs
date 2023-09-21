@@ -5,24 +5,26 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System.Net;
 using System.Linq;
+using System.Net.Sockets;
 
 public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
     private WorldStateDataPack _dataPack;
+    private UdpClient _udpClient = new UdpClient(WorldStateDataPack.Port);
 
     protected override void ReceivePack()
     {
         while (true)
         {
-            IPEndPoint temp = ClientConnectionHandler.ServerEndPoint;
-            _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
-            if (temp == ClientConnectionHandler.ServerEndPoint)
+            IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, WorldStateDataPack.Port);
+            _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
+            if (temp.Address == ClientConnectionHandler.ServerEndPoint)
             {
                 _dataPack = CheckDataPack<WorldStateDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {
-                    _ipToData[temp] = _dataPack;
+                    _ipToData[temp.Address] = _dataPack;
                 }
             }
         }

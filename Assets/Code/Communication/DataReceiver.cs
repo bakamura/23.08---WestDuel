@@ -9,7 +9,7 @@ using System;
 public abstract class DataReceiver<T> : MonoBehaviour
 {
 
-    protected Dictionary<IPEndPoint, T> _ipToData = new Dictionary<IPEndPoint, T>();
+    protected Dictionary<IPAddress, T> _ipToData = new Dictionary<IPAddress, T>();
     protected MemoryStream _memoryStream;
     protected BinaryFormatter _binaryFormatter = new BinaryFormatter();
 

@@ -1,5 +1,6 @@
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,14 +11,15 @@ public class GameStateReceiverServer : DataReceiver<GameStateDataPack>
 
     private IPEndPoint _ipEpCache;
     private GameStateDataPack _dataPack;
+    private UdpClient _udpClient = new UdpClient(GameStateDataPack.Port);
     protected override void ImplementPack()
     {
         while (true)
         {
             for (int i = 0; i < ServerConnectionHandler.players.Count; i++)
             {
-                _ipEpCache = ServerConnectionHandler.players[i].ip;
-                _memoryStream = new MemoryStream(ServerConnectionHandler.udpClient.Receive(ref _ipEpCache));
+                _ipEpCache = new IPEndPoint(ServerConnectionHandler.players[i].ip, GameStateDataPack.Port);
+                _memoryStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
                 _dataPack = CheckDataPack<GameStateDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {

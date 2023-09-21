@@ -15,4 +15,6 @@ public class WorldStateDataPack {
     public List<float[]> boxesPos = new List<float[]>();
 
     public readonly float[] deactivatePos =  { 0, -100, 0 };
+
+    public static int Port = 11002;
 }
