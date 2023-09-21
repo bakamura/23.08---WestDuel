@@ -49,13 +49,16 @@ public class MainMenu : Menu {
 
     private void Awake() {
         _currentUi = _initialMenu;
+
+        _udpClient = new UdpClient(10000);
+        _bFormatter = new BinaryFormatter();
+
         _ipSelf = new IPEndPoint(Dns.GetHostEntry(Dns.GetHostName()).AddressList.First(f => f.AddressFamily == AddressFamily.InterNetwork), 10000);
+        foreach (IPAddress adress in Dns.GetHostEntry(Dns.GetHostName()).AddressList) if (adress.ToString().Split('.')[0] == "172" && adress.ToString().Split('.')[1] == "17") _ipSelf = new IPEndPoint(adress, 10000);
 
         string[] ipText = _ipSelf.ToString().Split(':');
         _ipSelfText.text = ipText[0];
 
-        _udpClient = new UdpClient(10000);
-        _bFormatter = new BinaryFormatter();
     }
 
     private void Update() {
@@ -145,6 +148,7 @@ public class MainMenu : Menu {
             else {
                 if (str == START_SUCCESS) {
                     ServerConnectionHandler.players[0].ip = _ipOther; // Instantiate before
+                    //ServerConnectionHandler.players[0].ip = _ipOther.Address;
                     SceneManager.LoadScene(1);
                 }
                 else if (str == LEAVE_LOBBY) {
@@ -173,6 +177,7 @@ public class MainMenu : Menu {
                     _bFormatter.Serialize(_mStream, START_SUCCESS);
                     _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 10000));
                     ClientConnectionHandler.ServerEndPoint = _ipOther;
+                    //ClientConnectionHandler.ServerEndPoint = _ipOther.Address;
                     SceneManager.LoadScene(1);
                 }
                 else if (str == LEAVE_LOBBY) {
