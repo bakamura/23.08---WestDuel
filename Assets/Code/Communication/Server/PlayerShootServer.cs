@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class PlayerShootServer : MonoBehaviour {
 
@@ -15,8 +16,10 @@ public class PlayerShootServer : MonoBehaviour {
     [Header("Cache")]
 
     private bool _canInput = false;
-    private Bullet[] _bulletPool = new Bullet[2];
+    private Bullet[] _bulletPool = new Bullet[MaxBulletAmount];
     private Camera _cam;
+    public static int MaxBulletAmount = 2;
+    public Action OnShoot;
 
     private void Awake() {
         for(int i = 0; i < _bulletPool.Length; i++) _bulletPool[i] = Instantiate(_bulletPrefab, Vector3.zero, Quaternion.identity).GetComponent<Bullet>();
@@ -38,6 +41,7 @@ public class PlayerShootServer : MonoBehaviour {
                     break;
                 }
             }
+            OnShoot?.Invoke();
         }
     }
 

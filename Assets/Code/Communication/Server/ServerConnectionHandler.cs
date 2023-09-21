@@ -17,4 +17,5 @@ public class PlayerInfo {
     public PlayerHealth health;
     public PlayerMovementServer movement;
     public PlayerShootServer shoot;
+    public AnimationsUpdate animationsUpdate;
 }
