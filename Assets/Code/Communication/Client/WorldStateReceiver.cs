@@ -1,34 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System.Net;
+using System.Linq;
+using System.Net.Sockets;
 
 public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
     private WorldStateDataPack _dataPack;
-    private bool[] _bulletsShoot = new bool[4];//size is playerCount * MaxBulletPerPlayer
-
-    private void Start()
-    {
-        for (int a = 0; a < _bulletsShoot.Length; a++)
-        {
-            Bullet temp = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>();
-            ClientConnectionHandler.BulletsList.Add(temp);
-        }
-    }
+    private UdpClient _udpClient = new UdpClient(WorldStateDataPack.Port);
 
     protected override void ReceivePack()
     {
         while (true)
         {
-            IPEndPoint temp = ClientConnectionHandler.ServerEndPoint;
-            _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
-            if (temp == ClientConnectionHandler.ServerEndPoint)
+            IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, WorldStateDataPack.Port);
+            _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
+            if (temp.Address == ClientConnectionHandler.ServerEndPoint)
             {
                 _dataPack = CheckDataPack<WorldStateDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {
-                    _ipToData[temp] = _dataPack;
+                    _ipToData[temp.Address] = _dataPack;
                 }
             }
         }
@@ -38,25 +34,24 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
     {
         if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
         {
-            #region UpdatePlayersPositions
+            #region UpdatePlayers
             for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
             {
                 ClientConnectionHandler.PlayersList[i].Object.transform.position = PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].playersPos[i]);
                 ClientConnectionHandler.PlayersList[i].Rigidbody.velocity = PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].playersVelocity[i]);
             }
             #endregion
-            #region UpdateBullets               
-            //if (_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count > ClientConnectionHandler.BulletsList.Count)
-            //{
-            //    int newBullets = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - ClientConnectionHandler.BulletsList.Count;
-            //    for (int a = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - newBullets; a < _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count; a++)
-            //    {
-            //        Bullet temp = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>();
-            //        temp.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[a]), PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsVelocity[a]));
-            //        ClientConnectionHandler.BulletsList.Add(temp);
-            //        _bulletsShoot[a] = true;
-            //    }
-            //}
+            #region UpdateBullets
+            if (_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count > ClientConnectionHandler.BulletsList.Count)
+            {
+                int newBullets = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - ClientConnectionHandler.BulletsList.Count;
+                for (int a = _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count - newBullets; a < _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count; a++)
+                {
+                    Bullet temp = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>();
+                    temp.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[a]), PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsVelocity[a]));
+                    ClientConnectionHandler.BulletsList.Add(temp);
+                }
+            }
             for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos.Count; i++)
             {
                 if (_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[i] == _ipToData[ClientConnectionHandler.ServerEndPoint].deactivatePos)
@@ -67,7 +62,6 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
                 {
                     ClientConnectionHandler.BulletsList[i].UpdateState(true);
                     ClientConnectionHandler.BulletsList[i].Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsPos[i]), PackingUtility.FloatArrayToVector3(_ipToData[ClientConnectionHandler.ServerEndPoint].bulletsVelocity[i]));
-                    _bulletsShoot[i] = true;
                 }
             }
             #endregion
@@ -109,20 +103,8 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
                 }
             }
             //}
-            #endregion
-            #region UpdatePlayersAnimations
-            for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
-            {
-                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetDirection(PackingUtility.FloatArrayToVector3(_dataPack.playersVelocity[i]));
-                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_dataPack.playersMousePosition[i]));
-                for(int a  = _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count * i; a < _bulletsShoot.Length; a++)
-                {
-                    ClientConnectionHandler.PlayersList[i].AnimationsUpdate.TriggerShootAnim();
-                    _bulletsShoot[a] = false;
-                }
-            }
-            #endregion
         }
+        #endregion
         _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
     }
 }

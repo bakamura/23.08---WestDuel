@@ -26,17 +26,15 @@ public static class ClientConnectionHandler
         }
     }
 
-    public const int Port = 11000;
-    public static IPEndPoint ServerEndPoint { get { return ServerEndPoint; } set { SetIpEndPoint(string.Empty); } }
-    public static UdpClient UdpClient = new UdpClient(Port);
+    public static IPAddress ServerEndPoint;
     public static bool _hasGameEnded;
 
-    public static IPEndPoint SetIpEndPoint(string IpAddress)
+    public static IPEndPoint SetIpEndPoint(string IpAddress, int port)
     {
         IPEndPoint temp;
         if (IPAddress.TryParse(IpAddress, out IPAddress address))
         {
-            temp = new IPEndPoint(address, Port);
+            temp = new IPEndPoint(address, port);
             return temp;
         }
         else

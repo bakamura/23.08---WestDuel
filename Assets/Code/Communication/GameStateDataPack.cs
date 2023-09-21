@@ -16,4 +16,6 @@ public class GameStateDataPack {
 
     public List<int> playersHealth = new List<int>();
 
+    public static int Port = 11001;
+
 }

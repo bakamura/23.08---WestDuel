@@ -1,4 +1,6 @@
 using System.IO;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +11,8 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
 
     private BinaryFormatter _bf;
     private MemoryStream _ms;
+    private UdpClient _udpClient = new UdpClient(GameStateDataPack.Port);
+    private IPEndPoint _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
 
     protected override void FixedUpdate()
     {
@@ -29,7 +33,7 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
         _ms = new MemoryStream();
         _bf.Serialize(_ms, _dataPackCache);
         _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.GamStateDataPack);
-        ClientConnectionHandler.UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ClientConnectionHandler.ServerEndPoint);
+        _udpClient.Send(_byteArrayCache, _byteArrayCache.Length, _endPoint);
     }
 
     public void QuitMatch()

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -10,6 +12,8 @@ public class InputSender : DataSender<InputDataPack>
     private ClientInputReader _clientInputReader;
     private MemoryStream _memoryStream;
     private BinaryFormatter _binaryFormatter =  new BinaryFormatter();
+    private UdpClient _udpClient = new UdpClient(InputDataPack.Port);
+    private IPEndPoint _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, InputDataPack.Port);
 
     private void Awake()
     {
@@ -38,6 +42,6 @@ public class InputSender : DataSender<InputDataPack>
         _memoryStream = new MemoryStream(); // Always open a new memory stream
         _binaryFormatter.Serialize(_memoryStream, _dataPackCache);
         _byteArrayCache = AddIdentifierByte(_memoryStream.ToArray(), (byte)DataPacksIdentification.InputDataPack);
-        ClientConnectionHandler.UdpClient.Send(_byteArrayCache, _byteArrayCache.Length, ClientConnectionHandler.ServerEndPoint);
+        _udpClient.Send(_byteArrayCache, _byteArrayCache.Length, _endPoint);
     }
 }

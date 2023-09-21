@@ -6,13 +6,12 @@ using UnityEngine;
 public static class ServerConnectionHandler {
 
     [Header("Server Handling")]
-    public static UdpClient udpClient = new UdpClient(11000);
     public static List<PlayerInfo> players = new List<PlayerInfo>();
 
 }
 
 public class PlayerInfo {
-    public IPEndPoint ip;
+    public IPAddress ip;
     public Transform transform;
     public Rigidbody rigidBody;
     public PlayerHealth health;

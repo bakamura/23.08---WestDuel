@@ -1,5 +1,6 @@
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -10,38 +11,21 @@ public class InputReceiver : DataReceiver<InputDataPack>
 
     private IPEndPoint _ipEpCache;
     private InputDataPack _dataPack;
-
+    private UdpClient _udpClient = new UdpClient(InputDataPack.Port);
     protected override void ReceivePack()
     {
         while (true)
         {
             for (int i = 0; i < ServerConnectionHandler.players.Count; i++)
             {
-                _ipEpCache = ServerConnectionHandler.players[i].ip;
-                _memoryStream = new MemoryStream(ServerConnectionHandler.udpClient.Receive(ref _ipEpCache));
-                _dataPack = CheckDataPack<InputDataPack>(DataPacksIdentification.InputDataPack);
+                _ipEpCache = new IPEndPoint(ServerConnectionHandler.players[i].ip, InputDataPack.Port);
+                _memoryStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
+                _dataPack = CheckDataPack<InputDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {
                     _ipToData[ServerConnectionHandler.players[i].ip] = _dataPack;
                 }
             }
-            // sera q quando recebe um pacote do memory stream ele é descartado?
-            //_memoryStream = new MemoryStream(ServerConnectionHandler.udpClient.Receive(ref _ipEpCache));
-            //bool isInPlayerList = false;
-            //foreach (PlayerInfo info in ServerConnectionHandler.players) if (info.ip == _ipEpCache)
-            //    {
-            //        isInPlayerList = true;
-            //        break;
-            //    }
-            //if (isInPlayerList)
-            //{
-            //    switch(CheckDataPack(ref byte[] _byteArr))
-            //    {
-            //        case DataPacksIdentification.GamStateDataPack:
-            //            // chama script especifico e altera o datapack correspondente
-
-            //    }
-            //}
         }
     }
 
@@ -51,15 +35,8 @@ public class InputReceiver : DataReceiver<InputDataPack>
         {
             if (_ipToData[ServerConnectionHandler.players[i].ip].updated)
             {
-                Vector2 movmentDirection = PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip]._movementInput);
-                ServerConnectionHandler.players[i].movement.SetInputDirection(movmentDirection);
-                ServerConnectionHandler.players[i].animationsUpdate.SetDirection(movmentDirection);
-                ServerConnectionHandler.players[i].animationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
-                if (_ipToData[ServerConnectionHandler.players[i].ip]._mouseClick)
-                {
-                    ServerConnectionHandler.players[i].shoot.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
-                    ServerConnectionHandler.players[i].animationsUpdate.TriggerShootAnim();
-                }
+                ServerConnectionHandler.players[i].movement.SetInputDirection(PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip]._movementInput));
+                if (_ipToData[ServerConnectionHandler.players[i].ip]._mouseClick) ServerConnectionHandler.players[i].shoot.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
             }
         }
     }
