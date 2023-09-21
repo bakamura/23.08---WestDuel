@@ -9,7 +9,7 @@ public class Menu : MonoBehaviour {
     [SerializeField] private float _fadeDuration;
     [Tooltip("The time between ending fade out and starting fade in")]
     [SerializeField] private float _fadeOpenDelay;
-    [SerializeField] private CanvasGroup _currentUi;
+    protected CanvasGroup _currentUi;
 
     [Header("Move Transition")]
 
@@ -51,9 +51,10 @@ public class Menu : MonoBehaviour {
             yield return null;
         }
         fadeIn.alpha = 1;
-        fadeIn.interactable = false;
-        fadeIn.blocksRaycasts = false;
+        fadeIn.interactable = true;
+        fadeIn.blocksRaycasts = true;
 
+        _currentUi = fadeIn;
     }
 
     public void OpenUIMove(RectTransform moveIn, Vector2 moveInActivePos, Vector2 moveInDeactivePos) {
@@ -70,6 +71,8 @@ public class Menu : MonoBehaviour {
             while (_floatC > 0) {
                 moveOut.anchoredPosition = Vector2.Lerp(moveOutActivePos, moveOutDeactivePos, _floatC);
                 _floatC -= Time.deltaTime / _moveDuration;
+
+                yield return null;
             }
             moveOut.anchoredPosition = moveOutDeactivePos;
         }
@@ -82,6 +85,8 @@ public class Menu : MonoBehaviour {
             while (_floatC < 1) {
                 moveIn.anchoredPosition = Vector2.Lerp(moveInDeactivePos, moveInActivePos, _floatC);
                 _floatC += Time.deltaTime / _moveDuration;
+
+                yield return null;
             }
             moveIn.anchoredPosition = moveInActivePos;
         }
