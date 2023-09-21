@@ -60,7 +60,7 @@ public class AnimationsUpdate : MonoBehaviour
         while (_canUpdate)
         {
             Vector3 direction = Vector3.zero;
-            //float dotProduct;
+            float dotProduct;
             Vector3 axisLocks;
             //Vector3 result;
 
@@ -76,10 +76,11 @@ public class AnimationsUpdate : MonoBehaviour
                 switch (_bonesToUpdate[i].BodyPartType)
                 {
                     case CalculationMethod.DirectionalInput:
-                        direction = new Vector3(_direction.x * axisLocks.x, 0, _direction.y * axisLocks.z).normalized;                        
+                        direction = new Vector3(_direction.x * axisLocks.x, 0, _direction.y * axisLocks.z).normalized;
+                        dotProduct = Mathf.Abs(Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction));
                         if (direction != Vector3.zero)
                         {
-                            _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed);
+                            _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
                             _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
                         }
                         Debug.Log(_bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y);
@@ -87,9 +88,10 @@ public class AnimationsUpdate : MonoBehaviour
                     case CalculationMethod.MouseInput:
                         direction = (_mousePosition - _bonesToUpdate[i].Bone.transform.position).normalized;
                         direction = new Vector3(direction.x * axisLocks.x, direction.y * axisLocks.y, direction.z * axisLocks.z);
+                        dotProduct = Mathf.Abs(Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction));
                         if (direction != Vector3.zero)
                         {
-                            _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed);
+                            _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
                             _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
                         }                        
                         break;
