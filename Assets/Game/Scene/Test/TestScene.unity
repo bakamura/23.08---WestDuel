@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -209,6 +209,10 @@ PrefabInstance:
       value: Player Instance Server
       objectReference: {fileID: 0}
     - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+      propertyPath: _speed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
       propertyPath: _inputReader
       value: 
       objectReference: {fileID: 345916016}
@@ -218,7 +222,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
       propertyPath: _minDiferenceToUpdate
-      value: 0.05
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+      propertyPath: _bonesToUpdate.Array.data[0].ConstrainXAxis
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+      propertyPath: _bonesToUpdate.Array.data[0].ConstrainZAxis
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
       propertyPath: _bonesToUpdate.Array.data[0].MaxAngleToFlip
@@ -229,12 +241,24 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+      propertyPath: _bonesToUpdate.Array.data[1].ConstrainXAxis
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+      propertyPath: _bonesToUpdate.Array.data[1].ConstrainYAxis
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+      propertyPath: _bonesToUpdate.Array.data[1].ConstrainZAxis
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
       propertyPath: _bonesToUpdate.Array.data[1].MaxAngleToFlip
-      value: 90
+      value: 270
       objectReference: {fileID: 0}
     - target: {fileID: 3178418511314837011, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
       propertyPath: _bonesToUpdate.Array.data[1].MinAngleToFlip
-      value: -90
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3178418511314837014, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
       propertyPath: m_UseGravity
@@ -418,13 +442,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317457384}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.78, y: 9.42, z: -2.54}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 1.78, y: 7.5, z: -11.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &1502357671
 GameObject:
   m_ObjectHideFlags: 0
