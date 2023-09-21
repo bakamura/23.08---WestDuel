@@ -76,36 +76,13 @@ public class AnimationsUpdate : MonoBehaviour
                 switch (_bonesToUpdate[i].BodyPartType)
                 {
                     case CalculationMethod.DirectionalInput:
-                        direction = new Vector3(_direction.x * axisLocks.x, 0, _direction.y * axisLocks.z).normalized;
-                        //_bonesToUpdate[i].Bone.transform.forward = Vector3.Lerp(_bonesToUpdate[i].Bone.transform.forward, direction, _minDiferenceToUpdate);
-                        //_fliped = direction.z < 0;                        
-                        //dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
-
-                        //if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate)
-                        //{
-                        //result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
-
-                        //if (result.y > _bonesToUpdate[i].MinAngleToFlip && result.y < _bonesToUpdate[i].MaxAngleToFlip)
-                        //{
-                        //    _fliped = true;
-                        //    //Debug.Log($"true {result.y}");
-                        //}
-                        //else
-                        //{
-                        //    _fliped = false;
-                        //    //Debug.Log($"false {result.y}");
-                        //}
-                        //_bonesToUpdate[i].Bone.transform.eulerAngles = result;
-                        //Debug.Log(result.y);
-                        //}
+                        direction = new Vector3(_direction.x * axisLocks.x, 0, _direction.y * axisLocks.z).normalized;                        
                         if (direction != Vector3.zero)
                         {
                             _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed);
                             _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
                         }
                         Debug.Log(_bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y);
-                        //Debug.Log($"previous: {_previousValues[i]}, current {dotProduct}");
-                        //Debug.Log($"direction: {direction}, dot: {dotProduct}, rigth: {_bonesToUpdate[i].Bone.transform.right}");
                         break;
                     case CalculationMethod.MouseInput:
                         direction = (_mousePosition - _bonesToUpdate[i].Bone.transform.position).normalized;
@@ -114,21 +91,12 @@ public class AnimationsUpdate : MonoBehaviour
                         {
                             _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed);
                             _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
-                        }
-                        //dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
-                        //_bonesToUpdate[i].Bone.transform.eulerAngles = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
-                        //result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
-                        //direction = _mousePosition - _bonesToUpdate[i].Bone.transform.position;
-                        //angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-                        //_bonesToUpdate[i].Bone.transform.rotation = Quaternion.AngleAxis(Mathf.Clamp(angle * Mathf.Rad2Deg, -90, 90), axisLocks);
-                        //Debug.Log($"direction: {direction}, dot: {dotProduct}");
-                        //_fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
+                        }                        
                         break;
                 }
             }
             if (_fliped)
             {
-                //_bonesToUpdate[0].Bone.transform.root.transform.localScale = new Vector3(_bonesToUpdate[0].Bone.transform.root.transform.localScale.x, _bonesToUpdate[0].Bone.transform.root.transform.localScale.y, -1);
                 _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles = new Vector3(
                                     _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.x,
                                     180,
@@ -136,7 +104,6 @@ public class AnimationsUpdate : MonoBehaviour
             }
             else
             {
-                //_bonesToUpdate[0].Bone.transform.root.transform.localScale = new Vector3(_bonesToUpdate[0].Bone.transform.root.transform.localScale.x, _bonesToUpdate[0].Bone.transform.root.transform.localScale.y, 1);
                 _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles = new Vector3(
                                     _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.x,
                                     0,
@@ -186,4 +153,27 @@ public class AnimationsUpdate : MonoBehaviour
             _updateCoroutine = StartCoroutine(UpdateAnimations());
         }
     }
+    #region oldCodeForRotation
+    //_bonesToUpdate[i].Bone.transform.forward = Vector3.Lerp(_bonesToUpdate[i].Bone.transform.forward, direction, _minDiferenceToUpdate);
+    //_fliped = direction.z < 0;                        
+    //dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
+
+    //if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate)
+    //{
+    //result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
+
+    //if (result.y > _bonesToUpdate[i].MinAngleToFlip && result.y < _bonesToUpdate[i].MaxAngleToFlip)
+    //{
+    //    _fliped = true;
+    //    //Debug.Log($"true {result.y}");
+    //}
+    //else
+    //{
+    //    _fliped = false;
+    //    //Debug.Log($"false {result.y}");
+    //}
+    //_bonesToUpdate[i].Bone.transform.eulerAngles = result;
+    //Debug.Log(result.y);
+    //}
+    #endregion
 }
