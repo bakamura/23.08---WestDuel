@@ -12,6 +12,7 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
     [SerializeField] private NetworkReferenceContainer _container;
     private WorldStateDataPack _dataPack;
     private UdpClient _udpClient = new UdpClient(WorldStateDataPack.Port);
+    private bool[] _bulletsShoot = new bool[4];//size is playerCount * MaxBulletPerPlayer
 
     protected override void ReceivePack()
     {
@@ -103,8 +104,20 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
                 }
             }
             //}
+            #endregion
+            #region UpdatePlayersAnimations
+            for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
+            {
+                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetDirection(PackingUtility.FloatArrayToVector3(_dataPack.playersVelocity[i]));
+                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_dataPack.playersMousePosition[i]));
+                for (int a = _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count * i; a < _bulletsShoot.Length; a++)
+                {
+                    ClientConnectionHandler.PlayersList[i].AnimationsUpdate.TriggerShootAnim();
+                    _bulletsShoot[a] = false;
+                }
+            }
+            #endregion
+            _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
         }
-        #endregion
-        _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
     }
 }

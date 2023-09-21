@@ -35,8 +35,15 @@ public class InputReceiver : DataReceiver<InputDataPack>
         {
             if (_ipToData[ServerConnectionHandler.players[i].ip].updated)
             {
-                ServerConnectionHandler.players[i].movement.SetInputDirection(PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip]._movementInput));
-                if (_ipToData[ServerConnectionHandler.players[i].ip]._mouseClick) ServerConnectionHandler.players[i].shoot.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
+                Vector2 movmentDirection = PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip]._movementInput);
+                ServerConnectionHandler.players[i].movement.SetInputDirection(movmentDirection);
+                ServerConnectionHandler.players[i].animationsUpdate.SetDirection(movmentDirection);
+                ServerConnectionHandler.players[i].animationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
+                if (_ipToData[ServerConnectionHandler.players[i].ip]._mouseClick)
+                {
+                    ServerConnectionHandler.players[i].shoot.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
+                    ServerConnectionHandler.players[i].animationsUpdate.TriggerShootAnim();
+                }
             }
         }
     }
