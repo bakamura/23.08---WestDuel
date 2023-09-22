@@ -16,27 +16,31 @@ public static class ClientConnectionHandler
     {
         public GameObject Object;
         public Rigidbody Rigidbody;
+        public AnimationsUpdate AnimationsUpdate;
 
         public MovableObjectData(GameObject obj)
         {
             Object = obj;
             Rigidbody = Object.GetComponent<Rigidbody>();
+            AnimationsUpdate = Object.GetComponent<AnimationsUpdate>();
         }
     }
 
-    public const int Port = 11000;
-    public static IPEndPoint ServerEndPoint { get { return ServerEndPoint; } set { } }
-    public static UdpClient UdpClient = new UdpClient(Port);
+    public static IPAddress ServerEndPoint;
+    public static bool _hasGameEnded;
 
-    public static void SetIpEndPoint(string IpAddress)
+    public static IPEndPoint SetIpEndPoint(string IpAddress, int port)
     {
+        IPEndPoint temp;
         if (IPAddress.TryParse(IpAddress, out IPAddress address))
         {
-            ServerEndPoint = new IPEndPoint(address, Port);
+            temp = new IPEndPoint(address, port);
+            return temp;
         }
         else
         {
             Debug.LogError($"the Address {IpAddress} is invalid");
+            return null;
         }
     }
 }

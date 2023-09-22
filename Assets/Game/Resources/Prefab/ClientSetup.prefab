@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 885871660185076252}
   - component: {fileID: 6189965576259495015}
   - component: {fileID: 411453151196745470}
+  - component: {fileID: 8633540648237605406}
   m_Layer: 0
   m_Name: ClientSetup
   m_TagString: Untagged
@@ -49,11 +50,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb72b7fb008d9642a9961e4d530bba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keyForward: 0
-  _keyRight: 0
-  _keyBackward: 0
-  _keyLeft: 0
-  _keyShoot: 0
+  _keyForward: 119
+  _keyRight: 100
+  _keyBackward: 97
+  _keyLeft: 115
+  _keyShoot: 323
 --- !u!114 &2130258223166972413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPoints: []
   _delayBetweenSpawns: 0
-  _bulletPickupPrefab: {fileID: 0}
+  _bulletPickupPrefab: {fileID: 5497056799873916956, guid: 2be4c36f26730364ea895a848e797f14, type: 3}
   _maxAmmoPickupsInScene: 2
   _startWithAutomaticSpawns: 1
   _debugMode: 0
@@ -140,3 +141,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPoints: []
+--- !u!114 &8633540648237605406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2780990740732705522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e83e751d221bcc49a5556f77836533d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

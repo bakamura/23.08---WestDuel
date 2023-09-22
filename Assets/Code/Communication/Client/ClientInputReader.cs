@@ -32,6 +32,9 @@ public class ClientInputReader : MonoBehaviour
 
         _mouseClick = Input.GetKeyDown(_keyShoot);
 
-        _mousePosition = _camera.ScreenToWorldPoint(Input.mousePosition);
+        if(Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit))
+        {
+            _mousePosition = raycastHit.point;
+        }
     }
 }

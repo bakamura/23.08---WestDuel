@@ -5,24 +5,27 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System.Net;
 using System.Linq;
+using System.Net.Sockets;
 
 public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
     private WorldStateDataPack _dataPack;
+    private UdpClient _udpClient = new UdpClient(WorldStateDataPack.Port);
+    private bool[] _bulletsShoot = new bool[4];//size is playerCount * MaxBulletPerPlayer
 
     protected override void ReceivePack()
     {
         while (true)
         {
-            IPEndPoint temp = ClientConnectionHandler.ServerEndPoint;
-            _memoryStream = new MemoryStream(ClientConnectionHandler.UdpClient.Receive(ref temp));
-            if (temp == ClientConnectionHandler.ServerEndPoint)
+            IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, WorldStateDataPack.Port);
+            _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
+            if (temp.Address == ClientConnectionHandler.ServerEndPoint)
             {
                 _dataPack = CheckDataPack<WorldStateDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {
-                    _ipToData[temp] = _dataPack;
+                    _ipToData[temp.Address] = _dataPack;
                 }
             }
         }
@@ -101,8 +104,20 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
                 }
             }
             //}
+            #endregion
+            #region UpdatePlayersAnimations
+            for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
+            {
+                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetDirection(PackingUtility.FloatArrayToVector3(_dataPack.playersVelocity[i]));
+                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_dataPack.playersMousePosition[i]));
+                for (int a = _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count * i; a < _bulletsShoot.Length; a++)
+                {
+                    ClientConnectionHandler.PlayersList[i].AnimationsUpdate.TriggerShootAnim();
+                    _bulletsShoot[a] = false;
+                }
+            }
+            #endregion
+            _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
         }
-        #endregion
-        _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
     }
 }

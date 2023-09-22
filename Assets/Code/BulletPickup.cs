@@ -5,6 +5,7 @@ using System;
 
 public class BulletPickup : MonoBehaviour
 {
+    [SerializeField] private SoundManager.SfxAudioData _audioData;
     private BulletPickup _nextInPoolList;
     private Vector3 _spawnPointUsed;
 
@@ -35,12 +36,14 @@ public class BulletPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<PlayerShoot>().GetBullet();
+        PlayerShootClient temp = other.GetComponent<PlayerShootClient>();
+        if (temp) temp.GetBullet();
         CollectBullet();
     }
 
     public void CollectBullet()
     {
+        SoundManager.Instance.PlaySoundEffect(_audioData, transform.position);
         UpdateState(false);
         OnCollect?.Invoke(_spawnPointUsed);
     }

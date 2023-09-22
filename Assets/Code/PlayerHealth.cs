@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovement), typeof(PlayerShoot))]
+[RequireComponent(typeof(PlayerMovementServer), typeof(PlayerShootServer))]
 public class PlayerHealth : MonoBehaviour {
 
     [Header("Parameters")]
@@ -16,16 +15,16 @@ public class PlayerHealth : MonoBehaviour {
 
     [Header("Cache")]
 
-    private PlayerMovement _movementScript;
-    private PlayerShoot _shootScript;
+    private PlayerMovementClient _movementScript;
+    private PlayerShootClient _shootScript;
     private SpawnPlayer _spawnPlayer;
     private Transform _oponentTransform;
     private WaitForSeconds _respawnWait;
     private WaitForSeconds _invencibilityWait;
 
     private void Awake() {
-        _movementScript = GetComponent<PlayerMovement>();
-        _shootScript = GetComponent<PlayerShoot>();
+        _movementScript = GetComponent<PlayerMovementClient>();
+        _shootScript = GetComponent<PlayerShootClient>();
         _spawnPlayer = FindObjectOfType<SpawnPlayer>();
         PlayerHealth[] players = FindObjectsOfType<PlayerHealth>();
         foreach(PlayerHealth player in players) if(player != this) _oponentTransform = player.transform;

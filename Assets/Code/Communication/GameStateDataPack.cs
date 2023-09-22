@@ -9,10 +9,13 @@ public class GameStateDataPack {
         Initiate,
         Restart,
         Continue,
-        Ended
+        Ended,
+        Quit
     }
     public GameState gameState = GameState.Initiate;
 
     public List<int> playersHealth = new List<int>();
+
+    public static int Port = 11001;
 
 }
