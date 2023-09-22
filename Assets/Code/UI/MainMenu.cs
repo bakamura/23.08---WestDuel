@@ -1,3 +1,4 @@
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -85,7 +86,7 @@ public class MainMenu : Menu {
     }
 
     public void OpenJoinMenu() {
-        _currentUi = _initialMenu.interactable ? _initialMenu : _mainMenu;
+        _currentUi = _initialMenu.interactable ? _initialMenu : _lobbyMenu;
         if (_ipOther != null) {
             _mStream = new MemoryStream();
             _bFormatter.Serialize(_mStream, LEAVE_LOBBY);
@@ -94,7 +95,7 @@ public class MainMenu : Menu {
         if (_threadC != null) _threadC.Abort();
         _threadC = new Thread(Joining);
         _threadC.Start();
-        OpenUIFade(_joinMenu);
+        OpenUIFade(_currentUi == _initialMenu ? _joinMenu : _mainMenu);
     }
 
     public void OpenMainMenu() {
@@ -146,14 +147,8 @@ public class MainMenu : Menu {
                 }
             }
             else {
-                if (str == START_SUCCESS) {
-                    ServerConnectionHandler.players[0].ip = _ipOther; // Instantiate before
-                    //ServerConnectionHandler.players[0].ip = _ipOther.Address;
-                    SceneManager.LoadScene(1);
-                }
-                else if (str == LEAVE_LOBBY) {
-                    _ipOther = null;
-                }
+                if (str == START_SUCCESS) StartCoroutine(GoToGameScene(true));
+                else if (str == LEAVE_LOBBY) _ipOther = null;
             }
         }
     }
@@ -176,9 +171,8 @@ public class MainMenu : Menu {
                     _mStream = new MemoryStream();
                     _bFormatter.Serialize(_mStream, START_SUCCESS);
                     _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 10000));
-                    ClientConnectionHandler.ServerEndPoint = _ipOther;
-                    //ClientConnectionHandler.ServerEndPoint = _ipOther.Address;
-                    SceneManager.LoadScene(1);
+
+                    StartCoroutine(GoToGameScene(false));
                 }
                 else if (str == LEAVE_LOBBY) {
                     _ipOther = null;
@@ -186,6 +180,29 @@ public class MainMenu : Menu {
                 }
             }
         }
+    }
+
+    private IEnumerator GoToGameScene(bool isHost) {
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(isHost ? 1 : 2);
+        //asyncOperation.allowSceneActivation = false;
+
+        _threadC.Abort();
+        _udpClient.Close();
+
+        while(!asyncOperation.isDone) yield return null;
+        
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(isHost ? 1: 2)); //
+        if (isHost) {
+            ServerConnectionHandler.InstantiatePlayer(true, _ipSelf.Address);
+            ServerConnectionHandler.InstantiatePlayer(false, _ipOther.Address);
+        }
+        else {
+            ClientConnectionHandler.ServerEndPoint = _ipOther.Address;
+        }
+
+        asyncOperation = SceneManager.UnloadSceneAsync(0);
+
+        while (!asyncOperation.isDone) yield return null;
     }
 
     public void QuitGame() {

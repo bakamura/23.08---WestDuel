@@ -1,8 +1,8 @@
 using UnityEngine;
 using System;
 
-public class ServerInputReader : MonoBehaviour
-{
+public class ServerInputReader : MonoBehaviour {
+
     [Header("Inputs")]
 
     [SerializeField] private KeyCode _keyForward;
@@ -15,27 +15,31 @@ public class ServerInputReader : MonoBehaviour
     private Vector3 _mousePosition;
     private Camera _camera;
 
-    public Vector3 MousePosition => _mousePosition;
-    public Vector2 Direction => _input;
+    public Vector3 MousePosition { get {return _mousePosition;} }
+    public Vector3 Direction { get { return _input; } }
 
-    private void Awake()
-    {
+    private void Awake() {
         _camera = Camera.main;
     }
 
-    void Update()
-    {
+    void Update() {
+        // Movement
         _input.Set((Input.GetKey(_keyLeft) ? -1 : 0) + (Input.GetKey(_keyRight) ? 1 : 0),
                    (Input.GetKey(_keyBackward) ? -1 : 0) + (Input.GetKey(_keyForward) ? 1 : 0));
-        //ServerConnectionHandler.players[0].movement.SetInputDirection(_input);
-        if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit))
-        {
+
+        ServerConnectionHandler.players[0].movement.SetInputDirection(_input);
+
+        // Aiming
+        if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit)) {
             _mousePosition = raycastHit.point;
-            //Debug.Log(_mousePosition);
         }
-        if (Input.GetKeyDown(_keyShoot))
-        {
-            //ServerConnectionHandler.players[0].shoot.Shoot(_mousePosition);
+        else {
+            _mousePosition = Vector3.up * 256f;
+            Debug.Log("Mouse not hitting shit");
         }
+
+        // Shooting
+        if (Input.GetKeyDown(_keyShoot) && _mousePosition.y < 128f) ServerConnectionHandler.players[0].shoot.Shoot(_mousePosition);
+
     }
 }
