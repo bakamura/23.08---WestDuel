@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 3178418511314837011}
   - component: {fileID: 1083039953724483083}
   m_Layer: 0
-  m_Name: Player Instance Server
+  m_Name: Player1 Instance Client
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

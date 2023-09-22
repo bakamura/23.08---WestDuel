@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovementClient), typeof(PlayerShootClient))]
+[RequireComponent(typeof(PlayerMovementServer), typeof(PlayerShootServer))]
 public class PlayerHealth : MonoBehaviour {
 
     [Header("Parameters")]

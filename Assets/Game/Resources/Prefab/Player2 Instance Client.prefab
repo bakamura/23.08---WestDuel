@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 2607295250034501987}
   - component: {fileID: 6345846821502188569}
   m_Layer: 0
-  m_Name: Player Instance Client
+  m_Name: Player2 Instance Client
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
