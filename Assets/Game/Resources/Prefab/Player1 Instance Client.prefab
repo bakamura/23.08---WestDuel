@@ -578,21 +578,21 @@ MonoBehaviour:
   _bonesToUpdate:
   - Bone: {fileID: 590485610380113176}
     BodyPartType: 0
-    ConstrainXAxis: 1
-    ConstrainYAxis: 0
-    ConstrainZAxis: 1
-    MinAngleToFlip: 0
-    MaxAngleToFlip: 0
+    ConstrainXAxis: 0
+    ConstrainYAxis: 1
+    ConstrainZAxis: 0
+    MinAngleToFlip: 90
+    MaxAngleToFlip: 270
   - Bone: {fileID: 3405508377999182317}
     BodyPartType: 1
-    ConstrainXAxis: 1
-    ConstrainYAxis: 0
-    ConstrainZAxis: 1
-    MinAngleToFlip: 0
-    MaxAngleToFlip: 0
+    ConstrainXAxis: 0
+    ConstrainYAxis: 1
+    ConstrainZAxis: 0
+    MinAngleToFlip: 90
+    MaxAngleToFlip: 270
   _inputReader: {fileID: 0}
   _tickFrequency: 0.02
-  _speed: 0
+  _speed: 5
 --- !u!95 &1083039953724483083
 Animator:
   serializedVersion: 5
