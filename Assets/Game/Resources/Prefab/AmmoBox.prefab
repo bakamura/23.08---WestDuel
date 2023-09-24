@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2753380713474236192}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -2432090755550338912, guid: 659915402cb874d48a194362ccbf86d7, type: 3}
 --- !u!23 &5408679417575517056
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: dce4d3a27cdecb34e8d470b2c06b45f9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,3 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c48cb72bb59d24f821c3977c914943, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioData:
+    Clip: {fileID: 0}
+    Volume: 0
+    IsSoundSpatial: 0
+    MinSoundRange: 0
+    MaxSoundRange: 0
+    RandomizePitch: []
