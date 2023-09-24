@@ -78,12 +78,14 @@ MonoBehaviour:
   _tickFrequency: 0.02
   _speed: 1
   _audioData:
-    Clip: {fileID: 0}
-    Volume: 0
-    IsSoundSpatial: 0
-    MinSoundRange: 0
-    MaxSoundRange: 0
-    RandomizePitch: []
+    Clip: {fileID: 8300000, guid: 9df0394b192457142970aacae3bf1337, type: 3}
+    Volume: 1
+    IsSoundSpatial: 1
+    MinSoundRange: 1
+    MaxSoundRange: 5
+    RandomizePitch:
+    - 1
+    - 2
 --- !u!1001 &7799789931323845179
 PrefabInstance:
   m_ObjectHideFlags: 0
