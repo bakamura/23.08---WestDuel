@@ -109,9 +109,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioData:
-    Clip: {fileID: 0}
-    Volume: 0
-    IsSoundSpatial: 0
-    MinSoundRange: 0
-    MaxSoundRange: 0
-    RandomizePitch: []
+    Clip: {fileID: 8300000, guid: 5923201a4aa59794086c6f1c52b7a633, type: 3}
+    Volume: 1
+    IsSoundSpatial: 1
+    MinSoundRange: 1
+    MaxSoundRange: 5
+    RandomizePitch:
+    - 1
+    - 2
