@@ -12,11 +12,11 @@ public static class ServerConnectionHandler {
         PlayerInfo info = new PlayerInfo();
         info.ip = ip;
         info.transform = go.transform;
-        info.rigidBody = go.GetComponent<Rigidbody>();
-        info.health = go.GetComponent<PlayerHealth>();
-        info.movement = go.GetComponent<PlayerMovementServer>();
-        info.shoot = go.GetComponent<PlayerShootServer>();
-        info.animationsUpdate = go.GetComponent<AnimationsUpdate>();
+        info.rigidBody = go.GetComponentInChildren<Rigidbody>();
+        info.health = go.GetComponentInChildren<PlayerHealth>();
+        info.movement = go.GetComponentInChildren<PlayerMovementServer>();
+        info.shoot = go.GetComponentInChildren<PlayerShootServer>();
+        info.animationsUpdate = go.GetComponentInChildren<AnimationsUpdate>();
         players.Add(info);
     }
 

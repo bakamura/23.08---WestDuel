@@ -1,58 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class PlayerShootClient : MonoBehaviour {
+//public class PlayerShootClient : MonoBehaviour {
 
-    [Header("Parameters")]
+//    [Header("Parameters")]
 
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _firePoint;
-    private bool _hasBullet = false;
+//    [SerializeField] private GameObject _bulletPrefab;
+//    [SerializeField] private Transform _firePoint;
+//    private bool _hasBullet = false;
 
-    [Header("Inputs")]
+//    [Header("Inputs")]
 
-    [SerializeField] private KeyCode _keyShoot;
-    [SerializeField] private LayerMask _mouseElevatedReceiver;
+//    [SerializeField] private KeyCode _keyShoot;
+//    [SerializeField] private LayerMask _mouseElevatedReceiver;
 
-    [Header("Cache")]
+//    [Header("Cache")]
 
-    private bool _canInput = false;
-    private Bullet[] _bulletPool = new Bullet[2];
-    private Camera _cam;
+//    private bool _canInput = false;
+//    private Bullet[] _bulletPool = new Bullet[2];
+//    private Camera _cam;
 
-    private void Awake() {
-        for(int i = 0; i < _bulletPool.Length; i++) _bulletPool[i] = Instantiate(_bulletPrefab, Vector3.zero, Quaternion.identity).GetComponent<Bullet>();
-        _cam = Camera.main;
+//    private void Awake() {
+//        for(int i = 0; i < _bulletPool.Length; i++) _bulletPool[i] = Instantiate(_bulletPrefab, Vector3.zero, Quaternion.identity).GetComponent<Bullet>();
+//        _cam = Camera.main;
 
-        _canInput = true; // test
-    }
+//        _canInput = true; // test
+//    }
 
-    public void Shoot(Vector3 point) {
-        if (_canInput && _hasBullet) {
-            //Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, _mouseElevatedReceiver, QueryTriggerInteraction.Collide);
+//    public void Shoot(Vector3 point) {
+//        if (_canInput && _hasBullet) {
+//            //Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, _mouseElevatedReceiver, QueryTriggerInteraction.Collide);
 
-            foreach (Bullet bullet in _bulletPool) {
-                if (!bullet.gameObject.activeSelf) {
-                    bullet.gameObject.SetActive(true);
-                    bullet.Shoot(_firePoint.position, point);
-                    _hasBullet = false;
-                    break;
-                }
-            }
-        }
-    }
+//            foreach (Bullet bullet in _bulletPool) {
+//                if (!bullet.gameObject.activeSelf) {
+//                    bullet.gameObject.SetActive(true);
+//                    bullet.Shoot(_firePoint.position, point);
+//                    _hasBullet = false;
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
-    public void SetActive(bool isActive) {
-        _canInput = isActive;
-    }
+//    public void SetActive(bool isActive) {
+//        _canInput = isActive;
+//    }
 
-    public bool CheckBullet() {
-        return _hasBullet;
-    }
+//    public bool CheckBullet() {
+//        return _hasBullet;
+//    }
 
-    public void GetBullet() {
-        _hasBullet = true;
-    }
+//    public void GetBullet() {
+//        _hasBullet = true;
+//    }
 
-}
+//}

@@ -15,16 +15,16 @@ public class PlayerHealth : MonoBehaviour {
 
     [Header("Cache")]
 
-    private PlayerMovementClient _movementScript;
-    private PlayerShootClient _shootScript;
+    private PlayerMovementServer _movementScript;
+    private PlayerShootServer _shootScript;
     private SpawnPlayer _spawnPlayer;
     private Transform _oponentTransform;
     private WaitForSeconds _respawnWait;
     private WaitForSeconds _invencibilityWait;
 
     private void Awake() {
-        _movementScript = GetComponent<PlayerMovementClient>();
-        _shootScript = GetComponent<PlayerShootClient>();
+        _movementScript = GetComponent<PlayerMovementServer>();
+        _shootScript = GetComponent<PlayerShootServer>();
         _spawnPlayer = FindObjectOfType<SpawnPlayer>();
         PlayerHealth[] players = FindObjectsOfType<PlayerHealth>();
         foreach(PlayerHealth player in players) if(player != this) _oponentTransform = player.transform;
@@ -52,6 +52,7 @@ public class PlayerHealth : MonoBehaviour {
 
         yield return _respawnWait;
 
+        if (_spawnPlayer == null) FindObjectOfType<SpawnPlayer>();
         transform.position = _spawnPlayer.GetPointFurthestFromOponent(_oponentTransform.position);
         _movementScript.SetActive(false);
         _shootScript.SetActive(false);

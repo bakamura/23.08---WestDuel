@@ -25,6 +25,7 @@ public class ServerInputReader : MonoBehaviour {
     }
 
     void Update() {
+        if (ServerConnectionHandler.players.Count < 1) return;
         // Movement
         _input.Set((Input.GetKey(_keyLeft) ? -1 : 0) + (Input.GetKey(_keyRight) ? 1 : 0),
                    (Input.GetKey(_keyBackward) ? -1 : 0) + (Input.GetKey(_keyForward) ? 1 : 0));

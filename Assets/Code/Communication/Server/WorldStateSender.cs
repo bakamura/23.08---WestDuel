@@ -13,10 +13,13 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
     private UdpClient _udpClient;
     private void Awake()
     {
+        _dataPackCache = new WorldStateDataPack();
         _udpClient = new UdpClient(WorldStateDataPack.Port);
     }
 
-    protected override void PreparePack() {
+    protected override void PreparePack()
+    {
+        if (ServerConnectionHandler.players.Count < 1) return;
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++) {
             _dataPackCache.playersPos[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position);
             _dataPackCache.playersVelocity[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].rigidBody.velocity);
