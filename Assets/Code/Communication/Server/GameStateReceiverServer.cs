@@ -44,7 +44,7 @@ public class GameStateReceiverServer : DataReceiver<GameStateDataPack>
     {
         for (int i = 1; i < ServerConnectionHandler.players.Count; i++)
         {
-            if (_ipToData[ServerConnectionHandler.players[i].ip].updated)
+            if (_ipToData.ContainsKey(ServerConnectionHandler.players[i].ip) && _ipToData[ServerConnectionHandler.players[i].ip].updated)
             {
                 switch (_ipToData[ClientConnectionHandler.ServerEndPoint].gameState)
                 {

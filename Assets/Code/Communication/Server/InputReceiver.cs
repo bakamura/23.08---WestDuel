@@ -44,7 +44,7 @@ public class InputReceiver : DataReceiver<InputDataPack>
     {
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++)
         {
-            if (_ipToData[ServerConnectionHandler.players[i].ip].updated)
+            if (_ipToData.ContainsKey(ServerConnectionHandler.players[i].ip) && _ipToData[ServerConnectionHandler.players[i].ip].updated)
             {
                 Vector2 movmentDirection = PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip]._movementInput);
                 ServerConnectionHandler.players[i].movement.SetInputDirection(movmentDirection);
