@@ -64,9 +64,10 @@ public class MainMenu : Menu {
 
     private void Update() {
         if (threadToMain != null) {
-            string[] ipText = _ipOther.ToString().Split(':');
+            string[] ipText;
             switch (threadToMain) {
                 case "OPEN LOBBY":
+                    ipText = _ipOther.ToString().Split(':');
                     _ipOtherText.text = ipText[0];
                     OpenUIFade(_lobbyMenu);
                     break;
@@ -74,7 +75,14 @@ public class MainMenu : Menu {
                     OpenJoinMenu();
                     break;
                 case "OTHER JOINED":
+                    ipText = _ipOther.ToString().Split(':');
                     _ipOtherText.text = ipText[0];
+                    break;
+                case "START GAME HOST":
+                    StartCoroutine(GoToGameScene(true));
+                    break;
+                case "START GAME JOINER":
+                    StartCoroutine(GoToGameScene(false));
                     break;
             }
             threadToMain = null;
@@ -155,7 +163,7 @@ public class MainMenu : Menu {
                 }
             }
             else {
-                if (str == START_SUCCESS) StartCoroutine(GoToGameScene(true));
+                if (str == START_SUCCESS) threadToMain = "START GAME HOST";
                 else if (str == LEAVE_LOBBY) _ipOther = null;
             }
         }
@@ -177,9 +185,9 @@ public class MainMenu : Menu {
                 if (str == START) {
                     _mStream = new MemoryStream();
                     _bFormatter.Serialize(_mStream, START_SUCCESS);
-                    _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text), 10000));
+                    _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, _ipOther);
 
-                    StartCoroutine(GoToGameScene(false));
+                    threadToMain = "START GAME JOINER";
                 }
                 else if (str == LEAVE_LOBBY) {
                     _ipOther = null;
@@ -196,9 +204,9 @@ public class MainMenu : Menu {
         _threadC.Abort();
         _udpClient.Close();
 
-        while(!asyncOperation.isDone) yield return null;
-        
-        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(isHost ? 1: 2)); //
+        while (!asyncOperation.isDone) yield return null;
+
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(isHost ? 1 : 2)); //
         if (isHost) {
             ServerConnectionHandler.InstantiatePlayer(true, _ipSelf.Address);
             ServerConnectionHandler.InstantiatePlayer(false, _ipOther.Address);
