@@ -86,7 +86,8 @@ public class MainMenu : Menu {
     }
 
     public void OpenJoinMenu() {
-        _currentUi = _initialMenu.interactable ? _initialMenu : _lobbyMenu;
+        bool comingFromInitial = _initialMenu.interactable;
+        _currentUi = comingFromInitial ? _initialMenu : _lobbyMenu;
         if (_ipOther != null) {
             _mStream = new MemoryStream();
             _bFormatter.Serialize(_mStream, LEAVE_LOBBY);
@@ -95,7 +96,7 @@ public class MainMenu : Menu {
         if (_threadC != null) _threadC.Abort();
         _threadC = new Thread(Joining);
         _threadC.Start();
-        OpenUIFade(_currentUi == _initialMenu ? _joinMenu : _mainMenu);
+        OpenUIFade(comingFromInitial ? _joinMenu : _mainMenu, _joinMenu);
     }
 
     public void OpenMainMenu() {
@@ -115,13 +116,21 @@ public class MainMenu : Menu {
         OpenUIMove(_settingsMenu, _settingsMenuActivePos, _settingsMenuDeactivePos);
     }
 
+    public void CloseSetingsMenu() {
+        CloseUIMove(_settingsMenu, _settingsMenuActivePos, _settingsMenuDeactivePos);
+    }
+
     public void JoinGame() {
         _mStream = new MemoryStream();
         _bFormatter.Serialize(_mStream, JOIN);
-        _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(IPAddress.Parse(_ipInput.text.Substring(0, _ipInput.text.Length - 1)), 10000)); // Unsafely removes last CHAR (text mesh pro invisible char
+        if (IPAddress.TryParse(_ipInput.text.Substring(0, _ipInput.text.Length - 1), out IPAddress ip)) {
+            _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, new IPEndPoint(ip, 10000)); // Unsafely removes last CHAR (text mesh pro invisible char
+        }
+        else Debug.LogWarning("Invalid IP Adress!");
     }
 
     public void StartGame() {
+        if (_ipOther == null) return;
         _mStream = new MemoryStream();
         _bFormatter.Serialize(_mStream, START);
         _udpClient.Send(_mStream.ToArray(), _mStream.ToArray().Length, _ipOther);
@@ -134,7 +143,6 @@ public class MainMenu : Menu {
 
     private void Hosting() {
         while (true) {
-            Debug.Log("Hosting Thread");
             _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
             string str = (string)_bFormatter.Deserialize(_mStream);
             if (_ipOther == null) {
@@ -155,7 +163,6 @@ public class MainMenu : Menu {
 
     private void Joining() {
         while (true) {
-            Debug.Log("Joining Thread");
             _mStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
             string str = (string)_bFormatter.Deserialize(_mStream);
             if (_ipOther == null) {

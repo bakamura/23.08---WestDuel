@@ -29,11 +29,11 @@ public class Menu : MonoBehaviour {
         _moveDelayWait = new WaitForSeconds(_moveOpenDelay);
     }
 
-    public void OpenUIFade(CanvasGroup fadeIn) {
-        StartCoroutine(FadeUITransition(_currentUi, fadeIn));
+    public void OpenUIFade(CanvasGroup fadeIn, CanvasGroup newActiveCanvas = null) {
+        StartCoroutine(FadeUITransition(_currentUi, fadeIn, newActiveCanvas));
     }
 
-    private IEnumerator FadeUITransition(CanvasGroup fadeOut, CanvasGroup fadeIn) {
+    private IEnumerator FadeUITransition(CanvasGroup fadeOut, CanvasGroup fadeIn, CanvasGroup newActiveCanvas) {
         fadeOut.interactable = false;
         fadeOut.blocksRaycasts = false;
         while (fadeOut.alpha > 0) {
@@ -54,7 +54,7 @@ public class Menu : MonoBehaviour {
         fadeIn.interactable = true;
         fadeIn.blocksRaycasts = true;
 
-        _currentUi = fadeIn;
+        _currentUi = newActiveCanvas == null ? fadeIn : newActiveCanvas;
     }
 
     public void OpenUIMove(RectTransform moveIn, Vector2 moveInActivePos, Vector2 moveInDeactivePos) {
@@ -69,7 +69,7 @@ public class Menu : MonoBehaviour {
         if (moveOut != null) {
             _floatC = 1;
             while (_floatC > 0) {
-                moveOut.anchoredPosition = Vector2.Lerp(moveOutActivePos, moveOutDeactivePos, _floatC);
+                moveOut.anchoredPosition = Vector2.Lerp(moveOutDeactivePos, moveInActivePos, _floatC);
                 _floatC -= Time.deltaTime / _moveDuration;
 
                 yield return null;
