@@ -14,10 +14,14 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
     private UdpClient _udpClient;
     private bool[] _bulletsShoot = new bool[4];//size is playerCount * MaxBulletPerPlayer
 
+    protected override void Awake()
+    {
+        _udpClient = new UdpClient(WorldStateDataPack.Port);
+        base.Awake();
+    }
     protected override void ReceivePack()
     {
         IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, WorldStateDataPack.Port);
-        _udpClient = new UdpClient(WorldStateDataPack.Port);
         while (true)
         {
             _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
