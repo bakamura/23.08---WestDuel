@@ -13,14 +13,15 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
 
     protected override void Awake()
     {
-        _udpClient = new UdpClient(GameStateDataPack.Port);
+        _udpClient = new UdpClient(GameStateDataPack.PortClientReceive);
         base.Awake();
     }
 
     protected override void ReceivePack()
-    {
+    {        
         while (true)
         {
+            print("running");
             _memoryStream = new MemoryStream(_udpClient.Receive(ref _endPoint));
             if (_endPoint.Address == ClientConnectionHandler.ServerEndPoint)
             {

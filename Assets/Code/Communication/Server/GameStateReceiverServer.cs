@@ -15,7 +15,7 @@ public class GameStateReceiverServer : DataReceiver<GameStateDataPack>
 
     protected override void Awake()
     {
-        _udpClient = new UdpClient(GameStateDataPack.Port);
+        _udpClient = new UdpClient(GameStateDataPack.PortServerReceive);
         base.Awake();
     }
 

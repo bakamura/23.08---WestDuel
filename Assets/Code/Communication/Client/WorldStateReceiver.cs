@@ -24,6 +24,7 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
     {
         while (true)
         {
+            Debug.Log("wordl");
             _memoryStream = new MemoryStream(_udpClient.Receive(ref _endPoint));
             if (_endPoint.Address == ClientConnectionHandler.ServerEndPoint)
             {
@@ -125,5 +126,10 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
             #endregion
             _ipToData[ClientConnectionHandler.ServerEndPoint].updated = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        _udpClient.Close();
     }
 }

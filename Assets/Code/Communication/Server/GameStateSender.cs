@@ -18,7 +18,7 @@ public class GameStateSender : DataSender<GameStateDataPack> {
 
     private void Awake()
     {
-        _udpClient = new UdpClient(GameStateDataPack.Port);
+        _udpClient = new UdpClient(GameStateDataPack.PortClientReceive);
     }
 
     protected override void FixedUpdate() {
@@ -47,7 +47,7 @@ public class GameStateSender : DataSender<GameStateDataPack> {
         _ms = new MemoryStream();
         _bf.Serialize(_ms, _dataPackCache);
         _byteArrayCache = AddIdentifierByte(_ms.ToArray(), (byte)DataPacksIdentification.GamStateDataPack);
-        for (int i = 0; i < ServerConnectionHandler.players.Count; i++) _udpClient.Send(_byteArrayCache, _byteArrayCache.Length, new IPEndPoint(ServerConnectionHandler.players[i].ip, GameStateDataPack.Port));
+        for (int i = 0; i < ServerConnectionHandler.players.Count; i++) _udpClient.Send(_byteArrayCache, _byteArrayCache.Length, new IPEndPoint(ServerConnectionHandler.players[i].ip, GameStateDataPack.PortClientReceive));
     }
 
     public void QuitMatch() {

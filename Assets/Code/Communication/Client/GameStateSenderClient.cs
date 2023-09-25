@@ -16,8 +16,8 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
 
     private void Awake()
     {
-        _udpClient = new UdpClient(GameStateDataPack.Port);
-        _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
+        _udpClient = new UdpClient(GameStateDataPack.PortServerReceive);
+        _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.PortClientReceive);
         _dataPackCache = new GameStateDataPack();
     }
 
