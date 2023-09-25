@@ -12,11 +12,13 @@ public class InputSender : DataSender<InputDataPack>
     private ClientInputReader _clientInputReader;
     private MemoryStream _memoryStream;
     private BinaryFormatter _binaryFormatter =  new BinaryFormatter();
-    private UdpClient _udpClient = new UdpClient(InputDataPack.Port);
-    private IPEndPoint _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, InputDataPack.Port);
+    private UdpClient _udpClient;
+    private IPEndPoint _endPoint;
 
     private void Awake()
     {
+        _udpClient = new UdpClient(InputDataPack.Port);
+        _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, InputDataPack.Port);
         _dataPackCache = new InputDataPack();
         _clientInputReader = GetComponent<ClientInputReader>();
     }
@@ -43,5 +45,10 @@ public class InputSender : DataSender<InputDataPack>
         _binaryFormatter.Serialize(_memoryStream, _dataPackCache);
         _byteArrayCache = AddIdentifierByte(_memoryStream.ToArray(), (byte)DataPacksIdentification.InputDataPack);
         _udpClient.Send(_byteArrayCache, _byteArrayCache.Length, _endPoint);
+    }
+
+    private void OnDestroy()
+    {
+        _udpClient.Close();
     }
 }

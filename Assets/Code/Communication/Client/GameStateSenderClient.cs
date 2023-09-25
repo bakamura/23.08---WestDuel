@@ -11,8 +11,14 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
 
     private BinaryFormatter _bf;
     private MemoryStream _ms;
-    private UdpClient _udpClient = new UdpClient(GameStateDataPack.Port);
-    private IPEndPoint _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
+    private UdpClient _udpClient;
+    private IPEndPoint _endPoint;
+
+    private void Awake()
+    {
+        _udpClient = new UdpClient(GameStateDataPack.Port);
+        _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
+    }
 
     protected override void FixedUpdate()
     {
@@ -55,5 +61,8 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
         SceneManager.LoadScene("MainMenu");
 
     }
-
+    private void OnDestroy()
+    {
+        _udpClient.Close();
+    }
 }
