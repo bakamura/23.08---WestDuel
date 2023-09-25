@@ -8,7 +8,7 @@ public static class ServerConnectionHandler {
     public static List<PlayerInfo> players = new List<PlayerInfo>();
 
     public static void InstantiatePlayer(bool isServer, IPAddress ip) {
-        GameObject go = isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab();
+        GameObject go = GameObject.Instantiate(isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab());
         PlayerInfo info = new PlayerInfo();
         info.ip = ip;
         info.transform = go.transform;

@@ -202,22 +202,17 @@ public class MainMenu : Menu {
         if(!isHost) {
             ClientConnectionHandler.ServerEndPoint = _ipOther.Address;
         }
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(isHost ? 1 : 2);
-        //asyncOperation.allowSceneActivation = false;
+        SceneManager.LoadScene(isHost ? 1 : 2);
+
+        yield return null;
 
         _threadC.Abort();
         _udpClient.Close();
 
-        while (!asyncOperation.isDone) yield return null;
-
-        asyncOperation = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-        // SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(isHost ? 1 : 2)); //
         if (isHost) {
             ServerConnectionHandler.InstantiatePlayer(true, _ipSelf.Address);
             ServerConnectionHandler.InstantiatePlayer(false, _ipOther.Address);
         }
-
-        while (!asyncOperation.isDone) yield return null;
 
         Destroy(gameObject);
     }
