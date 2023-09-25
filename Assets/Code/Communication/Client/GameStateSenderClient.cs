@@ -18,6 +18,7 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
     {
         _udpClient = new UdpClient(GameStateDataPack.Port);
         _endPoint = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
+        _dataPackCache = new GameStateDataPack();
     }
 
     protected override void FixedUpdate()

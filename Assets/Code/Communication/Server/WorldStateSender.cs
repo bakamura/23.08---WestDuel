@@ -10,7 +10,11 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
 
     private BinaryFormatter _bf;
     private MemoryStream _ms;
-    private UdpClient _udpClient = new UdpClient(WorldStateDataPack.Port);
+    private UdpClient _udpClient;
+    private void Awake()
+    {
+        _udpClient = new UdpClient(WorldStateDataPack.Port);
+    }
 
     protected override void PreparePack() {
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++) {
@@ -31,4 +35,8 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++) _udpClient.Send(_byteArrayCache, _byteArrayCache.Length, new IPEndPoint(ServerConnectionHandler.players[i].ip, WorldStateDataPack.Port));
     }
 
+    private void OnDestroy()
+    {
+        _udpClient.Close();
+    }
 }

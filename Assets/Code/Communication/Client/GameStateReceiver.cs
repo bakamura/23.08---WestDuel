@@ -10,10 +10,15 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
     private GameStateDataPack _dataPack;
     private UdpClient _udpClient;
 
+    protected override void Awake()
+    {
+        _udpClient = new UdpClient(GameStateDataPack.Port);
+        base.Awake();
+    }
+
     protected override void ReceivePack()
     {
         IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
-        _udpClient = new UdpClient(GameStateDataPack.Port);
         while (true)
         {
             _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
@@ -30,7 +35,7 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
 
     protected override void ImplementPack()
     {
-        if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
+        if (_ipToData.ContainsKey(ClientConnectionHandler.ServerEndPoint) && _ipToData[ClientConnectionHandler.ServerEndPoint].updated)
         {
             switch (_ipToData[ClientConnectionHandler.ServerEndPoint].gameState)
             {
@@ -78,5 +83,10 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
         {
             _container.Hud.UpdateHealth(i, _dataPack.playersHealth[i]);
         }
+    }
+
+    private void OnDestroy()
+    {
+        _udpClient.Close();
     }
 }

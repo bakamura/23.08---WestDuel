@@ -13,7 +13,7 @@ public abstract class DataReceiver<T> : MonoBehaviour
     protected MemoryStream _memoryStream;
     protected BinaryFormatter _binaryFormatter = new BinaryFormatter();
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         Thread receiverThread = new Thread(ReceivePack);
         receiverThread.Start();

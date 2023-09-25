@@ -14,7 +14,12 @@ public class GameStateSender : DataSender<GameStateDataPack> {
 
     private BinaryFormatter _bf;
     private MemoryStream _ms;
-    private UdpClient _udpClient = new UdpClient(GameStateDataPack.Port);
+    private UdpClient _udpClient;
+
+    private void Awake()
+    {
+        _udpClient = new UdpClient(GameStateDataPack.Port);
+    }
 
     protected override void FixedUpdate() {
         PreparePack();
@@ -67,4 +72,8 @@ public class GameStateSender : DataSender<GameStateDataPack> {
         // Unpause Game
     }
 
+    private void OnDestroy()
+    {
+        _udpClient.Close();
+    }
 }

@@ -11,7 +11,14 @@ public class GameStateReceiverServer : DataReceiver<GameStateDataPack>
 
     private IPEndPoint _ipEpCache;
     private GameStateDataPack _dataPack;
-    private UdpClient _udpClient = new UdpClient(GameStateDataPack.Port);
+    private UdpClient _udpClient;
+
+    protected override void Awake()
+    {
+        _udpClient = new UdpClient(GameStateDataPack.Port);
+        base.Awake();
+    }
+
     protected override void ImplementPack()
     {
         while (true)
@@ -51,5 +58,9 @@ public class GameStateReceiverServer : DataReceiver<GameStateDataPack>
                 _ipToData[ServerConnectionHandler.players[i].ip].updated = false;
             }
         }
+    }
+    private void OnDestroy()
+    {
+        _udpClient.Close();
     }
 }

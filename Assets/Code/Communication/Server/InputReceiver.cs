@@ -11,7 +11,13 @@ public class InputReceiver : DataReceiver<InputDataPack>
 
     private IPEndPoint _ipEpCache;
     private InputDataPack _dataPack;
-    private UdpClient _udpClient = new UdpClient(InputDataPack.Port);
+    private UdpClient _udpClient;
+    protected override void Awake()
+    {
+        _udpClient = new UdpClient(InputDataPack.Port);
+        base.Awake();
+    }
+
     protected override void ReceivePack()
     {
         while (true)
@@ -48,4 +54,8 @@ public class InputReceiver : DataReceiver<InputDataPack>
         }
     }
 
+    private void OnDestroy()
+    {
+        _udpClient.Close();
+    }
 }

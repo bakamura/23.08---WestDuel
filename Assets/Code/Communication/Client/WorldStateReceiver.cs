@@ -34,7 +34,7 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 
     protected override void ImplementPack()
     {
-        if (_ipToData[ClientConnectionHandler.ServerEndPoint].updated)
+        if (_ipToData.ContainsKey(ClientConnectionHandler.ServerEndPoint) && _ipToData[ClientConnectionHandler.ServerEndPoint].updated)
         {
             #region UpdatePlayers
             for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
