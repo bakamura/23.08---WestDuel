@@ -33,7 +33,7 @@ public class PlayerMovementServer : MonoBehaviour {
     }
 
     private void Move(Vector2 direction) {
-        _rb.velocity = _canInput ?
+        _rb.velocity = _canInput && _input != Vector2.zero ?
             (Quaternion.Euler(0, Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg + _camTransform.eulerAngles.y, 0) * Vector3.forward).normalized * (_shootScript.CheckBullet() ? _baseSpeed : _noBulletSpeed) :
             Vector3.zero;
     }
