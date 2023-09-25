@@ -8,13 +8,14 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
     private GameStateDataPack _dataPack;
-    private UdpClient _udpClient = new UdpClient(GameStateDataPack.Port);
+    private UdpClient _udpClient;
 
     protected override void ReceivePack()
     {
+        IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
+        _udpClient = new UdpClient(GameStateDataPack.Port);
         while (true)
         {
-            IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
             _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
             if (temp.Address == ClientConnectionHandler.ServerEndPoint)
             {
@@ -45,9 +46,9 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
                 case GameStateDataPack.GameState.Restart:
                     for (int i = 0; i < ClientConnectionHandler.PlayersList.Count; i++)
                     {
-                        _container.SpawnPlayer.GetPointFurthestFromOponent(i+1 >= ClientConnectionHandler.PlayersList.Count ? 
-                            ClientConnectionHandler.PlayersList[0].Object.transform.position : 
-                            ClientConnectionHandler.PlayersList[i+1].Object.transform.position);
+                        _container.SpawnPlayer.GetPointFurthestFromOponent(i + 1 >= ClientConnectionHandler.PlayersList.Count ?
+                            ClientConnectionHandler.PlayersList[0].Object.transform.position :
+                            ClientConnectionHandler.PlayersList[i + 1].Object.transform.position);
                     }
                     _container.Hud.HideEndScreen();
                     ClientConnectionHandler._hasGameEnded = false;
@@ -56,7 +57,7 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
                 case GameStateDataPack.GameState.Continue:
                     UpdateHealthUI();
                     break;
-                case GameStateDataPack.GameState.Ended:                    
+                case GameStateDataPack.GameState.Ended:
                     _container.Hud.ShowEndScreen(_dataPack.playersHealth[1] > 0);
                     ClientConnectionHandler._hasGameEnded = true;
                     break;

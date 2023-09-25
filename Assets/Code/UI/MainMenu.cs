@@ -198,6 +198,9 @@ public class MainMenu : Menu {
     }
 
     private IEnumerator GoToGameScene(bool isHost) {
+        if(!isHost) {
+            ClientConnectionHandler.ServerEndPoint = _ipOther.Address;
+        }
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(isHost ? 1 : 2);
         //asyncOperation.allowSceneActivation = false;
 
@@ -210,9 +213,6 @@ public class MainMenu : Menu {
         if (isHost) {
             ServerConnectionHandler.InstantiatePlayer(true, _ipSelf.Address);
             ServerConnectionHandler.InstantiatePlayer(false, _ipOther.Address);
-        }
-        else {
-            ClientConnectionHandler.ServerEndPoint = _ipOther.Address;
         }
 
         asyncOperation = SceneManager.UnloadSceneAsync(0);

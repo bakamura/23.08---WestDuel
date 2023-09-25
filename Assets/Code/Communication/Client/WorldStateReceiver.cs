@@ -11,14 +11,15 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
 {
     [SerializeField] private NetworkReferenceContainer _container;
     private WorldStateDataPack _dataPack;
-    private UdpClient _udpClient = new UdpClient(WorldStateDataPack.Port);
+    private UdpClient _udpClient;
     private bool[] _bulletsShoot = new bool[4];//size is playerCount * MaxBulletPerPlayer
 
     protected override void ReceivePack()
     {
+        IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, WorldStateDataPack.Port);
+        _udpClient = new UdpClient(WorldStateDataPack.Port);
         while (true)
         {
-            IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, WorldStateDataPack.Port);
             _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
             if (temp.Address == ClientConnectionHandler.ServerEndPoint)
             {
