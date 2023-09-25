@@ -14,7 +14,7 @@ public class GameStateDataPack {
     }
     public GameState gameState = GameState.Initiate;
 
-    public List<int> playersHealth = new List<int>();
+    public List<int> playersHealth = new List<int>() { new int(), new int() };
 
     public static int PortClientReceive = 11001;
     public static int PortServerReceive = 11005;
