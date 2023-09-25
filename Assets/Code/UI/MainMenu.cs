@@ -210,13 +210,12 @@ public class MainMenu : Menu {
 
         while (!asyncOperation.isDone) yield return null;
 
-        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(isHost ? 1 : 2)); //
+        asyncOperation = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+        // SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(isHost ? 1 : 2)); //
         if (isHost) {
             ServerConnectionHandler.InstantiatePlayer(true, _ipSelf.Address);
             ServerConnectionHandler.InstantiatePlayer(false, _ipOther.Address);
         }
-
-        asyncOperation = SceneManager.UnloadSceneAsync(0);
 
         while (!asyncOperation.isDone) yield return null;
 
