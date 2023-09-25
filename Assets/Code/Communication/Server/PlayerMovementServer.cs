@@ -10,7 +10,7 @@ public class PlayerMovementServer : MonoBehaviour {
 
     [Header("Cache")]
 
-    private bool _canInput = false;
+    private bool _canInput;
     private Vector2 _input = Vector2.zero;
     private Rigidbody _rb;
     private PlayerShootServer _shootScript;

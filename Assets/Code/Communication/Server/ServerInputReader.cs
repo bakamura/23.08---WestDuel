@@ -11,6 +11,8 @@ public class ServerInputReader : MonoBehaviour {
     [SerializeField] private KeyCode _keyLeft;
     [SerializeField] private KeyCode _keyShoot;
 
+    [SerializeField] private LayerMask _mouseLayer;
+
     private Vector2 _input;
     private Vector3 _mousePosition;
     private Camera _camera;
@@ -30,7 +32,7 @@ public class ServerInputReader : MonoBehaviour {
         ServerConnectionHandler.players[0].movement.SetInputDirection(_input);
 
         // Aiming
-        if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit)) {
+        if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit, Mathf.Infinity, _mouseLayer)) {
             _mousePosition = raycastHit.point;
         }
         else {
