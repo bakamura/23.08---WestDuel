@@ -13,13 +13,28 @@ public class Bullet : MonoBehaviour {
     //private WaitForSeconds _delay;
     //private Coroutine _moveCoroutine;
     //private Vector3 _currentDirection;
+    [HideInInspector] public Transform owner;
     private Rigidbody _rb;
     private PlayerHealth _adversaryPlayerHealth;
+    private Collider _adversaryPlayerCol;
 
     private void Awake()
     {
         //_delay = new WaitForSeconds(_tickFrequency);
         _rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        PlayerHealth[] pHArr = FindObjectsOfType<PlayerHealth>();
+        foreach(PlayerHealth ph in pHArr)
+        {
+            if(ph.gameObject.name != owner.name)
+            {
+                _adversaryPlayerHealth = ph;
+                _adversaryPlayerCol = ph.GetComponent<Collider>();
+            }
+        }
     }
 
     public void Shoot(Vector3 initialPos, Vector3 direction) {
@@ -41,8 +56,7 @@ public class Bullet : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!_adversaryPlayerHealth) _adversaryPlayerHealth = collision.collider.GetComponent<PlayerHealth>();
-        if(_adversaryPlayerHealth) _adversaryPlayerHealth.Die();
+        if(collision.collider == _adversaryPlayerCol) _adversaryPlayerHealth.Die();
         gameObject.SetActive(false);
         _rb.velocity = Vector3.zero;
     }

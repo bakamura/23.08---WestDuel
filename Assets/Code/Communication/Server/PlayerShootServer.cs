@@ -22,8 +22,12 @@ public class PlayerShootServer : MonoBehaviour {
     public Action OnShoot;
 
     private void Awake() {
-        for(int i = 0; i < _bulletPool.Length; i++) _bulletPool[i] = Instantiate(_bulletPrefab, Vector3.zero, Quaternion.identity).GetComponent<Bullet>();
-        _cam = Camera.main;
+        for (int i = 0; i < _bulletPool.Length; i++)
+        {
+            _bulletPool[i] = Instantiate(_bulletPrefab, Vector3.up * 256f, Quaternion.identity).GetComponent<Bullet>();
+            _bulletPool[i].owner = transform;
+        }
+            _cam = Camera.main;
 
         _canInput = true; // test
         _hasBullet = true; // test

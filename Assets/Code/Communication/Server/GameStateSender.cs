@@ -19,6 +19,7 @@ public class GameStateSender : DataSender<GameStateDataPack> {
     private void Awake()
     {
         _udpClient = new UdpClient(GameStateDataPack.PortClientReceive);
+        _dataPackCache = new GameStateDataPack();
     }
 
     protected override void FixedUpdate() {
