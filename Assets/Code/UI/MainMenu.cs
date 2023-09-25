@@ -60,6 +60,7 @@ public class MainMenu : Menu {
         string[] ipText = _ipSelf.ToString().Split(':');
         _ipSelfText.text = ipText[0];
 
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update() {
@@ -218,6 +219,8 @@ public class MainMenu : Menu {
         asyncOperation = SceneManager.UnloadSceneAsync(0);
 
         while (!asyncOperation.isDone) yield return null;
+
+        Destroy(gameObject);
     }
 
     public void QuitGame() {

@@ -19,7 +19,7 @@ public class GameStateReceiverServer : DataReceiver<GameStateDataPack>
         base.Awake();
     }
 
-    protected override void ImplementPack()
+    protected override void ReceivePack()
     {
         while (true)
         {
@@ -40,9 +40,9 @@ public class GameStateReceiverServer : DataReceiver<GameStateDataPack>
         }
     }
 
-    protected override void ReceivePack()
+    protected override void ImplementPack()
     {
-        for (int i = 0; i < ServerConnectionHandler.players.Count; i++)
+        for (int i = 1; i < ServerConnectionHandler.players.Count; i++)
         {
             if (_ipToData[ServerConnectionHandler.players[i].ip].updated)
             {
