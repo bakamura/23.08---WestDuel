@@ -98,11 +98,11 @@ public class AnimationsUpdate : MonoBehaviour
                         direction = (_mousePosition - _bonesToUpdate[i].Bone.transform.position).normalized;
                         direction = new Vector3(direction.x * axisLocks.x, direction.y * axisLocks.y, direction.z * axisLocks.z);
                         dotProduct = Mathf.Abs(Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction));
-                        if (direction != Vector3.zero)
-                        {
+                        //if (direction != Vector3.zero)
+                        //{
                             _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
-                            _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
-                        }                        
+                        //    _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
+                        //}                        
                         break;
                 }
             }
