@@ -34,7 +34,7 @@ public class SpawnPickup : MonoBehaviour
 
         for (int i = 0; i < _maxAmmoPickupsInScene; i++)
         {
-            _bulletPickups[i] = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<BulletPickup>();
+            _bulletPickups[i] = Instantiate(InstantiateHandler.GetAmmoBoxPrefab(), null).GetComponent<BulletPickup>();
             _bulletPickups[i].UpdateState(false);
             _bulletPickups[i].OnCollect += OnPickupCollect;
             _bulletPickups[i].name = $"BulletPickup {i}";
