@@ -35,6 +35,11 @@ public class HUD : Menu {
         OpenUIMove(_settings, _settingsInPos, _settingsOutPos);
     }
 
+    public void CloseSettings()
+    {
+        CloseUIMove(_settings, _settingsInPos, _settingsOutPos);
+    }
+
     public void QuitMatch() {
         GameStateSenderClient gameStateSenderClient = FindObjectOfType<GameStateSenderClient>();
         if (gameStateSenderClient != null) gameStateSenderClient.QuitMatch();
