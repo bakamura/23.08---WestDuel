@@ -36,13 +36,13 @@ public class AnimationsUpdate : MonoBehaviour
         MouseInput
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            TriggerShootAnim();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Mouse0))
+    //    {
+    //        TriggerShootAnim();
+    //    }
+    //}
 
     private void Awake()
     {
