@@ -8,7 +8,7 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
 
     [Header("Cache")]
 
-    private BinaryFormatter _bf;
+    private BinaryFormatter _bf = new BinaryFormatter();
     private MemoryStream _ms;
     private UdpClient _udpClient;
     private void Awake()

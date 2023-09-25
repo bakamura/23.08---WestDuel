@@ -9,7 +9,7 @@ public class GameStateSenderClient : DataSender<GameStateDataPack>
 {
     [Header("Cache")]
 
-    private BinaryFormatter _bf;
+    private BinaryFormatter _bf = new BinaryFormatter();
     private MemoryStream _ms;
     private UdpClient _udpClient;
     private IPEndPoint _endPoint;

@@ -12,7 +12,7 @@ public class GameStateSender : DataSender<GameStateDataPack> {
 
     [Header("Cache")]
 
-    private BinaryFormatter _bf;
+    private BinaryFormatter _bf = new BinaryFormatter();
     private MemoryStream _ms;
     private UdpClient _udpClient;
 
