@@ -98,6 +98,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5670055705511031892, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
   m_PrefabInstance: {fileID: 3541841879868515134}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &7590720699505861068 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6372749804697174770, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
+  m_PrefabInstance: {fileID: 3541841879868515134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2743536805232792736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8420855402336554448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 712494186a730c34dba7bb7d4fb75d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthMax: 3
+  _delayRespawn: 1.5
+  _invencibilityDuration: 1.5
 --- !u!114 &5093028014802235899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,22 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 5497056799873916956, guid: 2be4c36f26730364ea895a848e797f14, type: 3}
-  _firePoint: {fileID: 0}
+  _firePoint: {fileID: 7590720699505861068}
   _mouseElevatedReceiver:
     serializedVersion: 2
     m_Bits: 2
---- !u!114 &2743536805232792736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8420855402336554448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 712494186a730c34dba7bb7d4fb75d13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthMax: 3
-  _delayRespawn: 1.5
-  _invencibilityDuration: 1.5

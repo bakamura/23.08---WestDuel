@@ -98,6 +98,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2834965831631373480, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
   m_PrefabInstance: {fileID: 2442902835797693598}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &8252073615112509481 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6008837732751871159, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+  m_PrefabInstance: {fileID: 2442902835797693598}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &347526542760444082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 5497056799873916956, guid: 2be4c36f26730364ea895a848e797f14, type: 3}
-  _firePoint: {fileID: 0}
+  _firePoint: {fileID: 8252073615112509481}
   _mouseElevatedReceiver:
     serializedVersion: 2
     m_Bits: 2
