@@ -22,16 +22,21 @@ public class InputReceiver : DataReceiver<InputDataPack>
     {
         while (true)
         {
-            for (int i = 0; i < ServerConnectionHandler.players.Count; i++)
+            //_ipEpCache = new IPEndPoint(ServerConnectionHandler.players[i].ip, InputDataPack.Port);
+            _memoryStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
+            _dataPack = CheckDataPack<InputDataPack>(DataPacksIdentification.GamStateDataPack);
+            if (_dataPack != null)
             {
-                _ipEpCache = new IPEndPoint(ServerConnectionHandler.players[i].ip, InputDataPack.Port);
-                _memoryStream = new MemoryStream(_udpClient.Receive(ref _ipEpCache));
-                _dataPack = CheckDataPack<InputDataPack>(DataPacksIdentification.GamStateDataPack);
-                if (_dataPack != null)
+                for (int i = 0; i < ServerConnectionHandler.players.Count; i++)
                 {
-                    _ipToData[ServerConnectionHandler.players[i].ip] = _dataPack;
+                    if (ServerConnectionHandler.players[i].ip == _ipEpCache.Address)
+                    {
+                        _ipToData[ServerConnectionHandler.players[i].ip] = _dataPack;
+                        break;
+                    }
                 }
             }
+
         }
     }
 

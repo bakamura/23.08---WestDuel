@@ -9,6 +9,7 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
     [SerializeField] private NetworkReferenceContainer _container;
     private GameStateDataPack _dataPack;
     private UdpClient _udpClient;
+    private IPEndPoint _endPoint;
 
     protected override void Awake()
     {
@@ -18,16 +19,15 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
 
     protected override void ReceivePack()
     {
-        IPEndPoint temp = new IPEndPoint(ClientConnectionHandler.ServerEndPoint, GameStateDataPack.Port);
         while (true)
         {
-            _memoryStream = new MemoryStream(_udpClient.Receive(ref temp));
-            if (temp.Address == ClientConnectionHandler.ServerEndPoint)
+            _memoryStream = new MemoryStream(_udpClient.Receive(ref _endPoint));
+            if (_endPoint.Address == ClientConnectionHandler.ServerEndPoint)
             {
                 _dataPack = CheckDataPack<GameStateDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {
-                    _ipToData[temp.Address] = _dataPack;
+                    _ipToData[_endPoint.Address] = _dataPack;
                 }
             }
         }
