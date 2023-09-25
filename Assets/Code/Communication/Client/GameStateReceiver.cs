@@ -27,7 +27,8 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
                 _dataPack = CheckDataPack<GameStateDataPack>(DataPacksIdentification.GamStateDataPack);
                 if (_dataPack != null)
                 {
-                    _ipToData[_endPoint.Address] = _dataPack;
+                    if (!_ipToData.ContainsKey(ClientConnectionHandler.ServerEndPoint)) _ipToData.Add(ClientConnectionHandler.ServerEndPoint, _dataPack);
+                    else _ipToData[_endPoint.Address] = _dataPack;
                 }
             }
         }
