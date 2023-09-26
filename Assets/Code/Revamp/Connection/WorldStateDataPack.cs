@@ -5,36 +5,53 @@ using System.Net;
 public struct WorldStateDataPack {
 
 
-    public List<float[]> playersPos;
-    public List<float[]> playersVelocity;
-    public List<float[]> playersMousePosition;
-    public List<bool> playersHasBullet;
+    public Dictionary<IPEndPoint, float[]> playersPos;
+    public Dictionary<IPEndPoint, float[]> playersVelocity;
+    public Dictionary<IPEndPoint, float[]> playersShootPoint;
+    public Dictionary<IPEndPoint, bool> playersHasBullet;
 
-    public List<float[]> bulletsPos;
-    public List<float[]> bulletsVelocity;
+    public List<Dictionary<IPEndPoint, float[]>> bulletsPos;
+    public List<Dictionary<IPEndPoint, float[]>> bulletsVelocity;
 
     public List<float[]> boxesPos;
 
     public readonly float[] deactivatePos;
 
-    public WorldStateDataPack(byte a = 0) {
+    public WorldStateDataPack(IPEndPoint[] playerIp) {
 
-        playersPos = new List<float[]> { new float[3], new float[3] };
-        playersVelocity = new List<float[]> { new float[3], new float[3] };
-        playersMousePosition = new List<float[]> { new float[3], new float[3] };
-        playersHasBullet = new List<bool> { new bool(), new bool() };
+        playersPos = new Dictionary<IPEndPoint, float[]>();
+        playersVelocity = new Dictionary<IPEndPoint, float[]>();
+        playersShootPoint = new Dictionary<IPEndPoint, float[]>();
+        playersHasBullet = new Dictionary<IPEndPoint, bool>();
+        foreach(IPEndPoint ip in playerIp) {
+            playersPos.Add(ip, new float[3]);
+            playersVelocity.Add(ip, new float[3]);
+            playersShootPoint.Add(ip, new float[3]);
+            playersHasBullet.Add(ip, false);
+        }
 
-        bulletsPos = new List<float[]> { new float[3], new float[3], new float[3], new float[3] };
-        bulletsVelocity = new List<float[]> { new float[3], new float[3], new float[3], new float[3] };
+        bulletsPos = new List<Dictionary<IPEndPoint, float[]>>();
+        bulletsVelocity = new List<Dictionary<IPEndPoint, float[]>>();
 
-        boxesPos = new List<float[]>(2) { new float[3], new float[3] };
+        Dictionary<IPEndPoint, float[]> dictPos;
+        Dictionary<IPEndPoint, float[]> dictVelocity;
+        for (int i =0; i < 2; i++) { // Provisory should read Max Bullet Instead
+            dictPos = new Dictionary<IPEndPoint, float[]>();
+            dictVelocity = new Dictionary<IPEndPoint, float[]>();
+            foreach (IPEndPoint ip in playerIp) {
+                dictPos.Add(ip, new float[3]);
+                dictVelocity.Add(ip, new float[3]);
+            }
+            bulletsPos.Add(dictPos);
+            bulletsVelocity.Add(dictPos);
+        }
 
-        deactivatePos = new float[3] { 0, -100, 0 };
+        boxesPos = new List<float[]>();
+
+        deactivatePos = new float[3] { 0, 256, 0 };
 
         senderIp = null;
-        updated = true;
     }
 
     public IPEndPoint senderIp;
-    public bool updated;
 }

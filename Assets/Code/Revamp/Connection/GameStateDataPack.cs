@@ -12,17 +12,16 @@ public struct GameStateDataPack {
     }
     public GameState gameState;
 
-    public List<int> playersHealth;
+    public Dictionary<IPEndPoint, int> playerHealth;
 
-    public GameStateDataPack(byte a = 0) {
+    public GameStateDataPack(IPEndPoint[] playerIp) {
         gameState = GameState.Initiate;
 
-        playersHealth = new List<int>() { new int(), new int() };
+        playerHealth = new Dictionary<IPEndPoint, int>();
+        foreach (IPEndPoint ip in playerIp) playerHealth.Add(ip, new int());
 
         senderIp = null;
-        updated = true;
     }
 
     public IPEndPoint senderIp;
-    public bool updated;
 }
