@@ -23,7 +23,7 @@ public static class ConnectionHandler {
 
     public enum DataPacksIdentification {
         InputDataPack,
-        GamStateDataPack,
+        GameStateDataPack,
         WorldStateDataPack
     }
 

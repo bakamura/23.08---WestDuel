@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ServerGameStateReceiver : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class ServerGameStateReceiver : MonoBehaviour {
+
+    [Header("Cache")]
+
+    private GameStateDataPack _dataPackCache;
+
+    private void Update() {
+        ImplementPack();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void ImplementPack() {
+        if (DataReceiveHandler.queueInputData.Count > 0) {
+            _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();
+
+            // Game State Stuff
+        }
     }
+
 }

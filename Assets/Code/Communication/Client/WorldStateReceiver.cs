@@ -116,7 +116,7 @@ public class WorldStateReceiver : DataReceiver<WorldStateDataPack>
             for (int i = 0; i < _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count; i++)
             {
                 ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetDirection(PackingUtility.FloatArrayToVector3(_dataPack.playersVelocity[i]));
-                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_dataPack.playersMousePosition[i]));
+                ClientConnectionHandler.PlayersList[i].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_dataPack.playersShootPoint[i]));
                 for (int a = _ipToData[ClientConnectionHandler.ServerEndPoint].playersPos.Count * i; a < _bulletsShoot.Length; a++)
                 {
                     ClientConnectionHandler.PlayersList[i].AnimationsUpdate.TriggerShootAnim();

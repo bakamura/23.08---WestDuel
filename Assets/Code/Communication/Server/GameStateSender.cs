@@ -32,10 +32,10 @@ public class GameStateSender : DataSender<GameStateDataPack> {
 
     protected override void PreparePack() {
         for (int i = 0; i < ServerConnectionHandler.players.Count; i++) {
-            if (_dataPackCache.playersHealth[i] != ServerConnectionHandler.players[i].health.GetCurrentHealth()) {
+            if (_dataPackCache.playerHealth[i] != ServerConnectionHandler.players[i].health.GetCurrentHealth()) {
                 _sendSignal = true;
-                _dataPackCache.playersHealth[i] = ServerConnectionHandler.players[i].health.GetCurrentHealth();
-                _dataPackCache.gameState = _dataPackCache.playersHealth[i] > 0 ? GameStateDataPack.GameState.Continue : GameStateDataPack.GameState.Ended;
+                _dataPackCache.playerHealth[i] = ServerConnectionHandler.players[i].health.GetCurrentHealth();
+                _dataPackCache.gameState = _dataPackCache.playerHealth[i] > 0 ? GameStateDataPack.GameState.Continue : GameStateDataPack.GameState.Ended;
                 if (_dataPackCache.gameState == GameStateDataPack.GameState.Ended) {
                     EndGame();
                     break; // Doesn't allow ties

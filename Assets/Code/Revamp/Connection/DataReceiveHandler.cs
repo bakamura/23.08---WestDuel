@@ -30,7 +30,7 @@ public static class DataReceiveHandler {
                     ConnectionHandler.worldDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueWorldData.Enqueue(ConnectionHandler.worldDataCache);
                     break;
-                case ConnectionHandler.DataPacksIdentification.GamStateDataPack:
+                case ConnectionHandler.DataPacksIdentification.GameStateDataPack:
                     ConnectionHandler.gameStateDataCache = (GameStateDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
                     ConnectionHandler.gameStateDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueGameStateData.Enqueue(ConnectionHandler.gameStateDataCache);

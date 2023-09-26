@@ -11,11 +11,6 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
     private BinaryFormatter _bf = new BinaryFormatter();
     private MemoryStream _ms;
     private UdpClient _udpClient;
-    private void Awake()
-    {
-        _dataPackCache = new WorldStateDataPack();
-        _udpClient = new UdpClient(WorldStateDataPack.Port);
-    }
 
     protected override void PreparePack()
     {
@@ -27,7 +22,7 @@ public class WorldStateSender : DataSender<WorldStateDataPack> {
             _dataPackCache.bulletsPos[2*i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position); // Calc Inside [] because each player has 2 bullets
             _dataPackCache.bulletsPos[2*i + 1] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position);
             _dataPackCache.bulletsVelocity[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].health.transform.position); // Change later into account of bullet per player
-            _dataPackCache.playersMousePosition[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].animationsUpdate.GetMousePosition());
+            _dataPackCache.playersShootPoint[i] = PackingUtility.Vector3ToFloatArray(ServerConnectionHandler.players[i].animationsUpdate.GetMousePosition());
         }
     }
 

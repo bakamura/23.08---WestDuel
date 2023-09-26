@@ -65,7 +65,7 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
                     UpdateHealthUI();
                     break;
                 case GameStateDataPack.GameState.Ended:
-                    _container.Hud.ShowEndScreen(_dataPack.playersHealth[1] > 0);
+                    _container.Hud.ShowEndScreen(_dataPack.playerHealth[1] > 0);
                     ClientConnectionHandler._hasGameEnded = true;
                     break;
                 case GameStateDataPack.GameState.Quit:
@@ -81,9 +81,9 @@ public class GameStateReceiver : DataReceiver<GameStateDataPack>
     }
     private void UpdateHealthUI()
     {
-        for (int i = 0; i < _dataPack.playersHealth.Count; i++)
+        for (int i = 0; i < _dataPack.playerHealth.Count; i++)
         {
-            _container.Hud.UpdateHealth(i, _dataPack.playersHealth[i]);
+            _container.Hud.UpdateHealth(i, _dataPack.playerHealth[i]);
         }
     }
 
