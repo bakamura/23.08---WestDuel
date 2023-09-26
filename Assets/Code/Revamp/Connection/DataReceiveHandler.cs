@@ -3,18 +3,18 @@ using System.IO;
 using System.Threading;
 using UnityEngine;
 
-public class DataReceiveHandler : MonoBehaviour {
+public static class DataReceiveHandler {
 
-    public Queue<InputDataPack> queueInputData;
-    public Queue<WorldStateDataPack> queueWorldData;
-    public Queue<GameStateDataPack> queueGameStateData;
+    public static Queue<InputDataPack> queueInputData;
+    public static Queue<WorldStateDataPack> queueWorldData;
+    public static Queue<GameStateDataPack> queueGameStateData;
 
-    protected virtual void Awake() {
+    public static void Start() {
         Thread receiverThread = new Thread(ReceivePack);
         receiverThread.Start();
     }
 
-    private void ReceivePack() {
+    private static void ReceivePack() {
         while (true) {
             ConnectionHandler.memoryStreamCache = new MemoryStream(ConnectionHandler.udpClient.Receive(ref ConnectionHandler.ipEpCache));
             ConnectionHandler.byteArrayCache = (byte[])ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
