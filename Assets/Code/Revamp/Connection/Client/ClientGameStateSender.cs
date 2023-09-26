@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ClientGameStateSender : MonoBehaviour
@@ -9,13 +7,8 @@ public class ClientGameStateSender : MonoBehaviour
     //needs to be called by the UI
     public void QuitGame()
     {
-        PreparePack();
-        DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.GameStateDataPack, _dataPackCache, ConnectionHandler.ipEpCache);
-    }
-
-    private void PreparePack()
-    {
         _dataPackCache.gameState = GameStateDataPack.GameState.Quit;
+        DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.GameStateDataPack, _dataPackCache, ConnectionHandler.ipEpCache);
     }
 
     private void OnApplicationQuit()

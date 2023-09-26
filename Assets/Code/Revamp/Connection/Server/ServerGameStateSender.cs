@@ -44,4 +44,8 @@ public class ServerGameStateSender : Singleton<ServerGameStateSender> {
         _dataPackCache = new GameStateDataPack(playerIp);
     }
 
+    private void OnApplicationQuit() {
+        QuitMatch();
+    }
+
 }

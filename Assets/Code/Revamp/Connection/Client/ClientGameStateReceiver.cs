@@ -4,7 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class ClientGameStateReceiver : MonoBehaviour
 {
+    [Header("Cache")]
     [SerializeField] private Hud _hud;
+    private GameStateDataPack _dataPackCache;
+
     private void FixedUpdate()
     {
         ProcessData();
@@ -13,12 +16,12 @@ public class ClientGameStateReceiver : MonoBehaviour
     {
         if (DataReceiveHandler.queueGameStateData.Count > 0)
         {
-            GameStateDataPack temp = DataReceiveHandler.queueGameStateData.Dequeue();
-            switch (temp.gameState)
+            _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();
+            switch (_dataPackCache.gameState)
             {
                 case GameStateDataPack.GameState.Initiate:
-                    IPEndPoint[] playersIPs = new IPEndPoint[temp.playerHealth.Keys.Count];
-                    temp.playerHealth.Keys.CopyTo(playersIPs, 0);
+                    IPEndPoint[] playersIPs = new IPEndPoint[_dataPackCache.playerHealth.Keys.Count];
+                    _dataPackCache.playerHealth.Keys.CopyTo(playersIPs, 0);
                     for (int i = 0; i < playersIPs.Length; i++)
                     {
                         if(i == 0)
@@ -33,7 +36,7 @@ public class ClientGameStateReceiver : MonoBehaviour
                         }
                     }
 
-                    UpdateHealthUI(temp);
+                    UpdateHealthUI(_dataPackCache);
                     break;
                 case GameStateDataPack.GameState.Restart:
                     //for (int i = 0; i < ClientConnectionHandler.PlayersList.Count; i++)
@@ -42,15 +45,15 @@ public class ClientGameStateReceiver : MonoBehaviour
                     //        ClientConnectionHandler.PlayersList[0].Object.transform.position :
                     //        ClientConnectionHandler.PlayersList[i + 1].Object.transform.position);
                     //}
-                    _hud.HideEndScreen();
+                    _hud.HideEndScreen(); // Implement When HUD Revamp done
                     ClientConnectionHandler._hasGameEnded = false;
-                    UpdateHealthUI(temp);
+                    UpdateHealthUI(_dataPackCache);
                     break;
                 case GameStateDataPack.GameState.Continue:
-                    UpdateHealthUI(temp);
+                    UpdateHealthUI(_dataPackCache);
                     break;
                 case GameStateDataPack.GameState.Ended:
-                    _hud.ShowEndScreen(_dataPack.playersHealth[1] > 0);
+                    _hud.ShowEndScreen(_dataPack.playersHealth[1] > 0); // Implement When HUD Revamp done
                     ClientConnectionHandler._hasGameEnded = true;
                     break;
                 case GameStateDataPack.GameState.Quit:
@@ -65,7 +68,7 @@ public class ClientGameStateReceiver : MonoBehaviour
     {
         for (int i = 0; i < dataPack.playerHealth.Count; i++)
         {
-            _hud.UpdateHealth(i, dataPack.playersHealth[i]);
+            _hud.UpdateHealth(i, dataPack.playersHealth[i]); // Implement When HUD Revamp done
         }
     }
 }
