@@ -19,18 +19,18 @@ public class DataReceiveHandler : MonoBehaviour {
             ConnectionHandler.memoryStreamCache = new MemoryStream(ConnectionHandler.udpClient.Receive(ref ConnectionHandler.ipEpCache));
             ConnectionHandler.byteArrayCache = (byte[])ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
 
-            switch ((DataPacksIdentification)ConnectionHandler.byteArrayCache[0]) {
-                case DataPacksIdentification.InputDataPack:
+            switch ((ConnectionHandler.DataPacksIdentification)ConnectionHandler.byteArrayCache[0]) {
+                case ConnectionHandler.DataPacksIdentification.InputDataPack:
                     ConnectionHandler.inputDataCache = (InputDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
                     ConnectionHandler.inputDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueInputData.Enqueue(ConnectionHandler.inputDataCache);
                     break;
-                case DataPacksIdentification.WorldStateDataPack:
+                case ConnectionHandler.DataPacksIdentification.WorldStateDataPack:
                     ConnectionHandler.worldDataCache = (WorldStateDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
                     ConnectionHandler.worldDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueWorldData.Enqueue(ConnectionHandler.worldDataCache);
                     break;
-                case DataPacksIdentification.GamStateDataPack:
+                case ConnectionHandler.DataPacksIdentification.GamStateDataPack:
                     ConnectionHandler.gameStateDataCache = (GameStateDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
                     ConnectionHandler.gameStateDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueGameStateData.Enqueue(ConnectionHandler.gameStateDataCache);

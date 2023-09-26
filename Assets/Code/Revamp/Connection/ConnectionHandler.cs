@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public static class ConnectionHandler {
 
     public static UdpClient udpClient;
+
     public static BinaryFormatter binaryFormatter = new BinaryFormatter();
     public static MemoryStream memoryStreamCache;
     public static byte byteCache;
@@ -18,6 +19,12 @@ public static class ConnectionHandler {
 
     static ConnectionHandler() {
         udpClient = new UdpClient(11000);
+    }
+
+    public enum DataPacksIdentification {
+        InputDataPack,
+        GamStateDataPack,
+        WorldStateDataPack
     }
 
 }
