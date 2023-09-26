@@ -36,7 +36,7 @@ public class ServerLocalInputReader : MonoBehaviour {
         else _shootInput = Vector3.up * 256f;
 
         if(Input.GetKeyDown(_keyShoot)) {
-            if (_shootInput != Vector3.up * 256f) ServerPlayerInfo.player[null].shoot.Shoot(); // null => Own IP
+            if (_shootInput != Vector3.up * 256f) ServerPlayerInfo.player[ConnectionHandler.serverIpEp].shoot.Shoot();
             else Debug.LogWarning("Mouse not hitting shit");
         }
     }

@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public static class ConnectionHandler {
 
     public static UdpClient udpClient;
+    public static IPEndPoint serverIpEp;
 
     public static BinaryFormatter binaryFormatter = new BinaryFormatter();
     public static MemoryStream memoryStreamCache;
