@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class SpawnPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Vector3[] _spawnPoints;
 
-    // Update is called once per frame
-    void Update()
+    public Vector3 GetPointFurthestFromOponent(Vector3 oponentPos)
     {
-        
+        return _spawnPoints.OrderByDescending(x => Vector3.Distance(oponentPos, x)).First();
     }
 }
