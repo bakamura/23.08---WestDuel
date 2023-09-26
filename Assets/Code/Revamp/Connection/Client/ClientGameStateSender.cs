@@ -10,7 +10,7 @@ public class ClientGameStateSender : MonoBehaviour
     public void QuitGame()
     {
         PreparePack();
-        DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.GamStateDataPack, _dataPackCache, ConnectionHandler.ipEpCache);
+        DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.GameStateDataPack, _dataPackCache, ConnectionHandler.ipEpCache);
     }
 
     private void PreparePack()

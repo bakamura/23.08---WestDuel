@@ -63,7 +63,7 @@ public class ClientGameStateReceiver : MonoBehaviour
     }
     private void UpdateHealthUI(GameStateDataPack dataPack)
     {
-        for (int i = 0; i < dataPack.playersHealth.Count; i++)
+        for (int i = 0; i < dataPack.playerHealth.Count; i++)
         {
             _hud.UpdateHealth(i, dataPack.playersHealth[i]);
         }

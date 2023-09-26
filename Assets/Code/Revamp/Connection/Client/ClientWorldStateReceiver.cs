@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
+using System.Linq;
 
 public class ClientWorldStateReceiver : MonoBehaviour
 {
-    private List<Bullet> _bullets = new List<Bullet>();
+    private Dictionary<IPEndPoint, List<Bullet>> _bullets = new Dictionary<IPEndPoint, List<Bullet>>();
     private List<BulletPickup> _bulletPickups = new List<BulletPickup>();
 
     private void FixedUpdate()
@@ -14,7 +15,7 @@ public class ClientWorldStateReceiver : MonoBehaviour
     }
     private void ProcessData()
     {
-        if(DataReceiveHandler.queueWorldData.Count > 0)
+        if (DataReceiveHandler.queueWorldData.Count > 0)
         {
             WorldStateDataPack temp = DataReceiveHandler.queueWorldData.Dequeue();
             #region UpdatePlayersAndAnimations
@@ -28,9 +29,9 @@ public class ClientWorldStateReceiver : MonoBehaviour
                 //animations
                 ClientConnectionHandler.PlayersList[playersIPs[i]].AnimationsUpdate.SetDirection(PackingUtility.FloatArrayToVector3(temp.playersVelocity[playersIPs[i]]));
                 ClientConnectionHandler.PlayersList[playersIPs[i]].AnimationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(temp.playersShootPoint[playersIPs[i]]));
-                for(int a = 0; a < temp.bulletsPos[playersIPs[i]].Count; i++)
+                for (int a = 0; a < temp.bulletsPos[playersIPs[i]].Count; i++)
                 {
-                    if(PackingUtility.FloatArrayToVector3(temp.bulletsPos[playersIPs[i]][a]) != PackingUtility.FloatArrayToVector3(temp.deactivatePos))
+                    if (PackingUtility.FloatArrayToVector3(temp.bulletsPos[playersIPs[i]][a]) != PackingUtility.FloatArrayToVector3(temp.deactivatePos))
                     {
                         ClientConnectionHandler.PlayersList[playersIPs[i]].AnimationsUpdate.TriggerShootAnim();
                         break;
@@ -39,17 +40,20 @@ public class ClientWorldStateReceiver : MonoBehaviour
             }
             #endregion
             #region UpdateBullets
-            if (_bullets.Count == 0) InstantiateBullets(temp.bulletsPos.Keys.Count * temp.bulletsPos.Values.Count);
-            for (int i = 0; i < _bullets.Count; i++)
+            if (_bullets.Count == 0) InstantiateBullets(playersIPs, 2/*maxBulletInstances*/);
+            for (int i = 0; i < playersIPs.Length; i++)
             {
-                if (_bullets[i].transform.position == PackingUtility.FloatArrayToVector3(temp.deactivatePos))
+                for (int a = 0; a < temp.bulletsPos[playersIPs[i]].Count; a++)
                 {
-                    _bullets[i].UpdateState(false);
-                }
-                else
-                {
-                    _bullets[i].UpdateState(true);
-                    _bullets[i].Shoot(PackingUtility.FloatArrayToVector3(temp.bulletsPos[i]), PackingUtility.FloatArrayToVector3(temp.bulletsVelocity[i]));
+                    if (_bullets[playersIPs[i]][a].transform.position == PackingUtility.FloatArrayToVector3(temp.deactivatePos))
+                    {
+                        _bullets[playersIPs[i]][a].UpdateState(false);
+                    }
+                    else
+                    {
+                        _bullets[playersIPs[i]][a].UpdateState(true);
+                        _bullets[playersIPs[i]][a].Shoot(PackingUtility.FloatArrayToVector3(temp.bulletsPos[playersIPs[i]][a]), PackingUtility.FloatArrayToVector3(temp.bulletsVelocity[playersIPs[i]][a]));
+                    }
                 }
             }
             #endregion
@@ -71,11 +75,16 @@ public class ClientWorldStateReceiver : MonoBehaviour
         }
     }
 
-    private void InstantiateBullets(int amount)
+    private void InstantiateBullets(IPEndPoint[] keys, int amount)
     {
-        for(int i = 0; i < amount; i++)
+        Bullet[] temp = new Bullet[amount];
+        for (int i = 0; i < keys.Length; i++)
         {
-            _bullets.Add(Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>());
+            for (int a = 0; a < amount; a++)
+            {
+                temp[a] = Instantiate(InstantiateHandler.GetBulletPrefab(), null).GetComponent<Bullet>();
+            }
+            _bullets.Add(keys[i], temp.ToList());
         }
     }
 
