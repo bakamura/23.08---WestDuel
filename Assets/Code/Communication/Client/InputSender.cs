@@ -34,9 +34,9 @@ public class InputSender : DataSender<InputDataPack>
     protected override void PreparePack()
     {
         _dataPackCache.updated = true;
-        _dataPackCache._mouseClick = _clientInputReader.MouseClick;
-        _dataPackCache._mousePoint = PackingUtility.Vector3ToFloatArray(_clientInputReader.MousePosition);
-        _dataPackCache._movementInput = PackingUtility.Vector3ToFloatArray(_clientInputReader.CurrenMovment);
+        _dataPackCache.mouseClick = _clientInputReader.MouseClick;
+        _dataPackCache.mousePoint = PackingUtility.Vector3ToFloatArray(_clientInputReader.MousePosition);
+        _dataPackCache.movementInput = PackingUtility.Vector3ToFloatArray(_clientInputReader.CurrenMovment);
     }
 
     protected override void SendPack()

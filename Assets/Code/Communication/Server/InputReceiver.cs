@@ -46,13 +46,13 @@ public class InputReceiver : DataReceiver<InputDataPack>
         {
             if (_ipToData.ContainsKey(ServerConnectionHandler.players[i].ip) && _ipToData[ServerConnectionHandler.players[i].ip].updated)
             {
-                Vector2 movmentDirection = PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip]._movementInput);
+                Vector2 movmentDirection = PackingUtility.FloatArrayToVector2(_ipToData[ServerConnectionHandler.players[i].ip].movementInput);
                 ServerConnectionHandler.players[i].movement.SetInputDirection(movmentDirection);
                 ServerConnectionHandler.players[i].animationsUpdate.SetDirection(movmentDirection);
-                ServerConnectionHandler.players[i].animationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
-                if (_ipToData[ServerConnectionHandler.players[i].ip]._mouseClick)
+                ServerConnectionHandler.players[i].animationsUpdate.SetMousePosition(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip].mousePoint));
+                if (_ipToData[ServerConnectionHandler.players[i].ip].mouseClick)
                 {
-                    ServerConnectionHandler.players[i].shoot.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip]._mousePoint));
+                    ServerConnectionHandler.players[i].shoot.Shoot(PackingUtility.FloatArrayToVector3(_ipToData[ServerConnectionHandler.players[i].ip].mousePoint));
                     ServerConnectionHandler.players[i].animationsUpdate.TriggerShootAnim();
                 }
             }
