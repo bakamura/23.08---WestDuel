@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
-public class ServerWorldStateSender : MonoBehaviour {
+public class ServerWorldStateSender : Singleton<ServerWorldStateSender> {
 
     private WorldStateDataPack _dataPackCache;
     private Dictionary<IPEndPoint, List<Rigidbody>> playerBulletRigidBody = new Dictionary<IPEndPoint, List<Rigidbody>>();
@@ -20,13 +20,12 @@ public class ServerWorldStateSender : MonoBehaviour {
                 _dataPackCache.playersHasBullet[ip] = ServerPlayerInfo.player[ip].shoot.CheckBullet();
 
                 for (int i = 0; i < _dataPackCache.bulletsPos.Count; i++) {
-                    _dataPackCache.bulletsPos[ip][i] = PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].transform.position);
-                    _dataPackCache.bulletsVelocity[ip][i] = PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].velocity);
+                    _dataPackCache.bulletsPos[ip][i] = playerBulletRigidBody[ip][i].gameObject.activeSelf ? PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].transform.position) : _dataPackCache.deactivatePos;
+                    _dataPackCache.bulletsVelocity[ip][i] = playerBulletRigidBody[ip][i].gameObject.activeSelf ? PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].velocity) : _dataPackCache.deactivatePos;
                 }
 
-                for(int i = 0; i < 2; i++) {
-                    // Get max bulletPickup Amount
-                    // Update Each
+                for(int i = 0; i < 2 /* should be BulletPickup Amount */; i++) {
+                    // Update Each BulletPickup
                 }
             }
             DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.WorldStateDataPack, _dataPackCache, null); // null => Joiner IP
@@ -39,7 +38,7 @@ public class ServerWorldStateSender : MonoBehaviour {
         playerBulletRigidBody.Add(ipOwner, rbList);
     }
 
-    public void AddPlayerIP(IPEndPoint[] playerIp) { // Make ServerPlayerInfo call this
+    public void AddPlayerIP(IPEndPoint[] playerIp) {
         _dataPackCache = new WorldStateDataPack(playerIp);
     }
 

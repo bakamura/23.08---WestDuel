@@ -1,19 +1,18 @@
 using System.Net;
-using UnityEngine;
 
-public class ServerGameStateSender : MonoBehaviour {
+public class ServerGameStateSender : Singleton<ServerGameStateSender> {
 
     private GameStateDataPack _dataPackCache = new GameStateDataPack();
 
-    public void UpdateHealth() {
-        _dataPackCache.gameState = GameStateDataPack.GameState.Continue;
-        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) _dataPackCache.playerHealth[ip] = ServerPlayerInfo.player.[ip].health.GetCurrentHealth(); // Implement GetCurrentHealth in PlayerHealth()
+    public void StartMatch() {
+        _dataPackCache.gameState = GameStateDataPack.GameState.Initiate;
 
         SendPack();
     }
 
-    public void StartMatch() {
-        _dataPackCache.gameState = GameStateDataPack.GameState.Initiate;
+    public void UpdateHealth() {
+        _dataPackCache.gameState = GameStateDataPack.GameState.Continue;
+        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) _dataPackCache.playerHealth[ip] = ServerPlayerInfo.player.[ip].health.GetCurrentHealth(); // Implement GetCurrentHealth in PlayerHealth()
 
         SendPack();
     }

@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ServerGameStateReceiver : MonoBehaviour {
 
@@ -16,7 +16,18 @@ public class ServerGameStateReceiver : MonoBehaviour {
         if (DataReceiveHandler.queueInputData.Count > 0) {
             _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();
 
-            // Game State Stuff
+            //
+            if (ServerPlayerInfo.player.Keys.ToArray().Contains(_dataPackCache.senderIp)) {
+                switch (_dataPackCache.gameState) {
+                    case GameStateDataPack.GameState.Quit:
+                        // Reset Every Server Sided Class
+                        SceneManager.LoadScene(0);
+                        break;
+                    default:
+                        Debug.LogWarning("Receiving Unexpected GameState from Client");
+                        break;
+                }
+            }
         }
     }
 

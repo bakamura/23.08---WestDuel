@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using UnityEngine;
 
 public static class ServerPlayerInfo {
 
     public static Dictionary<IPEndPoint, PlayerInfo> player = new Dictionary<IPEndPoint, PlayerInfo>();
+    private const int playerMax = 2;
 
     public static void InstantiatePlayer(bool isServer, IPEndPoint ip) {
         GameObject go = GameObject.Instantiate(isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab()); //
@@ -13,6 +15,12 @@ public static class ServerPlayerInfo {
                                       go.GetComponentInChildren<PlayerHealth>(),
                                       go.GetComponentInChildren<PlayerMovement>(),
                                       go.GetComponentInChildren<PlayerShoot>()));
+
+        if (player.Count == playerMax) {
+            IPEndPoint[] ipEpArr = player.Keys.ToArray();
+            ServerWorldStateSender.Instance.AddPlayerIP(ipEpArr);
+            ServerGameStateSender.Instance.AddPlayerIP(ipEpArr);
+        }
     }
 }
 
