@@ -12,14 +12,14 @@ public class ServerGameStateSender : Singleton<ServerGameStateSender> {
 
     public void UpdateHealth() {
         _dataPackCache.gameState = GameStateDataPack.GameState.Continue;
-        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) _dataPackCache.playerHealth[ip] = ServerPlayerInfo.player.[ip].health.GetCurrentHealth(); // Implement GetCurrentHealth in PlayerHealth()
+        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) _dataPackCache.playerHealth[ip] = ServerPlayerInfo.player[ip].health.GetCurrentHealth(); // Implement GetCurrentHealth in PlayerHealth()
 
         SendPack();
     }
 
     public void EndMatch() {
         _dataPackCache.gameState = GameStateDataPack.GameState.Ended;
-        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) _dataPackCache.playerHealth[ip] = ServerPlayerInfo.player.[ip].health.GetCurrentHealth(); // Implement GetCurrentHealth in PlayerHealth()
+        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) _dataPackCache.playerHealth[ip] = ServerPlayerInfo.player[ip].health.GetCurrentHealth(); // Implement GetCurrentHealth in PlayerHealth()
 
         SendPack();
     }
