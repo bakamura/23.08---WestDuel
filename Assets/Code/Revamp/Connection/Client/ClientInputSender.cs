@@ -14,7 +14,7 @@ public class ClientInputSender : MonoBehaviour
     private void Update()
     {
         PreparePack();
-        DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.InputDataPack, _dataPackCache, ConnectionHandler.ipEpCache);
+        DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.InputDataPack, _dataPackCache, ConnectionHandler.serverIpEp);
     }
 
     private void PreparePack()
