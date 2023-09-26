@@ -10,8 +10,8 @@ public struct WorldStateDataPack {
     public Dictionary<IPEndPoint, float[]> playersShootPoint;
     public Dictionary<IPEndPoint, bool> playersHasBullet;
 
-    public List<Dictionary<IPEndPoint, float[]>> bulletsPos;
-    public List<Dictionary<IPEndPoint, float[]>> bulletsVelocity;
+    public Dictionary<IPEndPoint, List<float[]>> bulletsPos;
+    public Dictionary<IPEndPoint, List<float[]>> bulletsVelocity;
 
     public List<float[]> boxesPos;
 
@@ -23,30 +23,28 @@ public struct WorldStateDataPack {
         playersVelocity = new Dictionary<IPEndPoint, float[]>();
         playersShootPoint = new Dictionary<IPEndPoint, float[]>();
         playersHasBullet = new Dictionary<IPEndPoint, bool>();
-        foreach(IPEndPoint ip in playerIp) {
+        foreach (IPEndPoint ip in playerIp) {
             playersPos.Add(ip, new float[3]);
             playersVelocity.Add(ip, new float[3]);
             playersShootPoint.Add(ip, new float[3]);
             playersHasBullet.Add(ip, false);
         }
 
-        bulletsPos = new List<Dictionary<IPEndPoint, float[]>>();
-        bulletsVelocity = new List<Dictionary<IPEndPoint, float[]>>();
+        bulletsPos = new Dictionary<IPEndPoint, List<float[]>>();
+        bulletsVelocity = new Dictionary<IPEndPoint, List<float[]>>();
 
-        Dictionary<IPEndPoint, float[]> dictPos;
-        Dictionary<IPEndPoint, float[]> dictVelocity;
-        for (int i =0; i < 2; i++) { // Provisory should read Max Bullet Instead
-            dictPos = new Dictionary<IPEndPoint, float[]>();
-            dictVelocity = new Dictionary<IPEndPoint, float[]>();
-            foreach (IPEndPoint ip in playerIp) {
-                dictPos.Add(ip, new float[3]);
-                dictVelocity.Add(ip, new float[3]);
-            }
-            bulletsPos.Add(dictPos);
-            bulletsVelocity.Add(dictPos);
+        List<float[]> listCache;
+        foreach (IPEndPoint ip in playerIp) {
+            listCache = new List<float[]>();
+            for (int i = 0; i < 2; i++) listCache.Add(new float[3]); // Provisory should read Max Bullets
+            bulletsPos.Add(ip, listCache);
+            bulletsVelocity.Add(ip, listCache);
         }
 
         boxesPos = new List<float[]>();
+        for (int i = 0; i < 2; i++) { // Provisory should read max BulletPickups
+            boxesPos.Add(new float[3]);
+        }
 
         deactivatePos = new float[3] { 0, 256, 0 };
 
