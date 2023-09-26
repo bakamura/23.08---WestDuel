@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class ClientGameStateSender : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private GameStateDataPack _dataPackCache = new GameStateDataPack();    
+
+    //needs to be called by the UI
+    public void QuitGame()
     {
-        
+        PreparePack();
+        DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.GamStateDataPack, _dataPackCache, ConnectionHandler.ipEpCache);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void PreparePack()
     {
-        
+        _dataPackCache.gameState = GameStateDataPack.GameState.Quit;
+    }
+
+    private void OnApplicationQuit()
+    {
+        QuitGame();
     }
 }
