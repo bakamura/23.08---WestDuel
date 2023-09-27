@@ -13,10 +13,9 @@ public class ServerGameStateReceiver : MonoBehaviour {
     }
 
     private void ImplementPack() {
-        if (DataReceiveHandler.queueInputData.Count > 0) {
+        while (DataReceiveHandler.queueInputData.Count > 0) {
             _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();
 
-            //
             if (ServerPlayerInfo.player.Keys.ToArray().Contains(_dataPackCache.senderIp)) {
                 switch (_dataPackCache.gameState) {
                     case GameStateDataPack.GameState.Quit:

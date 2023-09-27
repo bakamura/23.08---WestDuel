@@ -42,45 +42,44 @@ public class LobbyConnectionHandler : MonoBehaviour {
     }
 
     private void ImplementPack() {
-        while (true) {
-            if (DataReceiveHandler.queueString.Count > 0) {
-                _dataPackCache = DataReceiveHandler.queueString.Dequeue();
-                if (_isHost) {
-                    if (ipOther == null) {
-                        if (_dataPackCache.stringSent == JOIN) {
-                            ipOther = _dataPackCache.senderIp;
-                            _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
-                        }
-                    }
-                    else {
-                        if (_dataPackCache.stringSent == START_SUCCESS) GoToGameScene();
-                        else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
-                            ipOther = null;
-                            _menu.SetIpText(1, "");
-                        }
+        while (DataReceiveHandler.queueString.Count > 0) {
+            _dataPackCache = DataReceiveHandler.queueString.Dequeue();
+            if (_isHost) {
+                if (ipOther == null) {
+                    if (_dataPackCache.stringSent == JOIN) {
+                        ipOther = _dataPackCache.senderIp;
+                        _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
                     }
                 }
                 else {
-                    if (ipOther == null) {
-                        if (_dataPackCache.stringSent == JOIN_SUCCESS) {
-                            ipOther = _dataPackCache.senderIp;
-                            _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
-                            _menu.OpenLobbyMenu();
-                        }
-                    }
-                    else {
-                        if (_dataPackCache.stringSent == START) {
-                            DataSendHandler.SendPack(START_SUCCESS, ipOther);
-                            GoToGameScene();
-                        }
-                        else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
-                            ipOther = null;
-                            _menu.SetIpText(1, "");
-                            _menu.OpenJoinMenu();
-                        }
+                    if (_dataPackCache.stringSent == START_SUCCESS) GoToGameScene();
+                    else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
+                        ipOther = null;
+                        _menu.SetIpText(1, "");
                     }
                 }
             }
+            else {
+                if (ipOther == null) {
+                    if (_dataPackCache.stringSent == JOIN_SUCCESS) {
+                        ipOther = _dataPackCache.senderIp;
+                        _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
+                        _menu.OpenLobbyMenu();
+                    }
+                }
+                else {
+                    if (_dataPackCache.stringSent == START) {
+                        DataSendHandler.SendPack(START_SUCCESS, ipOther);
+                        GoToGameScene();
+                    }
+                    else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
+                        ipOther = null;
+                        _menu.SetIpText(1, "");
+                        _menu.OpenJoinMenu();
+                    }
+                }
+            }
+
         }
     }
 

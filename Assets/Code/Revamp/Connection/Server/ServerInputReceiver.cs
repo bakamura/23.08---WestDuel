@@ -11,7 +11,7 @@ public class ServerInputReceiver : MonoBehaviour {
     }
 
     private void ImplementPack() {
-        if (DataReceiveHandler.queueInputData.Count > 0) {
+        while (DataReceiveHandler.queueInputData.Count > 0) {
             _dataPackCache = DataReceiveHandler.queueInputData.Dequeue();
 
             ServerPlayerInfo.player[_dataPackCache.senderIp].movement.SetInputDirection(PackingUtility.FloatArrayToVector2(_dataPackCache.movementInput));

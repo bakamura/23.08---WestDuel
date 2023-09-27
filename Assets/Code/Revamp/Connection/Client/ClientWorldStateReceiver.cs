@@ -18,7 +18,7 @@ public class ClientWorldStateReceiver : MonoBehaviour
     }
     private void ProcessData()
     {
-        if (DataReceiveHandler.queueWorldData.Count > 0)
+        while (DataReceiveHandler.queueWorldData.Count > 0)
         {
             _dataPackCache = DataReceiveHandler.queueWorldData.Dequeue();
             #region UpdatePlayersAndAnimations

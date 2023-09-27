@@ -14,7 +14,7 @@ public class ClientGameStateReceiver : MonoBehaviour
     }
     private void ProcessData()
     {
-        if (DataReceiveHandler.queueGameStateData.Count > 0)
+        while (DataReceiveHandler.queueGameStateData.Count > 0)
         {
             _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();            
             switch (_dataPackCache.gameState)

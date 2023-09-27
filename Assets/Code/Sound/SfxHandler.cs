@@ -1,40 +1,30 @@
 using UnityEngine;
 
-public class SfxHandler : MonoBehaviour /*Singleton<SfxHandler>*/ {
+public class SfxHandler : MonoBehaviour {
 
     [Header("UI SFX List")]
 
     [SerializeField] private AudioClip _uiClickSfx;
+    private float _uiClickDuration;
+    private float _uiClickCurrentCooldown = 0;
 
     [Header("Cache")]
 
     private AudioSource _as;
 
-    protected /*override*/ void Awake() {
-        //base.Awake();
-
+    protected void Awake() {
         _as = GetComponent<AudioSource>();
 
         _uiClickDuration = _uiClickSfx.length;
-    }
-
-    private void Start() {
-        //PlayerDash.instance.onDash.AddListener(DashSfx);
     }
 
     private void Update() {
         _uiClickCurrentCooldown -= Time.deltaTime;
     }
 
-    // Public?
-    public void PlaySfx(AudioClip sfx) {
+    private void PlaySfx(AudioClip sfx) {
         _as.PlayOneShot(sfx);
     }
-
-    // UI
-
-    private float _uiClickDuration;
-    private float _uiClickCurrentCooldown = 0;
 
     public void UiClickSfx() {
         if (_uiClickCurrentCooldown <= 0) {
