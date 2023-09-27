@@ -14,7 +14,7 @@ public class AnimationsUpdate : MonoBehaviour
     private Animator _animator;
     private bool _canShoot;
     private Coroutine _updateCoroutine;
-    bool _fliped = false;
+    //bool _fliped = false;
 
     [System.Serializable]
     private struct BoneModificationData
@@ -32,6 +32,14 @@ public class AnimationsUpdate : MonoBehaviour
     {
         DirectionalInput,
         MouseInput
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            TriggerShootAnim();
+        }
     }
 
     private void Awake()
@@ -58,11 +66,11 @@ public class AnimationsUpdate : MonoBehaviour
     {
         while (_canUpdate)
         {
-            Vector3 direction = Vector3.zero;
+            Vector3 direction;
             float dotProduct;
-            Vector3 axisLocks;
             float movmentSpeed = 0;
-            //Vector3 result;
+            Quaternion finalRotation;
+            bool fliped = false;
 
             if (_inputReader)
             {
@@ -72,32 +80,40 @@ public class AnimationsUpdate : MonoBehaviour
 
             for (int i = 0; i < _bonesToUpdate.Length; i++)
             {
-                axisLocks = new Vector3(_bonesToUpdate[i].ConstrainXAxis ? 0 : 1, _bonesToUpdate[i].ConstrainYAxis ? 0 : 1, _bonesToUpdate[i].ConstrainZAxis ? 0 : 1);
                 switch (_bonesToUpdate[i].BodyPartType)
                 {
                     case CalculationMethod.DirectionalInput:
-                        direction = new Vector3(_direction.x * axisLocks.x, 0, _direction.y * axisLocks.z).normalized;
+                        direction = new Vector3(_direction.x, 0, _direction.y).normalized;
                         movmentSpeed = direction.sqrMagnitude;
                         dotProduct = Mathf.Abs(Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction));
                         if (direction != Vector3.zero)
                         {
-                            _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
-                            _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
+                            finalRotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
+                            finalRotation = new Quaternion(_bonesToUpdate[i].ConstrainXAxis ? 0 : finalRotation.x,
+                                _bonesToUpdate[i].ConstrainYAxis ? 0 : finalRotation.y,
+                                _bonesToUpdate[i].ConstrainZAxis ? 0 : finalRotation.z,
+                                finalRotation.w);
+                            _bonesToUpdate[i].Bone.transform.rotation = finalRotation;
+                            fliped = finalRotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && finalRotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
                         }
                         break;
                     case CalculationMethod.MouseInput:
                         direction = (_mousePosition - _bonesToUpdate[i].Bone.transform.position).normalized;
-                        direction = new Vector3(direction.x * axisLocks.x, direction.y * axisLocks.y, direction.z * axisLocks.z);
                         dotProduct = Mathf.Abs(Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction));
+                        finalRotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
+                        finalRotation = new Quaternion(_bonesToUpdate[i].ConstrainXAxis ? 0 : finalRotation.x,
+                            _bonesToUpdate[i].ConstrainYAxis ? 0 : finalRotation.y,
+                            _bonesToUpdate[i].ConstrainZAxis ? 0 : finalRotation.z,
+                            finalRotation.w);
+                        _bonesToUpdate[i].Bone.transform.rotation = finalRotation;
                         //if (direction != Vector3.zero)
                         //{
-                            _bonesToUpdate[i].Bone.transform.rotation = Quaternion.RotateTowards(_bonesToUpdate[i].Bone.transform.rotation, Quaternion.LookRotation(direction), _speed * dotProduct);
-                        //    _fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
-                        //}                        
+                        //    if (!fliped) fliped = _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y > _bonesToUpdate[i].MinAngleToFlip && _bonesToUpdate[i].Bone.transform.rotation.eulerAngles.y < _bonesToUpdate[i].MaxAngleToFlip;
+                        //}
                         break;
                 }
             }
-            if (_fliped)
+            if (fliped)
             {
                 _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles = new Vector3(
                                     _bonesToUpdate[0].Bone.transform.root.transform.eulerAngles.x,
