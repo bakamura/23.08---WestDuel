@@ -9,7 +9,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
     [Header("IP")]
 
     private IPEndPoint _ipSelf;
-    private IPEndPoint _ipOther; // Doesn't consider 3+ players
+    [HideInInspector] public IPEndPoint ipOther; // Doesn't consider 3+ players
     private bool _isHost = false;
 
     [Header("Cache")]
@@ -46,35 +46,35 @@ public class LobbyConnectionHandler : MonoBehaviour {
             if (DataReceiveHandler.queueString.Count > 0) {
                 _dataPackCache = DataReceiveHandler.queueString.Dequeue();
                 if (_isHost) {
-                    if (_ipOther == null) {
+                    if (ipOther == null) {
                         if (_dataPackCache.stringSent == JOIN) {
-                            _ipOther = _dataPackCache.senderIp;
-                            _menu.SetIpText(1, _ipOther.ToString().Split(':')[0]);
+                            ipOther = _dataPackCache.senderIp;
+                            _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
                         }
                     }
                     else {
                         if (_dataPackCache.stringSent == START_SUCCESS) GoToGameScene();
                         else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
-                            _ipOther = null;
+                            ipOther = null;
                             _menu.SetIpText(1, "");
                         }
                     }
                 }
                 else {
-                    if (_ipOther == null) {
+                    if (ipOther == null) {
                         if (_dataPackCache.stringSent == JOIN_SUCCESS) {
-                            _ipOther = _dataPackCache.senderIp;
-                            _menu.SetIpText(1, _ipOther.ToString().Split(':')[0]);
+                            ipOther = _dataPackCache.senderIp;
+                            _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
                             _menu.OpenLobbyMenu();
                         }
                     }
                     else {
                         if (_dataPackCache.stringSent == START) {
-                            DataSendHandler.SendPack(START_SUCCESS, _ipOther);
+                            DataSendHandler.SendPack(START_SUCCESS, ipOther);
                             GoToGameScene();
                         }
                         else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
-                            _ipOther = null;
+                            ipOther = null;
                             _menu.SetIpText(1, "");
                             _menu.OpenJoinMenu();
                         }
@@ -84,11 +84,13 @@ public class LobbyConnectionHandler : MonoBehaviour {
         }
     }
 
+    // Called by MainMenu
     public void StartJoinMenu() {
         _isHost = false;
-        if (_ipOther != null) DataSendHandler.SendPack(LEAVE_LOBBY, _ipOther);
+        if (ipOther != null) DataSendHandler.SendPack(LEAVE_LOBBY, ipOther);
     }
 
+    // Called by Button
     public void JoinGame() {
         if (IPAddress.TryParse(_menu.ipInput.text.Substring(0, _menu.ipInput.text.Length - 1), out IPAddress ip)) {
             DataSendHandler.SendPack(JOIN, new IPEndPoint(ip, 11000)); // Unsafely removes last CHAR (text mesh pro invisible char)
@@ -96,29 +98,32 @@ public class LobbyConnectionHandler : MonoBehaviour {
         else Debug.Log("Invalid IP Adress!");
     }
 
+    // Called by MainMenu
     public void StartHostMenu() {
         _isHost = true;
     }
 
+    // Called by Button
     public void CopySelfIp() {
         string[] ipText = _ipSelf.ToString().Split(':');
         GUIUtility.systemCopyBuffer = ipText[0];
     }
 
+    // Called by Button
     public void StartGame() {
-        if (_ipOther != null) {
-            DataSendHandler.SendPack(START, _ipOther);
+        if (ipOther != null) {
+            DataSendHandler.SendPack(START, ipOther);
         }
     }
 
     private void GoToGameScene() {
-        ConnectionHandler.serverIpEp = _isHost ? _ipSelf : _ipOther;
+        ConnectionHandler.serverIpEp = _isHost ? _ipSelf : ipOther;
 
         SceneManager.LoadScene(_isHost ? 1 : 2);
 
         if (_isHost) {
             ServerPlayerInfo.InstantiatePlayer(true, _ipSelf);
-            ServerPlayerInfo.InstantiatePlayer(false, _ipOther);
+            ServerPlayerInfo.InstantiatePlayer(false, ipOther);
         }
 
         Destroy(gameObject);

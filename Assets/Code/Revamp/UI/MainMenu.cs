@@ -21,42 +21,56 @@ public class MainMenu : Menu {
 
     [SerializeField] private TextMeshProUGUI[] _playerIpText;
 
+    [Header("Cache")]
+
+    private LobbyConnectionHandler _connectionHandler;
+
     protected override void Awake() {
         _currentUi = _initialMenu;
     }
 
+    private void Start() {
+        _connectionHandler = FindObjectOfType<LobbyConnectionHandler>();
+    }
+
+    // Called by Button
     public void OpenInitialMenu() {
         OpenUIFade(_initialMenu);
     }
 
+    // Called by Button and LobbyConnectionHandler
     public void OpenJoinMenu() {
         bool comingFromInitial = _initialMenu.interactable;
         _currentUi = comingFromInitial ? _initialMenu : _lobbyMenu;
         OpenUIFade(comingFromInitial ? _joinMenu : _mainMenu, _joinMenu);
+
+        _connectionHandler.StartJoinMenu();
     }
 
-    public void OpenMainMenu() {
-        OpenUIFade(_mainMenu);
-        _currentUi = _joinMenu;
-    }
-
+    // Called by Button and LobbyConnectionHandler
     public void OpenLobbyMenu() {
         _currentUi = _mainMenu;
         OpenUIFade(_lobbyMenu);
+
+        if (_connectionHandler.ipOther == null) _connectionHandler.StartHostMenu();
     }
 
+    // Called by Button
     public void OpenSettingsMenu() {
         OpenUIMove(null, _settingsMenu, Vector2.zero, Vector2.zero, _settingsMenuActivePos, _settingsMenuDeactivePos);
     }
 
+    // Called by Button
     public void CloseSetingsMenu() {
         OpenUIMove(_settingsMenu, null,_settingsMenuActivePos, _settingsMenuDeactivePos, Vector2.zero, Vector2.zero);
     }
 
+    // Called by LobbyConnectionHandler
     public void SetIpText(int userId, string ipText) {
         _playerIpText[userId].text = ipText;
     }
 
+    // Called by Button
     public void QuitGame() {
         Application.Quit();
 #if UNITY_EDITOR
