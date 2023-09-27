@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
+
+// Remove Debug Later or move inside #if UNITY_EDITOR
 public class SpawnerBulletPickup : MonoBehaviour
 {
     [Header("Values")]
+
     [SerializeField] private Vector3[] _spawnPoints;
     [SerializeField] private float _delayBetweenSpawns;
     //[SerializeField] private GameObject _bulletPickupPrefab;
     [SerializeField] private byte _maxAmmoPickupsInScene = 2;
 
     [Header("Debug")]
+
     [SerializeField] private bool _startWithAutomaticSpawns = true;
     [SerializeField] private bool _debugMode;
     [SerializeField] private Color[] _colorPoints;

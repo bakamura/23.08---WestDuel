@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Net;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +16,7 @@ public class Hud : Menu {
     [Header("Health")]
 
     [SerializeField] private RectTransform[] _playerHealthImage;
+    private Dictionary<IPEndPoint, RectTransform> _playerHealthImageFromIp = new Dictionary<IPEndPoint, RectTransform>();
     [SerializeField] private float _healthUnitWidth;
 
     [Header("End Screen")]
@@ -23,8 +26,16 @@ public class Hud : Menu {
     [SerializeField] private Vector2 _endScreenInPos;
     [SerializeField] private TextMeshProUGUI _winText;
 
-    public void UpdateHealth(int playerId, int health) {
-        _playerHealthImage[playerId].SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _healthUnitWidth * health);
+    private void Start() {
+        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) {
+            if (ip == ConnectionHandler.serverIpEp) _playerHealthImageFromIp.Add(ip, _playerHealthImage[0]);
+            else _playerHealthImageFromIp.Add(ip, _playerHealthImage[1]);
+        }
+    }
+
+    public void UpdateHealth() {
+        foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) 
+            _playerHealthImageFromIp[ip].SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _healthUnitWidth * ServerPlayerInfo.player[ip].health.GetCurrentHealth());
     }
 
     public void OpenHUD() {
