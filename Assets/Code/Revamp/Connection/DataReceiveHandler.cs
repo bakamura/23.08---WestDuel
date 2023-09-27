@@ -5,10 +5,10 @@ using UnityEngine;
 
 public static class DataReceiveHandler {
 
-    public static Queue<InputDataPack> queueInputData;
-    public static Queue<WorldStateDataPack> queueWorldData;
-    public static Queue<GameStateDataPack> queueGameStateData;
-    public static Queue<StringDataPack> queueString;
+    public static Queue<InputDataPack> queueInputData = new Queue<InputDataPack>();
+    public static Queue<WorldStateDataPack> queueWorldData = new Queue<WorldStateDataPack>();
+    public static Queue<GameStateDataPack> queueGameStateData = new Queue<GameStateDataPack>();
+    public static Queue<StringDataPack> queueString = new Queue<StringDataPack>();
 
     public static void Start() {
         Thread receiverThread = new Thread(ReceivePack);
