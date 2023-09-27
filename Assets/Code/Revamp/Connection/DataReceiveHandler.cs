@@ -20,21 +20,21 @@ public static class DataReceiveHandler {
     private static void ReceivePack() {
         while (true) {
             ConnectionHandler.memoryStreamCache = new MemoryStream(ConnectionHandler.udpClient.Receive(ref ConnectionHandler.ipEpCache));
-            ConnectionHandler.byteArrayCache = getBytes(ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache));
+            ConnectionHandler.byteArrayCache = GetBytes(ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache));
 
             switch ((ConnectionHandler.DataPacksIdentification)ConnectionHandler.byteArrayCache[0]) {
                 case ConnectionHandler.DataPacksIdentification.InputDataPack:
-                    ConnectionHandler.inputDataCache = (InputDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
+                    ConnectionHandler.inputDataCache = FromBytes<InputDataPack>(ConnectionHandler.byteArrayCache);
                     ConnectionHandler.inputDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueInputData.Enqueue(ConnectionHandler.inputDataCache);
                     break;
                 case ConnectionHandler.DataPacksIdentification.WorldStateDataPack:
-                    ConnectionHandler.worldDataCache = (WorldStateDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
+                    ConnectionHandler.worldDataCache = FromBytes<WorldStateDataPack>(ConnectionHandler.byteArrayCache);
                     ConnectionHandler.worldDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueWorldData.Enqueue(ConnectionHandler.worldDataCache);
                     break;
                 case ConnectionHandler.DataPacksIdentification.GameStateDataPack:
-                    ConnectionHandler.gameStateDataCache = (GameStateDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
+                    ConnectionHandler.gameStateDataCache = FromBytes<GameStateDataPack>(ConnectionHandler.byteArrayCache);
                     ConnectionHandler.gameStateDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueGameStateData.Enqueue(ConnectionHandler.gameStateDataCache);
                     break;
@@ -48,29 +48,30 @@ public static class DataReceiveHandler {
         }
     }
 
-    public static byte[] getBytes(object str) {
-        int size = Marshal.SizeOf(str);
+    private static byte[] GetBytes(object obj) {
+        int size = Marshal.SizeOf(obj);
         byte[] arr = new byte[size];
         IntPtr ptr = Marshal.AllocHGlobal(size);
 
-        Marshal.StructureToPtr(str, ptr, true);
+        Marshal.StructureToPtr(obj, ptr, true);
         Marshal.Copy(ptr, arr, 0, size);
         Marshal.FreeHGlobal(ptr);
 
         return arr;
     }
 
-    public static T fromBytes<T>(byte[] arr) {
-        T str = default(T);
+    private static T FromBytes<T>(byte[] arr) {
+        T structT = default(T);
 
-        int size = Marshal.SizeOf(str);
+        int size = Marshal.SizeOf(structT);
         IntPtr ptr = Marshal.AllocHGlobal(size);
 
         Marshal.Copy(arr, 0, ptr, size);
 
-        str = (T)Marshal.PtrToStructure(ptr, str.GetType());
+        structT = (T)Marshal.PtrToStructure(ptr, structT.GetType());
         Marshal.FreeHGlobal(ptr);
 
-        return str;
+        return structT;
     }
+
 }
