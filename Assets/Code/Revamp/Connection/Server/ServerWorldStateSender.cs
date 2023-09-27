@@ -16,7 +16,7 @@ public class ServerWorldStateSender : Singleton<ServerWorldStateSender> {
             foreach (IPEndPoint ip in ServerPlayerInfo.player.Keys) {
                 _dataPackCache.playersPos[ip] = PackingUtility.Vector3ToFloatArray(ServerPlayerInfo.player[ip].transform.position);
                 _dataPackCache.playersVelocity[ip] = PackingUtility.Vector3ToFloatArray(ServerPlayerInfo.player[ip].rigidBody.velocity);
-                _dataPackCache.playersShootPoint[ip] = PackingUtility.Vector3ToFloatArray(ServerPlayerInfo.player[ip].shoot.CurrentAim()); // Create vector3 CurrentAim() in PlayerShoot
+                _dataPackCache.playersShootPoint[ip] = PackingUtility.Vector3ToFloatArray(ServerPlayerInfo.player[ip].shoot.aimPoint); // Create vector3 CurrentAim() in PlayerShoot
                 _dataPackCache.playersHasBullet[ip] = ServerPlayerInfo.player[ip].shoot.CheckBullet();
 
                 for (int i = 0; i < _dataPackCache.bulletsPos.Count; i++) {
@@ -28,7 +28,7 @@ public class ServerWorldStateSender : Singleton<ServerWorldStateSender> {
                     // Update Each BulletPickup
                 }
             }
-            foreach(IPEndPoint ip in ServerPlayerInfo.player.Keys) if(ip != ConnectionHandler.serverIpEp) DataSendHandler.SendPack(ConnectionHandler.DataPacksIdentification.WorldStateDataPack, _dataPackCache, ip);
+            foreach(IPEndPoint ip in ServerPlayerInfo.player.Keys) if(ip != ConnectionHandler.serverIpEp) DataSendHandler.SendPack(_dataPackCache, ip);
         }
     }
 

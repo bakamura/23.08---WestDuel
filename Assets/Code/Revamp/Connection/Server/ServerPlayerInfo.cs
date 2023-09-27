@@ -34,7 +34,7 @@ public struct PlayerInfo {
     public PlayerMovement movement;
     public PlayerShoot shoot;
 
-    public PlayerInfo(IPAddress ip, Transform transform, Rigidbody rigidBody, PlayerHealth health, PlayerMovement movement, PlayerShoot shoot) {
+    public PlayerInfo(Transform transform, Rigidbody rigidBody, PlayerHealth health, PlayerMovement movement, PlayerShoot shoot) {
         this.transform = transform;
         this.rigidBody = rigidBody;
         this.health = health;

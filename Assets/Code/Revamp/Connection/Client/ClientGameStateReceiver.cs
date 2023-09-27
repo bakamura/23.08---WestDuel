@@ -53,7 +53,7 @@ public class ClientGameStateReceiver : MonoBehaviour
                     UpdateHealthUI(_dataPackCache);
                     break;
                 case GameStateDataPack.GameState.Ended:
-                    _hud.ShowEndScreen(_dataPack.playersHealth[1] > 0); // Implement When HUD Revamp done
+                    _hud.ShowEndScreen(_dataPackCache.playerHealth[1] > 0); // Implement When HUD Revamp done USE IPEP TO GET
                     ClientConnectionHandler._hasGameEnded = true;
                     break;
                 case GameStateDataPack.GameState.Quit:
@@ -68,7 +68,7 @@ public class ClientGameStateReceiver : MonoBehaviour
     {
         for (int i = 0; i < dataPack.playerHealth.Count; i++)
         {
-            _hud.UpdateHealth(i, dataPack.playersHealth[i]); // Implement When HUD Revamp done
+            _hud.UpdateHealth(i, dataPack.playersHealth[i]); // Implement When HUD Revamp done USE IPEP TO GET
         }
     }
 }

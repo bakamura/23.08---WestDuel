@@ -11,6 +11,7 @@ public class PlayerShoot : MonoBehaviour {
     [SerializeField] private Transform _firePoint;
     private bool _hasBullet = false;
     private bool _canInput = false;
+    [HideInInspector] public Vector3 aimPoint;
 
     [Header("Cache")]
 
@@ -29,12 +30,16 @@ public class PlayerShoot : MonoBehaviour {
         _hasBullet = true; // Should be called by game initiator
     }
 
-    public void Shoot(Vector3 mouseWorldPos) {
+    public void SetAimPoint(Vector3 point) {
+        aimPoint = point;
+    }
+
+    public void Shoot() {
         if (_canInput && _hasBullet) {
             foreach (Bullet bullet in _bulletPool) {
                 if (!bullet.gameObject.activeSelf) {
                     bullet.gameObject.SetActive(true); // Not needed?
-                    bullet.Shoot(_firePoint.position, mouseWorldPos);
+                    bullet.Shoot(_firePoint.position, aimPoint);
                     _hasBullet = false;
                     break;
                 }

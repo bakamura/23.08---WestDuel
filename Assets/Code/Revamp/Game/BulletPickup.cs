@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -37,7 +35,7 @@ public class BulletPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerShootServer temp = other.GetComponent<PlayerShootServer>();
+        PlayerShoot temp = other.GetComponent<PlayerShoot>();
         if (temp) temp.GetBullet();
         CollectBullet();
     }
