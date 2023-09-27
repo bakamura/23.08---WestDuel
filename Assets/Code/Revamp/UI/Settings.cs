@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
-public class Settings : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class Settings : MonoBehaviour {
+
+    [Header("Audio")]
+
+    [SerializeField] private AudioMixer _audioMixer;
+
+    public void SetMusicVol(float volume) {
+        ChangeVolume("Music", volume);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void SetSfxVol(float volume) {
+        ChangeVolume("SFX", volume);
     }
+
+    private void ChangeVolume(string name, float volume) {
+        _audioMixer.SetFloat(name, Mathf.Log10(volume) * 20);
+    }
+
+    public void ToggleWindowed() {
+        Screen.fullScreen = !Screen.fullScreen;
+    }
+
 }

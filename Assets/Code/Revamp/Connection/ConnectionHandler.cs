@@ -24,8 +24,9 @@ public static class ConnectionHandler {
 
     public enum DataPacksIdentification {
         InputDataPack,
+        WorldStateDataPack,
         GameStateDataPack,
-        WorldStateDataPack
+        String
     }
 
 }

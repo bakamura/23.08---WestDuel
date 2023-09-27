@@ -1,0 +1,20 @@
+using System.Net;
+
+[System.Serializable]
+public struct StringDataPack {
+
+    public byte identifierByte;
+
+    public string stringSent;
+
+    public StringDataPack(IPEndPoint senderIp) {
+        identifierByte = 3;
+
+        stringSent = string.Empty;
+
+        this.senderIp = senderIp;
+    }
+
+    public IPEndPoint senderIp;
+
+}

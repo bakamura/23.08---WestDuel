@@ -8,6 +8,7 @@ public static class DataReceiveHandler {
     public static Queue<InputDataPack> queueInputData;
     public static Queue<WorldStateDataPack> queueWorldData;
     public static Queue<GameStateDataPack> queueGameStateData;
+    public static Queue<StringDataPack> queueString;
 
     public static void Start() {
         Thread receiverThread = new Thread(ReceivePack);
@@ -34,6 +35,9 @@ public static class DataReceiveHandler {
                     ConnectionHandler.gameStateDataCache = (GameStateDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
                     ConnectionHandler.gameStateDataCache.senderIp = ConnectionHandler.ipEpCache;
                     queueGameStateData.Enqueue(ConnectionHandler.gameStateDataCache);
+                    break;
+                case ConnectionHandler.DataPacksIdentification.String:
+                    queueString.Enqueue((StringDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache));
                     break;
                 default:
                     Debug.LogError("Unindentified DataPack Type Received");

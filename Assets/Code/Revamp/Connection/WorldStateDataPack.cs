@@ -4,6 +4,7 @@ using System.Net;
 [System.Serializable]
 public struct WorldStateDataPack {
 
+    public byte identifierByte;
 
     public Dictionary<IPEndPoint, float[]> playersPos;
     public Dictionary<IPEndPoint, float[]> playersVelocity;
@@ -18,6 +19,7 @@ public struct WorldStateDataPack {
     public readonly float[] deactivatePos;
 
     public WorldStateDataPack(IPEndPoint[] playerIp) {
+        identifierByte = 1;
 
         playersPos = new Dictionary<IPEndPoint, float[]>();
         playersVelocity = new Dictionary<IPEndPoint, float[]>();

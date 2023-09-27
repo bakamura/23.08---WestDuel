@@ -3,6 +3,9 @@ using System.Net;
 
 [System.Serializable]
 public struct GameStateDataPack {
+
+    public byte identifierByte;
+
     public enum GameState {
         Initiate,
         Restart,
@@ -15,6 +18,8 @@ public struct GameStateDataPack {
     public Dictionary<IPEndPoint, int> playerHealth;
 
     public GameStateDataPack(IPEndPoint[] playerIp) {
+        identifierByte = 2;
+
         gameState = GameState.Initiate;
 
         playerHealth = new Dictionary<IPEndPoint, int>();
