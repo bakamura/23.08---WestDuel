@@ -809,7 +809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4040398540390177740, guid: 1b8285eab6d79cb42815d410e8a5ebb8, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4040398540390177740, guid: 1b8285eab6d79cb42815d410e8a5ebb8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1037,7 +1037,6 @@ GameObject:
   - component: {fileID: 318436224}
   - component: {fileID: 318436223}
   - component: {fileID: 318436222}
-  - component: {fileID: 318436228}
   - component: {fileID: 318436227}
   - component: {fileID: 318436226}
   m_Layer: 5
@@ -1169,18 +1168,6 @@ MonoBehaviour:
   _playerIpText:
   - {fileID: 168484317}
   - {fileID: 1480811489}
---- !u!114 &318436228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 318436221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69a625dbf9707214685a9ab7eecf7672, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &369045535
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,7 +2036,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 318436228}
+      - m_Target: {fileID: 1422712145}
         m_TargetAssemblyTypeName: LobbyConnectionHandler, Assembly-CSharp
         m_MethodName: JoinGame
         m_Mode: 1
@@ -3172,7 +3159,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 318436228}
+      - m_Target: {fileID: 1422712145}
         m_TargetAssemblyTypeName: LobbyConnectionHandler, Assembly-CSharp
         m_MethodName: CopySelfIp
         m_Mode: 1
@@ -3247,6 +3234,49 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &1422712144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1422712146}
+  - component: {fileID: 1422712145}
+  m_Layer: 0
+  m_Name: LobbyHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1422712145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422712144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69a625dbf9707214685a9ab7eecf7672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1422712146
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422712144}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1480811487
 GameObject:
   m_ObjectHideFlags: 0
@@ -3600,7 +3630,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1616727794
 GameObject:
@@ -4571,7 +4601,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 318436228}
+      - m_Target: {fileID: 1422712145}
         m_TargetAssemblyTypeName: LobbyConnectionHandler, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
