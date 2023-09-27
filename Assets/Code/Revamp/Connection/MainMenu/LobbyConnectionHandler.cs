@@ -15,7 +15,8 @@ public class LobbyConnectionHandler : MonoBehaviour {
     [Header("Cache")]
 
     private MainMenu _menu;
-    private StringDataPack _dataPackCache;
+    private StringDataPack _dataPackSendCache;
+    private StringDataPack _dataPackReceiveCache;
 
     private const string START = "START"; // Server Send
     private const string START_SUCCESS = "START SUCCESS"; // Client Send
@@ -31,7 +32,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
         _menu = FindObjectOfType<MainMenu>();
         _menu.SetIpText(0, adressSelf.ToString());
         _ipSelf = new IPEndPoint(adressSelf, 11000);
-        _dataPackCache = new StringDataPack(_ipSelf);
+        _dataPackSendCache = new StringDataPack(_ipSelf);
 
         DataReceiveHandler.Start();
 
@@ -44,20 +45,20 @@ public class LobbyConnectionHandler : MonoBehaviour {
 
     private void ImplementPack() {
         while (DataReceiveHandler.queueString.Count > 0) {
-            _dataPackCache = DataReceiveHandler.queueString.Dequeue();
+            _dataPackReceiveCache = DataReceiveHandler.queueString.Dequeue();
             if (_isHost) {
                 if (ipOther == null) {
-                    if (_dataPackCache.stringSent == JOIN) {
-                        ipOther = PackingUtility.StringToIPEndPoint(_dataPackCache.ipEpString);
+                    if (_dataPackReceiveCache.stringSent == JOIN) {
+                        ipOther = PackingUtility.StringToIPEndPoint(_dataPackReceiveCache.ipEpString);
                         _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
 
-                        _dataPackCache.stringSent = JOIN_SUCCESS;
-                        DataSendHandler.SendPack(_dataPackCache, ipOther);
+                        _dataPackSendCache.stringSent = JOIN_SUCCESS;
+                        DataSendHandler.SendPack(_dataPackSendCache, ipOther);
                     }
                 }
                 else {
-                    if (_dataPackCache.stringSent == START_SUCCESS) GoToGameScene();
-                    else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
+                    if (_dataPackReceiveCache.stringSent == START_SUCCESS) GoToGameScene();
+                    else if (_dataPackReceiveCache.stringSent == LEAVE_LOBBY) {
                         ipOther = null;
                         _menu.SetIpText(1, "");
                     }
@@ -65,19 +66,19 @@ public class LobbyConnectionHandler : MonoBehaviour {
             }
             else {
                 if (ipOther == null) {
-                    if (_dataPackCache.stringSent == JOIN_SUCCESS) {
-                        ipOther = PackingUtility.StringToIPEndPoint(_dataPackCache.ipEpString);
+                    if (_dataPackReceiveCache.stringSent == JOIN_SUCCESS) {
+                        ipOther = PackingUtility.StringToIPEndPoint(_dataPackReceiveCache.ipEpString);
                         _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
                         _menu.OpenLobbyMenu();
                     }
                 }
                 else {
-                    if (_dataPackCache.stringSent == START) {
-                        _dataPackCache.stringSent = START_SUCCESS;
-                        DataSendHandler.SendPack(_dataPackCache, ipOther);
+                    if (_dataPackReceiveCache.stringSent == START) {
+                        _dataPackSendCache.stringSent = START_SUCCESS;
+                        DataSendHandler.SendPack(_dataPackSendCache, ipOther);
                         GoToGameScene();
                     }
-                    else if (_dataPackCache.stringSent == LEAVE_LOBBY) {
+                    else if (_dataPackReceiveCache.stringSent == LEAVE_LOBBY) {
                         ipOther = null;
                         _menu.SetIpText(1, "");
                         _menu.OpenJoinMenu();
@@ -92,16 +93,16 @@ public class LobbyConnectionHandler : MonoBehaviour {
     public void StartJoinMenu() {
         _isHost = false;
         if (ipOther != null) {
-            _dataPackCache.stringSent = LEAVE_LOBBY;
-            DataSendHandler.SendPack(_dataPackCache, ipOther);
+            _dataPackSendCache.stringSent = LEAVE_LOBBY;
+            DataSendHandler.SendPack(_dataPackSendCache, ipOther);
         }
     }
 
     // Called by Button
     public void JoinGame() {
         if (IPAddress.TryParse(_menu.ipInput.text.Substring(0, _menu.ipInput.text.Length - 1), out IPAddress ip)) {
-            _dataPackCache.stringSent = JOIN;
-            DataSendHandler.SendPack(_dataPackCache, new IPEndPoint(ip, 11000)); // Unsafely removes last CHAR (text mesh pro invisible char)
+            _dataPackSendCache.stringSent = JOIN;
+            DataSendHandler.SendPack(_dataPackSendCache, new IPEndPoint(ip, 11000)); // Unsafely removes last CHAR (text mesh pro invisible char)
         }
         else Debug.Log("Invalid IP Adress!");
     }
@@ -119,9 +120,9 @@ public class LobbyConnectionHandler : MonoBehaviour {
 
     // Called by Button
     public void StartGame() {
-        if (ipOther != null) {
-            _dataPackCache.stringSent = START;
-            DataSendHandler.SendPack(_dataPackCache, ipOther);
+        if (_isHost && ipOther != null) {
+            _dataPackSendCache.stringSent = START;
+            DataSendHandler.SendPack(_dataPackSendCache, ipOther);
         }
     }
 
