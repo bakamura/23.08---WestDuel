@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
@@ -18,7 +20,7 @@ public static class DataReceiveHandler {
     private static void ReceivePack() {
         while (true) {
             ConnectionHandler.memoryStreamCache = new MemoryStream(ConnectionHandler.udpClient.Receive(ref ConnectionHandler.ipEpCache));
-            ConnectionHandler.byteArrayCache = (byte[])ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache);
+            ConnectionHandler.byteArrayCache = getBytes(ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache));
 
             switch ((ConnectionHandler.DataPacksIdentification)ConnectionHandler.byteArrayCache[0]) {
                 case ConnectionHandler.DataPacksIdentification.InputDataPack:
@@ -46,4 +48,29 @@ public static class DataReceiveHandler {
         }
     }
 
+    public static byte[] getBytes(object str) {
+        int size = Marshal.SizeOf(str);
+        byte[] arr = new byte[size];
+        IntPtr ptr = Marshal.AllocHGlobal(size);
+
+        Marshal.StructureToPtr(str, ptr, true);
+        Marshal.Copy(ptr, arr, 0, size);
+        Marshal.FreeHGlobal(ptr);
+
+        return arr;
+    }
+
+    public static T fromBytes<T>(byte[] arr) {
+        T str = default(T);
+
+        int size = Marshal.SizeOf(str);
+        IntPtr ptr = Marshal.AllocHGlobal(size);
+
+        Marshal.Copy(arr, 0, ptr, size);
+
+        str = (T)Marshal.PtrToStructure(ptr, str.GetType());
+        Marshal.FreeHGlobal(ptr);
+
+        return str;
+    }
 }
