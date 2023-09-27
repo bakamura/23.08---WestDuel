@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimationsUpdate : MonoBehaviour
 {
     [SerializeField] private BoneModificationData[] _bonesToUpdate;
-    [SerializeField] private ServerInputReader _inputReader;
+    [SerializeField] private ServerLocalInputReader _inputReader;
     [SerializeField] private float _tickFrequency;
     [SerializeField, Min(1f)] private float _speed;
     //[SerializeField, Tooltip("the diference that the current direction and the target direction can be ignored")] private float _minDiferenceToUpdate;
@@ -36,24 +35,16 @@ public class AnimationsUpdate : MonoBehaviour
         MouseInput
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Mouse0))
-    //    {
-    //        TriggerShootAnim();
-    //    }
-    //}
-
     private void Awake()
     {
         _delay = new WaitForSeconds(_tickFrequency);
         _animator = GetComponent<Animator>();
         if (_inputReader)
         {
-            PlayerShootServer temp = GetComponentInChildren<PlayerShootServer>();
+            PlayerShoot temp = GetComponentInChildren<PlayerShoot>();
             if (temp)
             {
-                temp.OnShoot += TriggerShootAnim;
+                temp.onShoot.AddListener(TriggerShootAnim);
             }
             else
             {
@@ -75,8 +66,8 @@ public class AnimationsUpdate : MonoBehaviour
 
             if (_inputReader)
             {
-                SetMousePosition(_inputReader.MousePosition);
-                SetDirection(_inputReader.Direction);
+                SetMousePosition(_inputReader.ShootInput);
+                SetDirection(_inputReader.MovementInput);
             }
 
             for (int i = 0; i < _bonesToUpdate.Length; i++)

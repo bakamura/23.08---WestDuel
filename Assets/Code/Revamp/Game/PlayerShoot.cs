@@ -1,10 +1,9 @@
 using UnityEngine;
-using System;
 using UnityEngine.Events;
 
 public class PlayerShoot : MonoBehaviour {
 
-    public UnityEvent<PlayerShoot> onShoot = new UnityEvent<PlayerShoot>();
+    public UnityEvent onShoot = new UnityEvent();
 
     [Header("Parameters")]
 
@@ -40,7 +39,7 @@ public class PlayerShoot : MonoBehaviour {
                     break;
                 }
             }
-            onShoot?.Invoke(this);
+            onShoot?.Invoke();
         }
     }
 
