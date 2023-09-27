@@ -26,20 +26,20 @@ public static class DataReceiveHandler {
                 case ConnectionHandler.DataPacksIdentification.InputDataPack:
                     ConnectionHandler.inputDataCache = FromBytes<InputDataPack>(ConnectionHandler.byteArrayCache);
                     ConnectionHandler.inputDataCache.ipEpString = ConnectionHandler.ipEpCache.ToString();
-                    queueInputData.Enqueue(ConnectionHandler.inputDataCache);
+                    queueInputData.Enqueue(FromBytes<InputDataPack>(ConnectionHandler.byteArrayCache));
                     break;
                 case ConnectionHandler.DataPacksIdentification.WorldStateDataPack:
                     ConnectionHandler.worldDataCache = FromBytes<WorldStateDataPack>(ConnectionHandler.byteArrayCache);
                     ConnectionHandler.worldDataCache.ipEpString = ConnectionHandler.ipEpCache.ToString();
-                    queueWorldData.Enqueue(ConnectionHandler.worldDataCache);
+                    queueWorldData.Enqueue(FromBytes<WorldStateDataPack>(ConnectionHandler.byteArrayCache));
                     break;
                 case ConnectionHandler.DataPacksIdentification.GameStateDataPack:
                     ConnectionHandler.gameStateDataCache = FromBytes<GameStateDataPack>(ConnectionHandler.byteArrayCache);
                     ConnectionHandler.gameStateDataCache.ipEpString = ConnectionHandler.ipEpCache.ToString();
-                    queueGameStateData.Enqueue(ConnectionHandler.gameStateDataCache);
+                    queueGameStateData.Enqueue(FromBytes<GameStateDataPack>(ConnectionHandler.byteArrayCache));
                     break;
                 case ConnectionHandler.DataPacksIdentification.String:
-                    queueString.Enqueue((StringDataPack)ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache));
+                    queueString.Enqueue(FromBytes<StringDataPack>(ConnectionHandler.byteArrayCache));
                     break;
                 default:
                     Debug.LogError("Unindentified DataPack Type Received");
