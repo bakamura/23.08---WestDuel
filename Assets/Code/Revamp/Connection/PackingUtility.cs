@@ -1,3 +1,4 @@
+using System.Net; // I hate this
 using UnityEngine;
 
 public static class PackingUtility {
@@ -21,5 +22,12 @@ public static class PackingUtility {
     }
 
     public static float[] Vector3ToFloatArray(Vector3 vector3) { return new float[3] { vector3[0], vector3[1], vector3[2] }; }
+
+    // I hate this
+    public static IPEndPoint StringToIPEndPoint(string str) {
+        string[] strSplit = str.Split(':');
+        return new IPEndPoint(IPAddress.Parse(strSplit[0]), int.Parse(strSplit[1])); 
+    }
+    // END I hate this
 
 }

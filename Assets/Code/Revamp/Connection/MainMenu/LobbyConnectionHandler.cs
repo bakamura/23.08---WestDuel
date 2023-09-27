@@ -48,7 +48,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
             if (_isHost) {
                 if (ipOther == null) {
                     if (_dataPackCache.stringSent == JOIN) {
-                        ipOther = _dataPackCache.senderIp;
+                        ipOther = PackingUtility.StringToIPEndPoint(_dataPackCache.ipEpString);
                         _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
 
                         _dataPackCache.stringSent = JOIN_SUCCESS;
@@ -66,7 +66,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
             else {
                 if (ipOther == null) {
                     if (_dataPackCache.stringSent == JOIN_SUCCESS) {
-                        ipOther = _dataPackCache.senderIp;
+                        ipOther = PackingUtility.StringToIPEndPoint(_dataPackCache.ipEpString);
                         _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
                         _menu.OpenLobbyMenu();
                     }

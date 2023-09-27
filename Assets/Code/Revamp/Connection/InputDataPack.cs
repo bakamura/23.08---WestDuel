@@ -17,9 +17,10 @@ public struct InputDataPack {
         shootPoint = new float[3];
         shootTrigger = false;
 
-        senderIp = null;
+        ipEpString = null;
     }
 
-    public IPEndPoint senderIp;
+    //public IPEndPoint senderIp;
+    public string ipEpString; // I hate this
 
 }

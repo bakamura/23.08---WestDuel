@@ -38,7 +38,7 @@ public struct WorldStateDataPack {
         List<float[]> listCache;
         foreach (IPEndPoint ip in playerIp) {
             listCache = new List<float[]>();
-            for (int i = 0; i < 2; i++) listCache.Add(new float[3]); // Provisory should read Max Bullets
+            for (int i = 0; i < 2; i++) listCache.Add(new float[PlayerShoot.MaxBulletAmount]);
             bulletsPos.Add(ip, listCache);
             bulletsVelocity.Add(ip, listCache);
         }
@@ -50,8 +50,10 @@ public struct WorldStateDataPack {
 
         deactivatePos = new float[3] { 0, 256, 0 };
 
-        senderIp = null;
+        ipEpString = null;
     }
 
-    public IPEndPoint senderIp;
+    //public IPEndPoint senderIp;
+    public string ipEpString; // I hate this
+
 }

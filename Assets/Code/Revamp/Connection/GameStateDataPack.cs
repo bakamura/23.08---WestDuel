@@ -25,8 +25,9 @@ public struct GameStateDataPack {
         playerHealth = new Dictionary<IPEndPoint, int>();
         foreach (IPEndPoint ip in playerIp) playerHealth.Add(ip, new int());
 
-        senderIp = null;
+        ipEpString = null;
     }
 
-    public IPEndPoint senderIp;
+    //public IPEndPoint senderIp;
+    public string ipEpString; // I hate this
 }

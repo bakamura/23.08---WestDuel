@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq; // Debuggingx'
 using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
@@ -26,17 +25,17 @@ public static class DataReceiveHandler {
             switch ((ConnectionHandler.DataPacksIdentification)ConnectionHandler.byteArrayCache[0]) {
                 case ConnectionHandler.DataPacksIdentification.InputDataPack:
                     ConnectionHandler.inputDataCache = FromBytes<InputDataPack>(ConnectionHandler.byteArrayCache);
-                    ConnectionHandler.inputDataCache.senderIp = ConnectionHandler.ipEpCache;
+                    ConnectionHandler.inputDataCache.ipEpString = ConnectionHandler.ipEpCache.ToString();
                     queueInputData.Enqueue(ConnectionHandler.inputDataCache);
                     break;
                 case ConnectionHandler.DataPacksIdentification.WorldStateDataPack:
                     ConnectionHandler.worldDataCache = FromBytes<WorldStateDataPack>(ConnectionHandler.byteArrayCache);
-                    ConnectionHandler.worldDataCache.senderIp = ConnectionHandler.ipEpCache;
+                    ConnectionHandler.worldDataCache.ipEpString = ConnectionHandler.ipEpCache.ToString();
                     queueWorldData.Enqueue(ConnectionHandler.worldDataCache);
                     break;
                 case ConnectionHandler.DataPacksIdentification.GameStateDataPack:
                     ConnectionHandler.gameStateDataCache = FromBytes<GameStateDataPack>(ConnectionHandler.byteArrayCache);
-                    ConnectionHandler.gameStateDataCache.senderIp = ConnectionHandler.ipEpCache;
+                    ConnectionHandler.gameStateDataCache.ipEpString = ConnectionHandler.ipEpCache.ToString();
                     queueGameStateData.Enqueue(ConnectionHandler.gameStateDataCache);
                     break;
                 case ConnectionHandler.DataPacksIdentification.String:

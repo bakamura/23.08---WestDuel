@@ -12,9 +12,10 @@ public struct StringDataPack {
 
         stringSent = string.Empty;
 
-        this.senderIp = senderIp;
+        this.ipEpString = senderIp.ToString();
     }
 
-    public IPEndPoint senderIp;
+    //public IPEndPoint senderIp;
+    public string ipEpString; // I hate this
 
 }

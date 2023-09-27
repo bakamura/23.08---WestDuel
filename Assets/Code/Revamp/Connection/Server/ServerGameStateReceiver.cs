@@ -16,7 +16,7 @@ public class ServerGameStateReceiver : MonoBehaviour {
         while (DataReceiveHandler.queueInputData.Count > 0) {
             _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();
 
-            if (ServerPlayerInfo.player.Keys.ToArray().Contains(_dataPackCache.senderIp)) {
+            if (ServerPlayerInfo.player.Keys.ToArray().Contains(PackingUtility.StringToIPEndPoint(_dataPackCache.ipEpString))) {
                 switch (_dataPackCache.gameState) {
                     case GameStateDataPack.GameState.Quit:
                         // Reset Every Server Sided Class
