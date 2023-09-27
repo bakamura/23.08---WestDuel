@@ -4,10 +4,9 @@ using UnityEngine;
 public class AnimationsUpdate : MonoBehaviour
 {
     [SerializeField] private BoneModificationData[] _bonesToUpdate;
-    [SerializeField] private ServerLocalInputReader _inputReader;
     [SerializeField] private float _tickFrequency;
     [SerializeField, Min(1f)] private float _speed;
-    //[SerializeField, Tooltip("the diference that the current direction and the target direction can be ignored")] private float _minDiferenceToUpdate;
+    private ServerLocalInputReader _inputReader;
     private WaitForSeconds _delay;
     private bool _canUpdate = true;
     private Vector3 _direction;
@@ -39,6 +38,7 @@ public class AnimationsUpdate : MonoBehaviour
     {
         _delay = new WaitForSeconds(_tickFrequency);
         _animator = GetComponent<Animator>();
+        _inputReader = Object.FindObjectOfType<ServerLocalInputReader>();
         if (_inputReader)
         {
             PlayerShoot temp = GetComponentInChildren<PlayerShoot>();

@@ -3,11 +3,11 @@ using UnityEngine.Events;
 
 public class PlayerShoot : MonoBehaviour {
 
-    public UnityEvent onShoot = new UnityEvent();
+    [HideInInspector] public UnityEvent onShoot = new UnityEvent();
 
     [Header("Parameters")]
 
-    [SerializeField] private GameObject _bulletPrefab;
+    //[SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _firePoint;
     private bool _hasBullet = false;
     private bool _canInput = false;
@@ -17,14 +17,14 @@ public class PlayerShoot : MonoBehaviour {
 
     public const int MaxBulletAmount = 2;
     private Bullet[] _bulletPool = new Bullet[MaxBulletAmount];
-    private Camera _cam;
+    //private Camera _cam;
 
     private void Awake() {
         for (int i = 0; i < _bulletPool.Length; i++) {
-            _bulletPool[i] = Instantiate(_bulletPrefab, Vector3.up * 256f, Quaternion.identity).GetComponent<Bullet>();
+            _bulletPool[i] = Instantiate(InstantiateHandler.GetBulletPrefab(), Vector3.up * 256f, Quaternion.identity).GetComponent<Bullet>();
             _bulletPool[i].owner = transform;
         }
-        _cam = Camera.main;
+        //_cam = Camera.main;
 
         _canInput = true; // Should be called by game initiator
         _hasBullet = true; // Should be called by game initiator
