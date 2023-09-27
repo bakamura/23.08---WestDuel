@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6096640427926682116}
-  - component: {fileID: 7037298406725102712}
   - component: {fileID: 8398195224824319831}
-  - component: {fileID: 1657840207754796054}
   - component: {fileID: 3611340105653935122}
+  - component: {fileID: 1657840207754796054}
+  - component: {fileID: 7037298406725102712}
   m_Layer: 0
   m_Name: ClientSetup
   m_TagString: Untagged
@@ -34,19 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7037298406725102712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2780990740732705522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0a5d0160cb07b744bb02b59d422292f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hud: {fileID: 0}
 --- !u!114 &8398195224824319831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,6 +44,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9aad429b4887ea54b9381def70541c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3611340105653935122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2780990740732705522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd5d65067990124e91858f1383ed60b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1657840207754796054
@@ -79,7 +78,7 @@ MonoBehaviour:
   _mouseRaycastLayer:
     serializedVersion: 2
     m_Bits: 2
---- !u!114 &3611340105653935122
+--- !u!114 &7037298406725102712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,6 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2780990740732705522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bd5d65067990124e91858f1383ed60b, type: 3}
+  m_Script: {fileID: 11500000, guid: c0a5d0160cb07b744bb02b59d422292f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hud: {fileID: 0}

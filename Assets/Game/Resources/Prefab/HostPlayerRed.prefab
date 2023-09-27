@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2834965831631373480}
   m_Layer: 0
-  m_Name: Player1 Instance Host
+  m_Name: HostPlayerRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,35 +103,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5723517659107298973, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
   m_PrefabInstance: {fileID: 2442902835797693598}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8652568695690613701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6588684588644689302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14eb11a7584423545a5dc9810e5484c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthMax: 0
-  _delayRespawn: 0
-  _invencibilityDuration: 0
---- !u!114 &5737913446584717369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6588684588644689302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 657e8794b6b655644b0eee5ebdba3f0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseSpeed: 0
-  _noBulletSpeed: 0
 --- !u!114 &2817381591599900028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,3 +120,32 @@ MonoBehaviour:
       m_Calls: []
   _firePoint: {fileID: 7964875233217747459}
   aimPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &5737913446584717369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6588684588644689302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657e8794b6b655644b0eee5ebdba3f0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseSpeed: 3
+  _noBulletSpeed: 5
+--- !u!114 &8652568695690613701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6588684588644689302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14eb11a7584423545a5dc9810e5484c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthMax: 3
+  _delayRespawn: 1.5
+  _invencibilityDuration: 1.5

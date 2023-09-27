@@ -10,10 +10,10 @@ public static class InstantiateHandler {
     private static GameObject _bulletPrefab;
 
     static InstantiateHandler() {
-        _player1ClientPrefab = Resources.Load<GameObject>("Prefab/Player1 Instance Client");
-        _player2ClientPrefab = Resources.Load<GameObject>("Prefab/Player2 Instance Client");
-        _player1HostPrefab = Resources.Load<GameObject>("Prefab/Player1 Instance Host");
-        _player2HostPrefab = Resources.Load<GameObject>("Prefab/Player2 Instance Host");
+        _player1ClientPrefab = Resources.Load<GameObject>("Prefab/VisualPlayerRed");
+        _player2ClientPrefab = Resources.Load<GameObject>("Prefab/VisualPlayerBlue");
+        _player1HostPrefab = Resources.Load<GameObject>("Prefab/HostPlayerRed");
+        _player2HostPrefab = Resources.Load<GameObject>("Prefab/HostPlayerBlue");
         _ammoBoxPrefab = Resources.Load<GameObject>("Prefab/AmmoBox");
         _bulletPrefab = Resources.Load<GameObject>("Prefab/Bullet");
     }

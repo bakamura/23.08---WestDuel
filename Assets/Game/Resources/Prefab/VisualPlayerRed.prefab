@@ -1656,7 +1656,7 @@ GameObject:
   - component: {fileID: 7318584195881152031}
   - component: {fileID: 6187755479878726955}
   m_Layer: 0
-  m_Name: Player1 Instance Client
+  m_Name: VisualPlayerRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
