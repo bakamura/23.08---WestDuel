@@ -1,4 +1,5 @@
 using System.Net;
+using UnityEngine.SceneManagement;
 
 public class ServerGameStateSender : Singleton<ServerGameStateSender> {
 
@@ -34,6 +35,7 @@ public class ServerGameStateSender : Singleton<ServerGameStateSender> {
         _dataPackCache.gameState = GameStateDataPack.GameState.Quit;
 
         SendPack();
+        SceneManager.LoadScene(0);
     }
 
     private void SendPack() {
