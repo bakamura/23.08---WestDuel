@@ -16,7 +16,7 @@ public class ClientGameStateReceiver : MonoBehaviour
     {
         if (DataReceiveHandler.queueGameStateData.Count > 0)
         {
-            _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();
+            _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();            
             switch (_dataPackCache.gameState)
             {
                 case GameStateDataPack.GameState.Initiate:
@@ -36,7 +36,7 @@ public class ClientGameStateReceiver : MonoBehaviour
                         }
                     }
 
-                    UpdateHealthUI(_dataPackCache);
+                    _hud.UpdateHealth();
                     break;
                 case GameStateDataPack.GameState.Restart:
                     //for (int i = 0; i < ClientConnectionHandler.PlayersList.Count; i++)
@@ -47,13 +47,13 @@ public class ClientGameStateReceiver : MonoBehaviour
                     //}
                     _hud.HideEndScreen(); // Implement When HUD Revamp done
                     ClientConnectionHandler._hasGameEnded = false;
-                    UpdateHealthUI(_dataPackCache);
+                    _hud.UpdateHealth();
                     break;
                 case GameStateDataPack.GameState.Continue:
-                    UpdateHealthUI(_dataPackCache);
+                    _hud.UpdateHealth();
                     break;
                 case GameStateDataPack.GameState.Ended:
-                    _hud.ShowEndScreen(_dataPackCache.playerHealth[1] > 0); // Implement When HUD Revamp done USE IPEP TO GET
+                    _hud.ShowEndScreen(_dataPackCache.playerHealth[ConnectionHandler.ipEpCache] > 0); // Implement When HUD Revamp done USE IPEP TO GET
                     ClientConnectionHandler._hasGameEnded = true;
                     break;
                 case GameStateDataPack.GameState.Quit:
@@ -62,13 +62,6 @@ public class ClientGameStateReceiver : MonoBehaviour
                     SceneManager.LoadScene("MainMenu");
                     break;
             }
-        }
-    }
-    private void UpdateHealthUI(GameStateDataPack dataPack)
-    {
-        for (int i = 0; i < dataPack.playerHealth.Count; i++)
-        {
-            _hud.UpdateHealth(i, dataPack.playersHealth[i]); // Implement When HUD Revamp done USE IPEP TO GET
         }
     }
 }
