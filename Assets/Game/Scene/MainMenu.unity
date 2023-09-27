@@ -1165,8 +1165,10 @@ MonoBehaviour:
   _settingsMenu: {fileID: 215408656}
   _settingsMenuActivePos: {x: 32, y: 0}
   _settingsMenuDeactivePos: {x: -818, y: 0}
-  ipInput: {fileID: 0}
-  _playerIpText: []
+  ipInput: {fileID: 369045537}
+  _playerIpText:
+  - {fileID: 168484317}
+  - {fileID: 1480811489}
 --- !u!114 &318436228
 MonoBehaviour:
   m_ObjectHideFlags: 0
