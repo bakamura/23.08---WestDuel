@@ -1545,9 +1545,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8235659380383591503}
-        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 8235659380383591492}
+        m_TargetAssemblyTypeName: Hud, Assembly-CSharp
+        m_MethodName: CloseSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2380,7 +2380,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -25, y: 25}
-  m_SizeDelta: {x: 600, y: 199}
+  m_SizeDelta: {x: 625.1748, y: 200}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &8235659379693563598
 CanvasRenderer:
@@ -2419,7 +2419,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.9975
+  m_PixelsPerUnitMultiplier: 0.975
 --- !u!1 &8235659380242738361
 GameObject:
   m_ObjectHideFlags: 0
@@ -2455,7 +2455,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 25, y: 25}
-  m_SizeDelta: {x: 600, y: 199}
+  m_SizeDelta: {x: 625.1748, y: 200}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &8235659380242738364
 CanvasRenderer:
@@ -2494,7 +2494,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.9975
+  m_PixelsPerUnitMultiplier: 0.975
 --- !u!1 &8235659380383591503
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,7 +2510,7 @@ GameObject:
   - component: {fileID: 8235659380383591492}
   - component: {fileID: 6166722782346819133}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: InGameCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2609,21 +2609,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 8235659380383591503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9ab6819a6e78ff4aba5a005ed2c015d, type: 3}
+  m_Script: {fileID: 11500000, guid: bf90b658d677df04b8cc07c88773fbf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _fadeDuration: 0.1
   _fadeOpenDelay: 0.05
   _moveDuration: 0.2
-  _moveOpenDelay: 0.05
+  _moveOpenDelay: 0.1
   _hud: {fileID: 8235659379392011893}
   _menu: {fileID: 8369250040844306755}
   _settings: {fileID: 5419673961414782277}
   _settingsOutPos: {x: -818, y: 0}
-  _settingsInPos: {x: 0, y: 0}
+  _settingsInPos: {x: 32, y: 0}
   _playerHealthImage:
   - {fileID: 8235659380242738362}
   - {fileID: 8235659379693563596}
+  _healthUnitWidth: 208.3916
   _endScreen: {fileID: 2021612818614880267}
   _endScreenOutPos: {x: 0, y: -910}
   _endScreenInPos: {x: 0, y: 0}
@@ -2637,7 +2638,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8235659380383591503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34c4698660c6ab44c8683fc1453b6863, type: 3}
+  m_Script: {fileID: 11500000, guid: d4d587a331b77404a93fb2229c5314fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixer: {fileID: 24100000, guid: bcbc946c248ed07429e5550b796610ef, type: 2}
