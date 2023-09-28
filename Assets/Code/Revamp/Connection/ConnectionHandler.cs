@@ -18,8 +18,10 @@ public static class ConnectionHandler {
     public static WorldStateDataPack worldDataCache;
     public static GameStateDataPack gameStateDataCache;
 
+    public const int port = 12369;
+
     static ConnectionHandler() {
-        udpClient = new UdpClient(11000);
+        udpClient = new UdpClient(port);
     }
 
     public enum DataPacksIdentification {

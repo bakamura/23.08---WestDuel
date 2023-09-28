@@ -11,10 +11,13 @@ public static class DataReceiveHandler {
     public static Queue<WorldStateDataPack> queueWorldData = new Queue<WorldStateDataPack>();
     public static Queue<GameStateDataPack> queueGameStateData = new Queue<GameStateDataPack>();
     public static Queue<StringDataPack> queueString = new Queue<StringDataPack>();
+    private static Thread threadC;
 
     public static void Start() {
-        Thread receiverThread = new Thread(ReceivePack);
-        receiverThread.Start();
+        if (threadC != null) {
+            threadC = new Thread(ReceivePack);
+            threadC.Start();
+        }
     }
 
     private static void ReceivePack() {

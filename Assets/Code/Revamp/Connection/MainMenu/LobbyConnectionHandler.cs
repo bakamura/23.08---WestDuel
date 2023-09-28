@@ -31,7 +31,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
 
         _menu = FindObjectOfType<MainMenu>();
         _menu.SetIpText(0, adressSelf.ToString());
-        _ipSelf = new IPEndPoint(adressSelf, 11000);
+        _ipSelf = new IPEndPoint(adressSelf, ConnectionHandler.port);
         _dataPackSendCache = new StringDataPack(_ipSelf);
 
         DataReceiveHandler.Start();
@@ -102,7 +102,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
     public void JoinGame() {
         if (IPAddress.TryParse(_menu.ipInput.text.Substring(0, _menu.ipInput.text.Length - 1), out IPAddress ip)) {
             _dataPackSendCache.stringSent = JOIN;
-            DataSendHandler.SendPack(_dataPackSendCache, new IPEndPoint(ip, 11000)); // Unsafely removes last CHAR (text mesh pro invisible char)
+            DataSendHandler.SendPack(_dataPackSendCache, new IPEndPoint(ip, ConnectionHandler.port)); // Unsafely removes last CHAR (text mesh pro invisible char)
         }
         else Debug.Log("Invalid IP Adress!");
     }
