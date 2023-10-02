@@ -6,7 +6,7 @@ public class AnimationsUpdate : MonoBehaviour
     [SerializeField] private BoneModificationData[] _bonesToUpdate;
     [SerializeField] private float _tickFrequency;
     [SerializeField, Min(1f)] private float _speed;
-    private ServerLocalInputReader _inputReader;
+    [SerializeField] private ServerLocalInputReader _inputReader;
     private WaitForSeconds _delay;
     private bool _canUpdate = true;
     private Vector3 _direction;
@@ -34,19 +34,19 @@ public class AnimationsUpdate : MonoBehaviour
         MouseInput
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            TriggerShootAnim();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Mouse0))
+    //    {
+    //        TriggerShootAnim();
+    //    }
+    //}
 
     private void Awake()
     {
         _delay = new WaitForSeconds(_tickFrequency);
         _animator = GetComponent<Animator>();
-        _inputReader = Object.FindObjectOfType<ServerLocalInputReader>();
+        //_inputReader = Object.FindObjectOfType<ServerLocalInputReader>();
         if (_inputReader)
         {
             PlayerShoot temp = GetComponentInChildren<PlayerShoot>();
@@ -172,27 +172,4 @@ public class AnimationsUpdate : MonoBehaviour
             _updateCoroutine = StartCoroutine(UpdateAnimations());
         }
     }
-    #region oldCodeForRotation
-    //_bonesToUpdate[i].Bone.transform.forward = Vector3.Lerp(_bonesToUpdate[i].Bone.transform.forward, direction, _minDiferenceToUpdate);
-    //_fliped = direction.z < 0;                        
-    //dotProduct = Vector3.Dot(_bonesToUpdate[i].Bone.transform.right, direction);
-
-    //if (Mathf.Abs(dotProduct) > _minDiferenceToUpdate)
-    //{
-    //result = _bonesToUpdate[i].Bone.transform.eulerAngles + _sensitivity * dotProduct * axisLocks;
-
-    //if (result.y > _bonesToUpdate[i].MinAngleToFlip && result.y < _bonesToUpdate[i].MaxAngleToFlip)
-    //{
-    //    _fliped = true;
-    //    //Debug.Log($"true {result.y}");
-    //}
-    //else
-    //{
-    //    _fliped = false;
-    //    //Debug.Log($"false {result.y}");
-    //}
-    //_bonesToUpdate[i].Bone.transform.eulerAngles = result;
-    //Debug.Log(result.y);
-    //}
-    #endregion
 }
