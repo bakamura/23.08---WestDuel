@@ -34,35 +34,19 @@ public class AnimationsUpdate : MonoBehaviour
         MouseInput
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Mouse0))
-    //    {
-    //        TriggerShootAnim();
-    //    }
-    //}
-
     private void Awake()
     {
         _delay = new WaitForSeconds(_tickFrequency);
         _animator = GetComponent<Animator>();
-        //if(ServerPlayerInfo.player.Count > 0) _inputReader = FindObjectOfType<ServerLocalInputReader>();
-        if (_inputReader)
-        {
-            PlayerShoot temp = GetComponentInChildren<PlayerShoot>();
-            if (temp)
-            {
-                temp.onShoot.AddListener(TriggerShootAnim);
-            }
-            else
-            {
-                Debug.LogWarning("there is no PlayerShootServer script to callback the Shoot animation");
-            }
-        }
+
         if (_canUpdate) _updateCoroutine = StartCoroutine(UpdateAnimations());
     }
 
-    IEnumerator UpdateAnimations()
+    private void Start() {
+        if(ServerPlayerInfo.player.Count > 0) transform.parent.GetComponent<PlayerShoot>().onShoot.AddListener(TriggerShootAnim);
+    }
+
+    private IEnumerator UpdateAnimations()
     {
         while (_canUpdate)
         {
@@ -72,7 +56,7 @@ public class AnimationsUpdate : MonoBehaviour
             Quaternion finalRotation;
             bool fliped = false;
 
-            if (_inputReader)
+            if (_inputReader != null)
             {
                 SetMousePosition(_inputReader.ShootInput);
                 SetDirection(_inputReader.MovementInput);
