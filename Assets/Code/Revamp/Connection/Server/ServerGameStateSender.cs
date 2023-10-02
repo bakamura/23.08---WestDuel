@@ -39,7 +39,7 @@ public class ServerGameStateSender : Singleton<ServerGameStateSender> {
     }
 
     private void SendPack() {
-        foreach(IPEndPoint ip in ServerPlayerInfo.player.Keys) if(ip != ConnectionHandler.serverIpEp) DataSendHandler.SendPack(_dataPackCache, ip);
+        foreach(IPEndPoint ip in ServerPlayerInfo.player.Keys) if(ip != ConnectionHandler.serverIpEp) DataSendHandler.SendPack(_dataPackCache, (byte)ConnectionHandler.DataPacksIdentification.GameStateDataPack,ip);
     }
 
     public void AddPlayerIP(IPEndPoint[] playerIp) { // Make ServerPlayerInfo call this

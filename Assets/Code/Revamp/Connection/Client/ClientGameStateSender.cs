@@ -8,7 +8,7 @@ public class ClientGameStateSender : MonoBehaviour
     public void QuitGame()
     {
         _dataPackCache.gameState = GameStateDataPack.GameState.Quit;
-        DataSendHandler.SendPack(_dataPackCache, ConnectionHandler.serverIpEp);
+        DataSendHandler.SendPack(_dataPackCache, (byte) ConnectionHandler.DataPacksIdentification.GameStateDataPack,ConnectionHandler.serverIpEp);
 
         SceneManager.LoadScene(0);
     }

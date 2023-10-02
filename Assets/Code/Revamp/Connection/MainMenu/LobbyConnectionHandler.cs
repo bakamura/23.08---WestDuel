@@ -53,7 +53,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
                         _menu.SetIpText(1, ipOther.ToString().Split(':')[0]);
 
                         _dataPackSendCache.stringSent = JOIN_SUCCESS;
-                        DataSendHandler.SendPack(_dataPackSendCache, ipOther);
+                        DataSendHandler.SendPack(_dataPackSendCache, (byte)ConnectionHandler.DataPacksIdentification.String, ipOther);
                     }
                 }
                 else {
@@ -75,7 +75,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
                 else {
                     if (_dataPackReceiveCache.stringSent == START) {
                         _dataPackSendCache.stringSent = START_SUCCESS;
-                        DataSendHandler.SendPack(_dataPackSendCache, ipOther);
+                        DataSendHandler.SendPack(_dataPackSendCache, (byte)ConnectionHandler.DataPacksIdentification.String, ipOther);
                         GoToGameScene();
                     }
                     else if (_dataPackReceiveCache.stringSent == LEAVE_LOBBY) {
@@ -94,7 +94,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
         _isHost = false;
         if (ipOther != null) {
             _dataPackSendCache.stringSent = LEAVE_LOBBY;
-            DataSendHandler.SendPack(_dataPackSendCache, ipOther);
+            DataSendHandler.SendPack(_dataPackSendCache, (byte)ConnectionHandler.DataPacksIdentification.String, ipOther);
         }
     }
 
@@ -102,7 +102,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
     public void JoinGame() {
         if (IPAddress.TryParse(_menu.ipInput.text.Substring(0, _menu.ipInput.text.Length - 1), out IPAddress ip)) {
             _dataPackSendCache.stringSent = JOIN;
-            DataSendHandler.SendPack(_dataPackSendCache, new IPEndPoint(ip, ConnectionHandler.port)); // Unsafely removes last CHAR (text mesh pro invisible char)
+            DataSendHandler.SendPack(_dataPackSendCache, (byte)ConnectionHandler.DataPacksIdentification.String, new IPEndPoint(ip, ConnectionHandler.port)); // Unsafely removes last CHAR (text mesh pro invisible char)
         }
         else Debug.Log("Invalid IP Adress!");
     }
@@ -122,7 +122,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
     public void StartGame() {
         if (_isHost && ipOther != null) {
             _dataPackSendCache.stringSent = START;
-            DataSendHandler.SendPack(_dataPackSendCache, ipOther);
+            DataSendHandler.SendPack(_dataPackSendCache, (byte)ConnectionHandler.DataPacksIdentification.String, ipOther);
         }
     }
 

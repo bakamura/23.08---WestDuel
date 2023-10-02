@@ -28,7 +28,7 @@ public class ServerWorldStateSender : Singleton<ServerWorldStateSender> {
                     // Update Each BulletPickup
                 }
             }
-            foreach(IPEndPoint ip in ServerPlayerInfo.player.Keys) if(ip != ConnectionHandler.serverIpEp) DataSendHandler.SendPack(_dataPackCache, ip);
+            foreach(IPEndPoint ip in ServerPlayerInfo.player.Keys) if(ip != ConnectionHandler.serverIpEp) DataSendHandler.SendPack(_dataPackCache, (byte)ConnectionHandler.DataPacksIdentification.WorldStateDataPack, ip);
         }
     }
 

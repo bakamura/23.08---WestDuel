@@ -44,6 +44,6 @@ public class ClientInputSender : MonoBehaviour
         _dataPackCache.shootPoint = PackingUtility.Vector3ToFloatArray(_shootInput);
         _dataPackCache.shootTrigger = Input.GetKeyDown(_keyShoot);
 
-        DataSendHandler.SendPack(_dataPackCache, ConnectionHandler.serverIpEp);
+        DataSendHandler.SendPack(_dataPackCache, (byte)ConnectionHandler.DataPacksIdentification.InputDataPack, ConnectionHandler.serverIpEp);
     }
 }
