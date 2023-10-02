@@ -35,13 +35,9 @@ public class ServerWorldStateSender : Singleton<ServerWorldStateSender> {
     }
 
     public GameObject InstantiatePlayer(bool isServer) {
-        Debug.Log($"Spawn Player null? {FindObjectOfType<SpawnPlayer>() == null}");
-        Debug.Log($"Instantiated PlayerPrefab null? {Instantiate(InstantiateHandler.GetPlayer1HostPrefab()) == null}");
-        GameObject go = Instantiate(isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab(),
+        return Instantiate(isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab(),
                     FindObjectOfType<SpawnPlayer>().GetPointFurthestFromOponent(isServer ? Vector3.zero : ServerPlayerInfo.player[ConnectionHandler.serverIpEp].transform.position),
                     Quaternion.identity);
-
-        return go;
     }
 
     public void AddBulletPool(IPEndPoint ipOwner, Bullet[] bulletPool) {

@@ -10,12 +10,14 @@ public static class ServerPlayerInfo {
 
     public static void InstantiatePlayer(bool isServer, IPEndPoint ip) {
         if (isServer) ConnectionHandler.serverIpEp = ip;
-        GameObject go = ServerWorldStateSender.Instance.InstantiatePlayer(isServer);
+        GameObject go = GameObject.Instantiate(isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab(), 
+                                               GameObject.FindObjectOfType<SpawnPlayer>().GetPointFurthestFromOponent(isServer ? Vector3.zero : player[ConnectionHandler.serverIpEp].transform.position), 
+                                               Quaternion.identity);
         player.Add(ip, new PlayerInfo(go.transform,
                                       go.GetComponentInChildren<Rigidbody>(),
-                                      go.GetComponentInChildren<PlayerHealth>(),
-                                      go.GetComponentInChildren<PlayerMovement>(),
-                                      go.GetComponentInChildren<PlayerShoot>()));
+                                      go.GetComponent<PlayerHealth>(),
+                                      go.GetComponent<PlayerMovement>(),
+                                      go.GetComponent<PlayerShoot>()));
 
         if (player.Count == playerMax) {
             IPEndPoint[] ipEpArr = player.Keys.ToArray();

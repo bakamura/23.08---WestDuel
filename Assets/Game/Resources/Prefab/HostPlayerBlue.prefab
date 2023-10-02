@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4497203284229414950}
+  - component: {fileID: 6398885480570290121}
+  - component: {fileID: 2014259838206593531}
+  - component: {fileID: 1760859288097236078}
   m_Layer: 0
   m_Name: HostPlayerBlue
   m_TagString: Untagged
@@ -27,10 +30,56 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3898050488103410819}
+  - {fileID: 5208764478430002396}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6398885480570290121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828787713868741276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14eb11a7584423545a5dc9810e5484c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthMax: 3
+  _delayRespawn: 1.5
+  _invencibilityDuration: 1.5
+--- !u!114 &2014259838206593531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828787713868741276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657e8794b6b655644b0eee5ebdba3f0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseSpeed: 3
+  _noBulletSpeed: 5
+--- !u!114 &1760859288097236078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828787713868741276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c23168cc167c8043b6bad0309865871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  _firePoint: {fileID: 1524396538032269974}
+  aimPoint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3541841879868515134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -88,64 +137,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
---- !u!1 &4419008600316397113 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 897446147410060551, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
-  m_PrefabInstance: {fileID: 3541841879868515134}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3898050488103410819 stripped
+--- !u!4 &5208764478430002396 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 522292387466919869, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8749959570443739106, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
   m_PrefabInstance: {fileID: 3541841879868515134}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2931959042988371423 stripped
+--- !u!4 &1524396538032269974 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1844029827803959009, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2594241609538570664, guid: bf6972bb8222a154dad5b14e52443d9b, type: 3}
   m_PrefabInstance: {fileID: 3541841879868515134}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6391227182811336489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4419008600316397113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14eb11a7584423545a5dc9810e5484c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthMax: 3
-  _delayRespawn: 1.5
-  _invencibilityDuration: 1.5
---- !u!114 &7570930756982348911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4419008600316397113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 657e8794b6b655644b0eee5ebdba3f0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _baseSpeed: 3
-  _noBulletSpeed: 5
---- !u!114 &8998774444867795484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4419008600316397113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c23168cc167c8043b6bad0309865871, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onShoot:
-    m_PersistentCalls:
-      m_Calls: []
-  _firePoint: {fileID: 2931959042988371423}
-  aimPoint: {x: 0, y: 0, z: 0}
