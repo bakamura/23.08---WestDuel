@@ -13,7 +13,7 @@ public class ServerGameStateReceiver : MonoBehaviour {
     }
 
     private void ImplementPack() {
-        while (DataReceiveHandler.queueInputData.Count > 0) {
+        while (DataReceiveHandler.queueGameStateData.Count > 0) {
             _dataPackCache = DataReceiveHandler.queueGameStateData.Dequeue();
 
             if (ServerPlayerInfo.player.Keys.ToArray().Contains(PackingUtility.StringToIPEndPoint(_dataPackCache.ipEpString))) {

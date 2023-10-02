@@ -10,9 +10,7 @@ public static class ServerPlayerInfo {
 
     public static void InstantiatePlayer(bool isServer, IPEndPoint ip) {
         if (isServer) ConnectionHandler.serverIpEp = ip;
-        GameObject go = GameObject.Instantiate(isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab(), 
-                                               GameObject.FindObjectOfType<SpawnPlayer>().GetPointFurthestFromOponent(isServer ? Vector3.zero : player[ConnectionHandler.serverIpEp].transform.position), 
-                                               Quaternion.identity);
+        GameObject go = ServerWorldStateSender.Instance.InstantiatePlayer(isServer);
         player.Add(ip, new PlayerInfo(go.transform,
                                       go.GetComponentInChildren<Rigidbody>(),
                                       go.GetComponentInChildren<PlayerHealth>(),

@@ -3,6 +3,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System.Collections;
 
 public class LobbyConnectionHandler : MonoBehaviour {
 
@@ -57,7 +58,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
                     }
                 }
                 else {
-                    if (_dataPackReceiveCache.stringSent == START_SUCCESS) GoToGameScene();
+                    if (_dataPackReceiveCache.stringSent == START_SUCCESS) StartCoroutine(GoToGameScene());
                     else if (_dataPackReceiveCache.stringSent == LEAVE_LOBBY) {
                         ipOther = null;
                         _menu.SetIpText(1, "");
@@ -76,7 +77,7 @@ public class LobbyConnectionHandler : MonoBehaviour {
                     if (_dataPackReceiveCache.stringSent == START) {
                         _dataPackSendCache.stringSent = START_SUCCESS;
                         DataSendHandler.SendPack(_dataPackSendCache, (byte)ConnectionHandler.DataPacksIdentification.String, ipOther);
-                        GoToGameScene();
+                        StartCoroutine(GoToGameScene());
                     }
                     else if (_dataPackReceiveCache.stringSent == LEAVE_LOBBY) {
                         ipOther = null;
@@ -126,14 +127,21 @@ public class LobbyConnectionHandler : MonoBehaviour {
         }
     }
 
-    private void GoToGameScene() {
+    private IEnumerator GoToGameScene() {
         ConnectionHandler.serverIpEp = _isHost ? _ipSelf : ipOther;
 
-        SceneManager.LoadScene(_isHost ? 1 : 2);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(_isHost ? 1 : 2);
+
+        while (!operation.isDone) {
+            yield return null;
+        }
 
         if (_isHost) {
             ServerPlayerInfo.InstantiatePlayer(true, _ipSelf);
             ServerPlayerInfo.InstantiatePlayer(false, ipOther);
+        }
+        else {
+            ServerGameStateSender.Instance.StartMatch();
         }
 
         Destroy(gameObject);

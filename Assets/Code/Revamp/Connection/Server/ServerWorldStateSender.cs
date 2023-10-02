@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -24,12 +25,19 @@ public class ServerWorldStateSender : Singleton<ServerWorldStateSender> {
                     _dataPackCache.bulletsVelocity[ip][i] = playerBulletRigidBody[ip][i].gameObject.activeSelf ? PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].velocity) : _dataPackCache.deactivatePos;
                 }
 
-                for(int i = 0; i < 2 /* should be BulletPickup Amount */; i++) {
+                //for(int i = 0; i < 2 /* should be BulletPickup Amount */; i++) {
                     // Update Each BulletPickup
-                }
+                    // IDK what is this
+                //}
             }
             foreach(IPEndPoint ip in ServerPlayerInfo.player.Keys) if(ip != ConnectionHandler.serverIpEp) DataSendHandler.SendPack(_dataPackCache, (byte)ConnectionHandler.DataPacksIdentification.WorldStateDataPack, ip);
         }
+    }
+
+    public GameObject InstantiatePlayer(bool isServer) {
+        return Instantiate(isServer ? InstantiateHandler.GetPlayer1HostPrefab() : InstantiateHandler.GetPlayer2HostPrefab(),
+                    FindObjectOfType<SpawnPlayer>().GetPointFurthestFromOponent(isServer ? Vector3.zero : ServerPlayerInfo.player[ConnectionHandler.serverIpEp].transform.position),
+                    Quaternion.identity);
     }
 
     public void AddBulletPool(IPEndPoint ipOwner, Bullet[] bulletPool) {
