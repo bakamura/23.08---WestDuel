@@ -14,7 +14,7 @@ public static class DataReceiveHandler {
     private static Thread threadC;
 
     public static void Start() {
-        if (threadC != null) {
+        if (threadC == null) {
             threadC = new Thread(ReceivePack);
             threadC.Start();
         }
@@ -23,6 +23,7 @@ public static class DataReceiveHandler {
     private static void ReceivePack() {
         while (true) {
             ConnectionHandler.memoryStreamCache = new MemoryStream(ConnectionHandler.udpClient.Receive(ref ConnectionHandler.ipEpCache));
+            Debug.Log(ConnectionHandler.ipEpCache);
             ConnectionHandler.byteArrayCache = GetBytes(ConnectionHandler.binaryFormatter.Deserialize(ConnectionHandler.memoryStreamCache));
 
             switch ((ConnectionHandler.DataPacksIdentification)ConnectionHandler.byteArrayCache[0]) {
