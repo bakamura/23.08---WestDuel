@@ -139,8 +139,6 @@ public class LobbyConnectionHandler : MonoBehaviour {
         if (_isHost) {
             ServerPlayerInfo.InstantiatePlayer(true, _ipSelf);
             ServerPlayerInfo.InstantiatePlayer(false, ipOther);
-        }
-        else {
             ServerGameStateSender.Instance.StartMatch();
         }
 
