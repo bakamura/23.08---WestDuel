@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour {
     private Transform _cam; // Not needed?
 
     private void Awake() {
-        _rb = GetComponent<Rigidbody>();
+        _rb = GetComponentInChildren<Rigidbody>();
         _shootScript = GetComponent<PlayerShoot>();
         _cam = Camera.main.transform;
 
@@ -32,9 +32,10 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Move(Vector2 direction) {
-        _rb.velocity = _canInput && _input != Vector2.zero ?
-            (Quaternion.Euler(0, Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg + _cam.eulerAngles.y, 0) * Vector3.forward).normalized * (_shootScript.CheckBullet() ? _baseSpeed : _noBulletSpeed) :
-            Vector3.zero;
+        _rb.velocity = _canInput && direction != Vector2.zero ?
+            (Quaternion.Euler(0, Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg + _cam.eulerAngles.y, 0) * Vector3.forward).normalized 
+            * (_shootScript.CheckBullet() ? _baseSpeed : _noBulletSpeed) : Vector3.zero;
+        print(_rb.velocity);
     }
 
     public void SetActive(bool isActive) {

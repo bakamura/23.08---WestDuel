@@ -20,10 +20,10 @@ public class ServerWorldStateSender : Singleton<ServerWorldStateSender> {
                 _dataPackCache.playersShootPoint[ip] = PackingUtility.Vector3ToFloatArray(ServerPlayerInfo.player[ip].shoot.aimPoint); // Create vector3 CurrentAim() in PlayerShoot
                 _dataPackCache.playersHasBullet[ip] = ServerPlayerInfo.player[ip].shoot.CheckBullet();
 
-                for (int i = 0; i < _dataPackCache.bulletsPos.Count; i++) {
-                    _dataPackCache.bulletsPos[ip][i] = playerBulletRigidBody[ip][i].gameObject.activeSelf ? PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].transform.position) : _dataPackCache.deactivatePos;
-                    _dataPackCache.bulletsVelocity[ip][i] = playerBulletRigidBody[ip][i].gameObject.activeSelf ? PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].velocity) : _dataPackCache.deactivatePos;
-                }
+                //for (int i = 0; i < _dataPackCache.bulletsPos.Count; i++) {
+                //    _dataPackCache.bulletsPos[ip][i] = playerBulletRigidBody[ip][i].gameObject.activeSelf ? PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].transform.position) : _dataPackCache.deactivatePos;
+                //    _dataPackCache.bulletsVelocity[ip][i] = playerBulletRigidBody[ip][i].gameObject.activeSelf ? PackingUtility.Vector3ToFloatArray(playerBulletRigidBody[ip][i].velocity) : _dataPackCache.deactivatePos;
+                //}
 
                 //for(int i = 0; i < 2 /* should be BulletPickup Amount */; i++) {
                     // Update Each BulletPickup

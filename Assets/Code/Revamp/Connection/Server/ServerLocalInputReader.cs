@@ -29,6 +29,7 @@ public class ServerLocalInputReader : MonoBehaviour {
     private void Update() {
         _movementInput.Set((Input.GetKey(_keyLeft) ? -1 : 0) + (Input.GetKey(_keyRight) ? 1 : 0),
                            (Input.GetKey(_keyBackward) ? -1 : 0) + (Input.GetKey(_keyForward) ? 1 : 0));
+        ServerPlayerInfo.player[ConnectionHandler.serverIpEp].movement.SetInputDirection(_movementInput);
 
         if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out RaycastHit raycastHit, Mathf.Infinity, _mouseRaycastLayer)) {
             _shootInput = raycastHit.point;

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2834965831631373480}
+  - component: {fileID: 7932168489723619012}
   - component: {fileID: 972237579122498997}
   - component: {fileID: 9052917482429596781}
   - component: {fileID: 8893189683958076227}
@@ -34,6 +35,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7932168489723619012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3178418511314837010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a8932e2beae8645a88cf4d32e12082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _keyForward: 119
+  _keyRight: 100
+  _keyBackward: 115
+  _keyLeft: 97
+  _keyShoot: 323
+  _mouseRaycastLayer:
+    serializedVersion: 2
+    m_Bits: 2
 --- !u!114 &972237579122498997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +152,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6099441056555734973, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
+      propertyPath: _inputReader
+      value: 
+      objectReference: {fileID: 7932168489723619012}
     - target: {fileID: 6369489012478144947, guid: 37e60304924daf54e97db81bc062ae8e, type: 3}
       propertyPath: m_Name
       value: VisualPlayerRed

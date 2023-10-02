@@ -6,7 +6,7 @@ public class AnimationsUpdate : MonoBehaviour
     [SerializeField] private BoneModificationData[] _bonesToUpdate;
     [SerializeField] private float _tickFrequency;
     [SerializeField, Min(1f)] private float _speed;
-    private ServerLocalInputReader _inputReader;
+    [SerializeField] private ServerLocalInputReader _inputReader;
     private WaitForSeconds _delay;
     private bool _canUpdate = true;
     private Vector3 _direction;
@@ -46,7 +46,7 @@ public class AnimationsUpdate : MonoBehaviour
     {
         _delay = new WaitForSeconds(_tickFrequency);
         _animator = GetComponent<Animator>();
-        if(ServerPlayerInfo.player.Count > 0) _inputReader = FindObjectOfType<ServerLocalInputReader>();
+        //if(ServerPlayerInfo.player.Count > 0) _inputReader = FindObjectOfType<ServerLocalInputReader>();
         if (_inputReader)
         {
             PlayerShoot temp = GetComponentInChildren<PlayerShoot>();

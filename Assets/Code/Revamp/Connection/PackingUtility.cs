@@ -25,6 +25,7 @@ public static class PackingUtility {
 
     // I hate this
     public static IPEndPoint StringToIPEndPoint(string str) {
+        if (str == null) return null;
         string[] strSplit = str.Split(':');
         return new IPEndPoint(IPAddress.Parse(strSplit[0]), int.Parse(strSplit[1])); 
     }
