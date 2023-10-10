@@ -46,4 +46,8 @@ public class ClientInputSender : MonoBehaviour
 
         DataSendHandler.SendPack(_dataPackCache, (byte)ConnectionHandler.DataPacksIdentification.InputDataPack, ConnectionHandler.serverIpEp);
     }
+
+    private void OnApplicationQuit() {
+        ConnectionHandler.udpClient.Close();
+    }
 }

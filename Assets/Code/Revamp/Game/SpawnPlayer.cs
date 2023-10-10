@@ -8,4 +8,8 @@ public class SpawnPlayer : MonoBehaviour {
     public Vector3 GetPointFurthestFromOponent(Vector3 oponentPos) {
         return _spawnPoints.OrderByDescending(x => Vector3.Distance(oponentPos, x)).First();
     }
+
+    private void OnApplicationQuit() {
+        ConnectionHandler.udpClient.Close();
+    }
 }
